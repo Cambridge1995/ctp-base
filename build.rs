@@ -95,20 +95,12 @@ fn main() {
         println!("cargo:rustc-link-lib={MD_API_BASENAME}");
         println!("cargo:rustc-link-lib={TRADER_API_BASENAME}");
     } else if target_os == "macos" {
-        // macOS 官方库的 install name 指向 framework 布局，直接按路径链接，
+        // macOS 官方库必须作为完整 framework Bundle 加载（dyld 按 Bundle
+        // 的 CodeResources 校验代码签名），通过 -F/-framework 链接，
         // 运行时经 rpath 定位 sdk/macos 下的 framework。
-        println!(
-            "cargo:rustc-link-arg={}/{}.framework/Versions/A/{}",
-            library_dir.display(),
-            MD_API_BASENAME,
-            MD_API_BASENAME
-        );
-        println!(
-            "cargo:rustc-link-arg={}/{}.framework/Versions/A/{}",
-            library_dir.display(),
-            TRADER_API_BASENAME,
-            TRADER_API_BASENAME
-        );
+        println!("cargo:rustc-link-arg=-F{}", library_dir.display());
+        println!("cargo:rustc-link-arg=-framework {MD_API_BASENAME}");
+        println!("cargo:rustc-link-arg=-framework {TRADER_API_BASENAME}");
         println!("cargo:rustc-link-arg=-Wl,-rpath,{}", library_dir.display());
     } else {
         println!("cargo:rustc-link-lib=dylib={MD_API_BASENAME}");

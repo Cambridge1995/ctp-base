@@ -22,6 +22,7 @@ jobs:
         if: runner.os == 'Windows'
         run: echo "LIBCLANG_PATH=C:\Program Files\LLVM\bin" >> $env:GITHUB_ENV
       - name: 配置运行时库路径
+        shell: bash
         run: |
           if [ "$RUNNER_OS" = "Windows" ]; then
             echo "$(pwd -W)/sdk/windows" >> $GITHUB_PATH
