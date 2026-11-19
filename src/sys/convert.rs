@@ -6014,3 +6014,462 @@ impl crate::QryCombPromotionParam {
         Ok(raw)
     }
 }
+
+impl crate::QryInvestorProductGroupMargin {
+    pub(crate) fn to_sys(
+        &self,
+    ) -> Result<sys::CThostFtdcQryInvestorProductGroupMarginField, ConversionError> {
+        let raw = sys::CThostFtdcQryInvestorProductGroupMarginField {
+            BrokerID: self.broker_id.to_wire(),
+            InvestorID: self.investor_id.to_wire(),
+            HedgeFlag: self
+                .hedge_flag
+                .code()
+                .ok_or_else(|| ConversionError::new("HedgeFlag", TextError::UnknownEnumValue))?
+                as c_char,
+            ExchangeID: self.exchange_id.to_wire(),
+            InvestUnitID: self.invest_unit_id.to_wire(),
+            ProductGroupID: self.product_group_id.to_wire(),
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QryExchangeMarginRate {
+    pub(crate) fn to_sys(
+        &self,
+    ) -> Result<sys::CThostFtdcQryExchangeMarginRateField, ConversionError> {
+        let raw = sys::CThostFtdcQryExchangeMarginRateField {
+            BrokerID: self.broker_id.to_wire(),
+            HedgeFlag: self
+                .hedge_flag
+                .code()
+                .ok_or_else(|| ConversionError::new("HedgeFlag", TextError::UnknownEnumValue))?
+                as c_char,
+            ExchangeID: self.exchange_id.to_wire(),
+            InstrumentID: self.instrument_id.to_wire(),
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QryExchangeMarginRateAdjust {
+    pub(crate) fn to_sys(
+        &self,
+    ) -> Result<sys::CThostFtdcQryExchangeMarginRateAdjustField, ConversionError> {
+        let raw = sys::CThostFtdcQryExchangeMarginRateAdjustField {
+            BrokerID: self.broker_id.to_wire(),
+            HedgeFlag: self
+                .hedge_flag
+                .code()
+                .ok_or_else(|| ConversionError::new("HedgeFlag", TextError::UnknownEnumValue))?
+                as c_char,
+            InstrumentID: self.instrument_id.to_wire(),
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QryMMInstrumentCommissionRate {
+    pub(crate) fn to_sys(
+        &self,
+    ) -> Result<sys::CThostFtdcQryMMInstrumentCommissionRateField, ConversionError> {
+        let raw = sys::CThostFtdcQryMMInstrumentCommissionRateField {
+            BrokerID: self.broker_id.to_wire(),
+            InvestorID: self.investor_id.to_wire(),
+            InstrumentID: self.instrument_id.to_wire(),
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QryMMOptionInstrCommRate {
+    pub(crate) fn to_sys(
+        &self,
+    ) -> Result<sys::CThostFtdcQryMMOptionInstrCommRateField, ConversionError> {
+        let raw = sys::CThostFtdcQryMMOptionInstrCommRateField {
+            BrokerID: self.broker_id.to_wire(),
+            InvestorID: self.investor_id.to_wire(),
+            InstrumentID: self.instrument_id.to_wire(),
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QryOptionInstrTradeCost {
+    pub(crate) fn to_sys(
+        &self,
+    ) -> Result<sys::CThostFtdcQryOptionInstrTradeCostField, ConversionError> {
+        let raw = sys::CThostFtdcQryOptionInstrTradeCostField {
+            BrokerID: self.broker_id.to_wire(),
+            InvestorID: self.investor_id.to_wire(),
+            HedgeFlag: self
+                .hedge_flag
+                .code()
+                .ok_or_else(|| ConversionError::new("HedgeFlag", TextError::UnknownEnumValue))?
+                as c_char,
+            InputPrice: self.input_price,
+            UnderlyingPrice: self.underlying_price,
+            ExchangeID: self.exchange_id.to_wire(),
+            InvestUnitID: self.invest_unit_id.to_wire(),
+            InstrumentID: self.instrument_id.to_wire(),
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QryOptionInstrCommRate {
+    pub(crate) fn to_sys(
+        &self,
+    ) -> Result<sys::CThostFtdcQryOptionInstrCommRateField, ConversionError> {
+        let raw = sys::CThostFtdcQryOptionInstrCommRateField {
+            BrokerID: self.broker_id.to_wire(),
+            InvestorID: self.investor_id.to_wire(),
+            ExchangeID: self.exchange_id.to_wire(),
+            InvestUnitID: self.invest_unit_id.to_wire(),
+            InstrumentID: self.instrument_id.to_wire(),
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QryRiskSettleInvestPosition {
+    pub(crate) fn to_sys(
+        &self,
+    ) -> Result<sys::CThostFtdcQryRiskSettleInvstPositionField, ConversionError> {
+        let raw = sys::CThostFtdcQryRiskSettleInvstPositionField {
+            BrokerID: self.broker_id.to_wire(),
+            InvestorID: self.investor_id.to_wire(),
+            InstrumentID: self.instrument_id.to_wire(),
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QryRiskSettleProductStatus {
+    pub(crate) fn to_sys(
+        &self,
+    ) -> Result<sys::CThostFtdcQryRiskSettleProductStatusField, ConversionError> {
+        let raw = sys::CThostFtdcQryRiskSettleProductStatusField {
+            ProductID: self.product_id.to_wire(),
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QrySPBMFutureParameter {
+    pub(crate) fn to_sys(
+        &self,
+    ) -> Result<sys::CThostFtdcQrySPBMFutureParameterField, ConversionError> {
+        let raw = sys::CThostFtdcQrySPBMFutureParameterField {
+            ExchangeID: self.exchange_id.to_wire(),
+            InstrumentID: self.instrument_id.to_wire(),
+            ProdFamilyCode: self.product_family_code.to_wire(),
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QrySPBMOptionParameter {
+    pub(crate) fn to_sys(
+        &self,
+    ) -> Result<sys::CThostFtdcQrySPBMOptionParameterField, ConversionError> {
+        let raw = sys::CThostFtdcQrySPBMOptionParameterField {
+            ExchangeID: self.exchange_id.to_wire(),
+            InstrumentID: self.instrument_id.to_wire(),
+            ProdFamilyCode: self.product_family_code.to_wire(),
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QrySPBMIntraParameter {
+    pub(crate) fn to_sys(
+        &self,
+    ) -> Result<sys::CThostFtdcQrySPBMIntraParameterField, ConversionError> {
+        let raw = sys::CThostFtdcQrySPBMIntraParameterField {
+            ExchangeID: self.exchange_id.to_wire(),
+            ProdFamilyCode: self.product_family_code.to_wire(),
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QrySPBMInterParameter {
+    pub(crate) fn to_sys(
+        &self,
+    ) -> Result<sys::CThostFtdcQrySPBMInterParameterField, ConversionError> {
+        let raw = sys::CThostFtdcQrySPBMInterParameterField {
+            ExchangeID: self.exchange_id.to_wire(),
+            Leg1ProdFamilyCode: self.leg1_product_family_code.to_wire(),
+            Leg2ProdFamilyCode: self.leg2_product_family_code.to_wire(),
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QrySPBMPortfDefinition {
+    pub(crate) fn to_sys(
+        &self,
+    ) -> Result<sys::CThostFtdcQrySPBMPortfDefinitionField, ConversionError> {
+        let raw = sys::CThostFtdcQrySPBMPortfDefinitionField {
+            ExchangeID: self.exchange_id.to_wire(),
+            PortfolioDefID: self.portfolio_definition_id,
+            ProdFamilyCode: self.product_family_code.to_wire(),
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QrySPBMInvestorPortfDef {
+    pub(crate) fn to_sys(
+        &self,
+    ) -> Result<sys::CThostFtdcQrySPBMInvestorPortfDefField, ConversionError> {
+        let raw = sys::CThostFtdcQrySPBMInvestorPortfDefField {
+            ExchangeID: self.exchange_id.to_wire(),
+            BrokerID: self.broker_id.to_wire(),
+            InvestorID: self.investor_id.to_wire(),
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QryInvestorPortfMarginRatio {
+    pub(crate) fn to_sys(
+        &self,
+    ) -> Result<sys::CThostFtdcQryInvestorPortfMarginRatioField, ConversionError> {
+        let raw = sys::CThostFtdcQryInvestorPortfMarginRatioField {
+            BrokerID: self.broker_id.to_wire(),
+            InvestorID: self.investor_id.to_wire(),
+            ExchangeID: self.exchange_id.to_wire(),
+            ProductGroupID: self.product_group_id.to_wire(),
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QryInvestorProdSPBMDetail {
+    pub(crate) fn to_sys(
+        &self,
+    ) -> Result<sys::CThostFtdcQryInvestorProdSPBMDetailField, ConversionError> {
+        let raw = sys::CThostFtdcQryInvestorProdSPBMDetailField {
+            ExchangeID: self.exchange_id.to_wire(),
+            BrokerID: self.broker_id.to_wire(),
+            InvestorID: self.investor_id.to_wire(),
+            ProdFamilyCode: self.product_family_code.to_wire(),
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QryInvestorCommoditySPMMMargin {
+    pub(crate) fn to_sys(
+        &self,
+    ) -> Result<sys::CThostFtdcQryInvestorCommoditySPMMMarginField, ConversionError> {
+        let raw = sys::CThostFtdcQryInvestorCommoditySPMMMarginField {
+            BrokerID: self.broker_id.to_wire(),
+            InvestorID: self.investor_id.to_wire(),
+            CommodityID: string_field(&self.commodity_id, "CommodityID")?,
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QryInvestorCommodityGroupSPMMMargin {
+    pub(crate) fn to_sys(
+        &self,
+    ) -> Result<sys::CThostFtdcQryInvestorCommodityGroupSPMMMarginField, ConversionError> {
+        let raw = sys::CThostFtdcQryInvestorCommodityGroupSPMMMarginField {
+            BrokerID: self.broker_id.to_wire(),
+            InvestorID: self.investor_id.to_wire(),
+            CommodityGroupID: string_field(&self.commodity_group_id, "CommodityGroupID")?,
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QrySPMMInstParam {
+    pub(crate) fn to_sys(&self) -> Result<sys::CThostFtdcQrySPMMInstParamField, ConversionError> {
+        let raw = sys::CThostFtdcQrySPMMInstParamField {
+            InstrumentID: self.instrument_id.to_wire(),
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QrySPMMProductParam {
+    pub(crate) fn to_sys(
+        &self,
+    ) -> Result<sys::CThostFtdcQrySPMMProductParamField, ConversionError> {
+        let raw = sys::CThostFtdcQrySPMMProductParamField {
+            ProductID: string_field(&self.product_id, "ProductID")?,
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QrySPBMAddOnInterParameter {
+    pub(crate) fn to_sys(
+        &self,
+    ) -> Result<sys::CThostFtdcQrySPBMAddOnInterParameterField, ConversionError> {
+        let raw = sys::CThostFtdcQrySPBMAddOnInterParameterField {
+            ExchangeID: self.exchange_id.to_wire(),
+            Leg1ProdFamilyCode: self.leg1_product_family_code.to_wire(),
+            Leg2ProdFamilyCode: self.leg2_product_family_code.to_wire(),
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QryRCAMSCombProductInfo {
+    pub(crate) fn to_sys(
+        &self,
+    ) -> Result<sys::CThostFtdcQryRCAMSCombProductInfoField, ConversionError> {
+        let raw = sys::CThostFtdcQryRCAMSCombProductInfoField {
+            ProductID: self.product_id.to_wire(),
+            CombProductID: self.comb_product_id.to_wire(),
+            ProductGroupID: self.product_group_id.to_wire(),
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QryRCAMSInstrParameter {
+    pub(crate) fn to_sys(
+        &self,
+    ) -> Result<sys::CThostFtdcQryRCAMSInstrParameterField, ConversionError> {
+        let raw = sys::CThostFtdcQryRCAMSInstrParameterField {
+            ProductID: self.product_id.to_wire(),
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QryRCAMSIntraParameter {
+    pub(crate) fn to_sys(
+        &self,
+    ) -> Result<sys::CThostFtdcQryRCAMSIntraParameterField, ConversionError> {
+        let raw = sys::CThostFtdcQryRCAMSIntraParameterField {
+            CombProductID: self.comb_product_id.to_wire(),
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QryRCAMSInterParameter {
+    pub(crate) fn to_sys(
+        &self,
+    ) -> Result<sys::CThostFtdcQryRCAMSInterParameterField, ConversionError> {
+        let raw = sys::CThostFtdcQryRCAMSInterParameterField {
+            ProductGroupID: self.product_group_id.to_wire(),
+            CombProduct1: self.comb_product1.to_wire(),
+            CombProduct2: self.comb_product2.to_wire(),
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QryRCAMSShortOptAdjustParam {
+    pub(crate) fn to_sys(
+        &self,
+    ) -> Result<sys::CThostFtdcQryRCAMSShortOptAdjustParamField, ConversionError> {
+        let raw = sys::CThostFtdcQryRCAMSShortOptAdjustParamField {
+            CombProductID: self.comb_product_id.to_wire(),
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QryRCAMSInvestorCombPosition {
+    pub(crate) fn to_sys(
+        &self,
+    ) -> Result<sys::CThostFtdcQryRCAMSInvestorCombPositionField, ConversionError> {
+        let raw = sys::CThostFtdcQryRCAMSInvestorCombPositionField {
+            BrokerID: self.broker_id.to_wire(),
+            InvestorID: self.investor_id.to_wire(),
+            InstrumentID: self.instrument_id.to_wire(),
+            CombInstrumentID: self.comb_instrument_id.to_wire(),
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QryInvestorProdRCAMSMargin {
+    pub(crate) fn to_sys(
+        &self,
+    ) -> Result<sys::CThostFtdcQryInvestorProdRCAMSMarginField, ConversionError> {
+        let raw = sys::CThostFtdcQryInvestorProdRCAMSMarginField {
+            BrokerID: self.broker_id.to_wire(),
+            InvestorID: self.investor_id.to_wire(),
+            CombProductID: self.comb_product_id.to_wire(),
+            ProductGroupID: self.product_group_id.to_wire(),
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QryRULEInstrParameter {
+    pub(crate) fn to_sys(
+        &self,
+    ) -> Result<sys::CThostFtdcQryRULEInstrParameterField, ConversionError> {
+        let raw = sys::CThostFtdcQryRULEInstrParameterField {
+            ExchangeID: self.exchange_id.to_wire(),
+            InstrumentID: self.instrument_id.to_wire(),
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QryRULEIntraParameter {
+    pub(crate) fn to_sys(
+        &self,
+    ) -> Result<sys::CThostFtdcQryRULEIntraParameterField, ConversionError> {
+        let raw = sys::CThostFtdcQryRULEIntraParameterField {
+            ExchangeID: self.exchange_id.to_wire(),
+            ProdFamilyCode: self.product_family_code.to_wire(),
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QryRULEInterParameter {
+    pub(crate) fn to_sys(
+        &self,
+    ) -> Result<sys::CThostFtdcQryRULEInterParameterField, ConversionError> {
+        let raw = sys::CThostFtdcQryRULEInterParameterField {
+            ExchangeID: self.exchange_id.to_wire(),
+            Leg1ProdFamilyCode: self.leg1_product_family_code.to_wire(),
+            Leg2ProdFamilyCode: self.leg2_product_family_code.to_wire(),
+            CommodityGroupID: self.commodity_group_id,
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QryInvestorProdRULEMargin {
+    pub(crate) fn to_sys(
+        &self,
+    ) -> Result<sys::CThostFtdcQryInvestorProdRULEMarginField, ConversionError> {
+        let raw = sys::CThostFtdcQryInvestorProdRULEMarginField {
+            ExchangeID: self.exchange_id.to_wire(),
+            BrokerID: self.broker_id.to_wire(),
+            InvestorID: self.investor_id.to_wire(),
+            ProdFamilyCode: self.product_family_code.to_wire(),
+            CommodityGroupID: self.commodity_group_id,
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QryInvestorPortfSetting {
+    pub(crate) fn to_sys(
+        &self,
+    ) -> Result<sys::CThostFtdcQryInvestorPortfSettingField, ConversionError> {
+        let raw = sys::CThostFtdcQryInvestorPortfSettingField {
+            ExchangeID: self.exchange_id.to_wire(),
+            BrokerID: self.broker_id.to_wire(),
+            InvestorID: self.investor_id.to_wire(),
+        };
+        Ok(raw)
+    }
+}

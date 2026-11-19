@@ -1090,6 +1090,142 @@ std::int32_t TraderApiBridge::query_comb_promotion_param(std::uint8_t* request, 
     return api_->ReqQryCombPromotionParam(reinterpret_cast<CThostFtdcQryCombPromotionParamField*>(request), request_id);
 }
 
+std::int32_t TraderApiBridge::query_investor_product_group_margin(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQryInvestorProductGroupMargin(reinterpret_cast<CThostFtdcQryInvestorProductGroupMarginField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_exchange_margin_rate(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQryExchangeMarginRate(reinterpret_cast<CThostFtdcQryExchangeMarginRateField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_exchange_margin_rate_adjust(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQryExchangeMarginRateAdjust(reinterpret_cast<CThostFtdcQryExchangeMarginRateAdjustField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_mm_instrument_commission_rate(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQryMMInstrumentCommissionRate(reinterpret_cast<CThostFtdcQryMMInstrumentCommissionRateField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_mm_option_instr_comm_rate(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQryMMOptionInstrCommRate(reinterpret_cast<CThostFtdcQryMMOptionInstrCommRateField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_option_instr_trade_cost(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQryOptionInstrTradeCost(reinterpret_cast<CThostFtdcQryOptionInstrTradeCostField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_option_instr_comm_rate(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQryOptionInstrCommRate(reinterpret_cast<CThostFtdcQryOptionInstrCommRateField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_risk_settle_invest_position(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQryRiskSettleInvstPosition(reinterpret_cast<CThostFtdcQryRiskSettleInvstPositionField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_risk_settle_product_status(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQryRiskSettleProductStatus(reinterpret_cast<CThostFtdcQryRiskSettleProductStatusField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_spbm_future_parameter(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQrySPBMFutureParameter(reinterpret_cast<CThostFtdcQrySPBMFutureParameterField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_spbm_option_parameter(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQrySPBMOptionParameter(reinterpret_cast<CThostFtdcQrySPBMOptionParameterField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_spbm_intra_parameter(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQrySPBMIntraParameter(reinterpret_cast<CThostFtdcQrySPBMIntraParameterField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_spbm_inter_parameter(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQrySPBMInterParameter(reinterpret_cast<CThostFtdcQrySPBMInterParameterField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_spbm_portf_definition(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQrySPBMPortfDefinition(reinterpret_cast<CThostFtdcQrySPBMPortfDefinitionField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_spbm_investor_portf_def(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQrySPBMInvestorPortfDef(reinterpret_cast<CThostFtdcQrySPBMInvestorPortfDefField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_investor_portf_margin_ratio(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQryInvestorPortfMarginRatio(reinterpret_cast<CThostFtdcQryInvestorPortfMarginRatioField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_investor_prod_spbm_detail(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQryInvestorProdSPBMDetail(reinterpret_cast<CThostFtdcQryInvestorProdSPBMDetailField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_investor_commodity_spmm_margin(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQryInvestorCommoditySPMMMargin(reinterpret_cast<CThostFtdcQryInvestorCommoditySPMMMarginField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_investor_commodity_group_spmm_margin(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQryInvestorCommodityGroupSPMMMargin(reinterpret_cast<CThostFtdcQryInvestorCommodityGroupSPMMMarginField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_spmm_inst_param(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQrySPMMInstParam(reinterpret_cast<CThostFtdcQrySPMMInstParamField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_spmm_product_param(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQrySPMMProductParam(reinterpret_cast<CThostFtdcQrySPMMProductParamField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_spbm_add_on_inter_parameter(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQrySPBMAddOnInterParameter(reinterpret_cast<CThostFtdcQrySPBMAddOnInterParameterField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_rcams_comb_product_info(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQryRCAMSCombProductInfo(reinterpret_cast<CThostFtdcQryRCAMSCombProductInfoField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_rcams_instr_parameter(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQryRCAMSInstrParameter(reinterpret_cast<CThostFtdcQryRCAMSInstrParameterField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_rcams_intra_parameter(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQryRCAMSIntraParameter(reinterpret_cast<CThostFtdcQryRCAMSIntraParameterField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_rcams_inter_parameter(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQryRCAMSInterParameter(reinterpret_cast<CThostFtdcQryRCAMSInterParameterField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_rcams_short_opt_adjust_param(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQryRCAMSShortOptAdjustParam(reinterpret_cast<CThostFtdcQryRCAMSShortOptAdjustParamField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_rcams_investor_comb_position(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQryRCAMSInvestorCombPosition(reinterpret_cast<CThostFtdcQryRCAMSInvestorCombPositionField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_investor_prod_rcams_margin(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQryInvestorProdRCAMSMargin(reinterpret_cast<CThostFtdcQryInvestorProdRCAMSMarginField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_rule_instr_parameter(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQryRULEInstrParameter(reinterpret_cast<CThostFtdcQryRULEInstrParameterField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_rule_intra_parameter(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQryRULEIntraParameter(reinterpret_cast<CThostFtdcQryRULEIntraParameterField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_rule_inter_parameter(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQryRULEInterParameter(reinterpret_cast<CThostFtdcQryRULEInterParameterField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_investor_prod_rule_margin(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQryInvestorProdRULEMargin(reinterpret_cast<CThostFtdcQryInvestorProdRULEMarginField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_investor_portf_setting(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQryInvestorPortfSetting(reinterpret_cast<CThostFtdcQryInvestorPortfSettingField*>(request), request_id);
+}
+
 void emit_trader_order(TraderSpiBridge& spi, std::uint8_t* data) {
     spi.OnRtnOrder(reinterpret_cast<CThostFtdcOrderField*>(data));
 }

@@ -317,6 +317,176 @@ mod bridge {
             request: *mut u8,
             request_id: i32,
         ) -> i32;
+        unsafe fn query_investor_product_group_margin(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn query_exchange_margin_rate(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn query_exchange_margin_rate_adjust(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn query_mm_instrument_commission_rate(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn query_mm_option_instr_comm_rate(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn query_option_instr_trade_cost(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn query_option_instr_comm_rate(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn query_risk_settle_invest_position(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn query_risk_settle_product_status(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn query_spbm_future_parameter(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn query_spbm_option_parameter(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn query_spbm_intra_parameter(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn query_spbm_inter_parameter(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn query_spbm_portf_definition(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn query_spbm_investor_portf_def(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn query_investor_portf_margin_ratio(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn query_investor_prod_spbm_detail(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn query_investor_commodity_spmm_margin(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn query_investor_commodity_group_spmm_margin(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn query_spmm_inst_param(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn query_spmm_product_param(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn query_spbm_add_on_inter_parameter(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn query_rcams_comb_product_info(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn query_rcams_instr_parameter(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn query_rcams_intra_parameter(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn query_rcams_inter_parameter(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn query_rcams_short_opt_adjust_param(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn query_rcams_investor_comb_position(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn query_investor_prod_rcams_margin(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn query_rule_instr_parameter(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn query_rule_intra_parameter(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn query_rule_inter_parameter(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn query_investor_prod_rule_margin(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn query_investor_portf_setting(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
         unsafe fn emit_trader_order(spi: Pin<&mut TraderSpiBridge>, data: *mut u8);
         unsafe fn emit_trader_callback(
             spi: Pin<&mut TraderSpiBridge>,
