@@ -882,6 +882,54 @@ std::int32_t TraderApiBridge::cancel_order(std::uint8_t* request, std::int32_t r
     return api_->ReqOrderAction(reinterpret_cast<CThostFtdcInputOrderActionField*>(request), request_id);
 }
 
+void TraderApiBridge::register_user_system_info(std::uint8_t* request) const {
+    api_->RegisterUserSystemInfo(reinterpret_cast<CThostFtdcUserSystemInfoField*>(request));
+}
+
+void TraderApiBridge::submit_user_system_info(std::uint8_t* request) const {
+    api_->SubmitUserSystemInfo(reinterpret_cast<CThostFtdcUserSystemInfoField*>(request));
+}
+
+void TraderApiBridge::register_wechat_user_system_info(std::uint8_t* request) const {
+    api_->RegisterWechatUserSystemInfo(reinterpret_cast<CThostFtdcWechatUserSystemInfoField*>(request));
+}
+
+void TraderApiBridge::submit_wechat_user_system_info(std::uint8_t* request) const {
+    api_->SubmitWechatUserSystemInfo(reinterpret_cast<CThostFtdcWechatUserSystemInfoField*>(request));
+}
+
+std::int32_t TraderApiBridge::user_password_update(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqUserPasswordUpdate(reinterpret_cast<CThostFtdcUserPasswordUpdateField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::trading_account_password_update(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqTradingAccountPasswordUpdate(reinterpret_cast<CThostFtdcTradingAccountPasswordUpdateField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::user_auth_method(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqUserAuthMethod(reinterpret_cast<CThostFtdcReqUserAuthMethodField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::gen_user_captcha(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqGenUserCaptcha(reinterpret_cast<CThostFtdcReqGenUserCaptchaField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::gen_user_text(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqGenUserText(reinterpret_cast<CThostFtdcReqGenUserTextField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::user_login_with_captcha(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqUserLoginWithCaptcha(reinterpret_cast<CThostFtdcReqUserLoginWithCaptchaField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::user_login_with_text(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqUserLoginWithText(reinterpret_cast<CThostFtdcReqUserLoginWithTextField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::user_login_with_otp(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqUserLoginWithOTP(reinterpret_cast<CThostFtdcReqUserLoginWithOTPField*>(request), request_id);
+}
+
 void emit_trader_order(TraderSpiBridge& spi, std::uint8_t* data) {
     spi.OnRtnOrder(reinterpret_cast<CThostFtdcOrderField*>(data));
 }

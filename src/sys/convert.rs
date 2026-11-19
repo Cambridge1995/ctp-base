@@ -5055,3 +5055,179 @@ impl crate::InputOrderAction {
         Ok(raw)
     }
 }
+
+impl crate::UserSystemInfo {
+    pub(crate) fn to_sys(&self) -> Result<sys::CThostFtdcUserSystemInfoField, ConversionError> {
+        let raw = sys::CThostFtdcUserSystemInfoField {
+            BrokerID: self.broker_id.to_wire(),
+            UserID: self.user_id.to_wire(),
+            ClientSystemInfoLen: self.client_system_info_len,
+            ClientSystemInfo: string_field(&self.client_system_info, "ClientSystemInfo")?,
+            ClientIPPort: self.client_ip_port,
+            ClientLoginTime: self.client_login_time.to_wire(),
+            ClientAppID: string_field(&self.client_app_id, "ClientAppID")?,
+            ClientPublicIP: string_field(&self.client_public_ip, "ClientPublicIP")?,
+            ClientLoginRemark: string_field(&self.client_login_remark, "ClientLoginRemark")?,
+            MAC: string_field(&self.mac, "MAC")?,
+            ..Default::default()
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::WechatUserSystemInfo {
+    pub(crate) fn to_sys(
+        &self,
+    ) -> Result<sys::CThostFtdcWechatUserSystemInfoField, ConversionError> {
+        let raw = sys::CThostFtdcWechatUserSystemInfoField {
+            BrokerID: self.broker_id.to_wire(),
+            UserID: self.user_id.to_wire(),
+            WechatCltSysInfoLen: self.wechat_clt_system_info_len,
+            WechatCltSysInfo: string_field(&self.wechat_clt_system_info, "WechatCltSysInfo")?,
+            ClientIPPort: self.client_ip_port,
+            ClientLoginTime: self.client_login_time.to_wire(),
+            ClientAppID: string_field(&self.client_app_id, "ClientAppID")?,
+            ClientPublicIP: string_field(&self.client_public_ip, "ClientPublicIP")?,
+            ClientLoginRemark: string_field(&self.client_login_remark, "ClientLoginRemark")?,
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::UserPasswordUpdate {
+    pub(crate) fn to_sys(&self) -> Result<sys::CThostFtdcUserPasswordUpdateField, ConversionError> {
+        let raw = sys::CThostFtdcUserPasswordUpdateField {
+            BrokerID: self.broker_id.to_wire(),
+            UserID: self.user_id.to_wire(),
+            OldPassword: string_field(&self.old_password, "OldPassword")?,
+            NewPassword: string_field(&self.new_password, "NewPassword")?,
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::TradingAccountPasswordUpdate {
+    pub(crate) fn to_sys(
+        &self,
+    ) -> Result<sys::CThostFtdcTradingAccountPasswordUpdateField, ConversionError> {
+        let raw = sys::CThostFtdcTradingAccountPasswordUpdateField {
+            BrokerID: self.broker_id.to_wire(),
+            AccountID: self.account_id.to_wire(),
+            OldPassword: string_field(&self.old_password, "OldPassword")?,
+            NewPassword: string_field(&self.new_password, "NewPassword")?,
+            CurrencyID: string_field(&self.currency_id, "CurrencyID")?,
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::ReqUserAuthMethod {
+    pub(crate) fn to_sys(&self) -> Result<sys::CThostFtdcReqUserAuthMethodField, ConversionError> {
+        let raw = sys::CThostFtdcReqUserAuthMethodField {
+            TradingDay: self.trading_day.to_wire(),
+            BrokerID: self.broker_id.to_wire(),
+            UserID: self.user_id.to_wire(),
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::ReqGenUserCaptcha {
+    pub(crate) fn to_sys(&self) -> Result<sys::CThostFtdcReqGenUserCaptchaField, ConversionError> {
+        let raw = sys::CThostFtdcReqGenUserCaptchaField {
+            TradingDay: self.trading_day.to_wire(),
+            BrokerID: self.broker_id.to_wire(),
+            UserID: self.user_id.to_wire(),
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::ReqGenUserText {
+    pub(crate) fn to_sys(&self) -> Result<sys::CThostFtdcReqGenUserTextField, ConversionError> {
+        let raw = sys::CThostFtdcReqGenUserTextField {
+            TradingDay: self.trading_day.to_wire(),
+            BrokerID: self.broker_id.to_wire(),
+            UserID: self.user_id.to_wire(),
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::ReqUserLoginWithCaptcha {
+    pub(crate) fn to_sys(
+        &self,
+    ) -> Result<sys::CThostFtdcReqUserLoginWithCaptchaField, ConversionError> {
+        let raw = sys::CThostFtdcReqUserLoginWithCaptchaField {
+            TradingDay: self.trading_day.to_wire(),
+            BrokerID: self.broker_id.to_wire(),
+            UserID: self.user_id.to_wire(),
+            Password: string_field(&self.password, "Password")?,
+            UserProductInfo: string_field(&self.user_product_info, "UserProductInfo")?,
+            InterfaceProductInfo: string_field(
+                &self.interface_product_info,
+                "InterfaceProductInfo",
+            )?,
+            ProtocolInfo: string_field(&self.protocol_info, "ProtocolInfo")?,
+            MacAddress: string_field(&self.mac_address, "MacAddress")?,
+            LoginRemark: string_field(&self.login_remark, "LoginRemark")?,
+            Captcha: string_field(&self.captcha, "Captcha")?,
+            ClientIPPort: self.client_ip_port,
+            ClientIPAddress: string_field(&self.client_ip_address, "ClientIPAddress")?,
+            ..Default::default()
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::ReqUserLoginWithText {
+    pub(crate) fn to_sys(
+        &self,
+    ) -> Result<sys::CThostFtdcReqUserLoginWithTextField, ConversionError> {
+        let raw = sys::CThostFtdcReqUserLoginWithTextField {
+            TradingDay: self.trading_day.to_wire(),
+            BrokerID: self.broker_id.to_wire(),
+            UserID: self.user_id.to_wire(),
+            Password: string_field(&self.password, "Password")?,
+            UserProductInfo: string_field(&self.user_product_info, "UserProductInfo")?,
+            InterfaceProductInfo: string_field(
+                &self.interface_product_info,
+                "InterfaceProductInfo",
+            )?,
+            ProtocolInfo: string_field(&self.protocol_info, "ProtocolInfo")?,
+            MacAddress: string_field(&self.mac_address, "MacAddress")?,
+            LoginRemark: string_field(&self.login_remark, "LoginRemark")?,
+            Text: string_field(&self.text, "Text")?,
+            ClientIPPort: self.client_ip_port,
+            ClientIPAddress: string_field(&self.client_ip_address, "ClientIPAddress")?,
+            ..Default::default()
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::ReqUserLoginWithOTP {
+    pub(crate) fn to_sys(
+        &self,
+    ) -> Result<sys::CThostFtdcReqUserLoginWithOTPField, ConversionError> {
+        let raw = sys::CThostFtdcReqUserLoginWithOTPField {
+            TradingDay: self.trading_day.to_wire(),
+            BrokerID: self.broker_id.to_wire(),
+            UserID: self.user_id.to_wire(),
+            Password: string_field(&self.password, "Password")?,
+            UserProductInfo: string_field(&self.user_product_info, "UserProductInfo")?,
+            InterfaceProductInfo: string_field(
+                &self.interface_product_info,
+                "InterfaceProductInfo",
+            )?,
+            ProtocolInfo: string_field(&self.protocol_info, "ProtocolInfo")?,
+            MacAddress: string_field(&self.mac_address, "MacAddress")?,
+            LoginRemark: string_field(&self.login_remark, "LoginRemark")?,
+            OTPPassword: string_field(&self.otp_password, "OTPPassword")?,
+            ClientIPPort: self.client_ip_port,
+            ClientIPAddress: string_field(&self.client_ip_address, "ClientIPAddress")?,
+            ..Default::default()
+        };
+        Ok(raw)
+    }
+}

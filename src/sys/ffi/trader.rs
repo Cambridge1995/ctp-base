@@ -103,6 +103,46 @@ mod bridge {
         ) -> i32;
         unsafe fn insert_order(self: &TraderApiBridge, request: *mut u8, request_id: i32) -> i32;
         unsafe fn cancel_order(self: &TraderApiBridge, request: *mut u8, request_id: i32) -> i32;
+        unsafe fn register_user_system_info(self: &TraderApiBridge, request: *mut u8);
+        unsafe fn submit_user_system_info(self: &TraderApiBridge, request: *mut u8);
+        unsafe fn register_wechat_user_system_info(self: &TraderApiBridge, request: *mut u8);
+        unsafe fn submit_wechat_user_system_info(self: &TraderApiBridge, request: *mut u8);
+        unsafe fn user_password_update(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn trading_account_password_update(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn user_auth_method(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn gen_user_captcha(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn gen_user_text(self: &TraderApiBridge, request: *mut u8, request_id: i32) -> i32;
+        unsafe fn user_login_with_captcha(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn user_login_with_text(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn user_login_with_otp(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
         unsafe fn emit_trader_order(spi: Pin<&mut TraderSpiBridge>, data: *mut u8);
         unsafe fn emit_trader_callback(
             spi: Pin<&mut TraderSpiBridge>,

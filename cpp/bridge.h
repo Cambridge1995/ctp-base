@@ -305,6 +305,18 @@ public:
     std::int32_t query_instrument(std::uint8_t* request, std::int32_t request_id) const;
     std::int32_t insert_order(std::uint8_t* request, std::int32_t request_id) const;
     std::int32_t cancel_order(std::uint8_t* request, std::int32_t request_id) const;
+    void register_user_system_info(std::uint8_t* request) const;
+    void submit_user_system_info(std::uint8_t* request) const;
+    void register_wechat_user_system_info(std::uint8_t* request) const;
+    void submit_wechat_user_system_info(std::uint8_t* request) const;
+    std::int32_t user_password_update(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t trading_account_password_update(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t user_auth_method(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t gen_user_captcha(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t gen_user_text(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t user_login_with_captcha(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t user_login_with_text(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t user_login_with_otp(std::uint8_t* request, std::int32_t request_id) const;
 
 private:
     CThostFtdcTraderApi* api_;

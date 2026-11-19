@@ -8,8 +8,10 @@ use crate::{
     QryInstrument, QryInstrumentCommissionRate, QryInstrumentMarginRate,
     QryInstrumentOrderCommRate, QryInvestorPosition, QryInvestorPositionDetail, QryMaxOrderVolume,
     QryOrder, QryProduct, QrySettlementInfo, QrySettlementInfoConfirm, QryTrade, QryTradingAccount,
-    QryTradingCode, ReqAuthenticate, ReqUserLogin, ResumeType, SettlementInfoConfirm, TextError,
-    TraderSpi, UserLogout, sys,
+    QryTradingCode, ReqAuthenticate, ReqGenUserCaptcha, ReqGenUserText, ReqUserAuthMethod,
+    ReqUserLogin, ReqUserLoginWithCaptcha, ReqUserLoginWithOTP, ReqUserLoginWithText, ResumeType,
+    SettlementInfoConfirm, TextError, TraderSpi, TradingAccountPasswordUpdate, UserLogout,
+    UserPasswordUpdate, UserSystemInfo, WechatUserSystemInfo, sys,
 };
 use cxx::UniquePtr;
 use std::{error::Error, fmt, ops::Deref};
@@ -489,6 +491,187 @@ impl TraderApi {
         let result = unsafe {
             self.inner.cancel_order(
                 (&mut raw as *mut sys::CThostFtdcInputOrderActionField).cast(),
+                request_id,
+            )
+        };
+        Ok(result)
+    }
+
+    pub fn register_user_system_info(
+        &self,
+        request: &UserSystemInfo,
+    ) -> Result<(), ConversionError> {
+        let mut raw = request.to_sys()?;
+        // SAFETY: raw 是完整初始化的终端信息，指针仅在同步调用期间有效。
+        unsafe {
+            self.inner.register_user_system_info(
+                (&mut raw as *mut sys::CThostFtdcUserSystemInfoField).cast(),
+            )
+        };
+        Ok(())
+    }
+
+    pub fn submit_user_system_info(&self, request: &UserSystemInfo) -> Result<(), ConversionError> {
+        let mut raw = request.to_sys()?;
+        // SAFETY: raw 是完整初始化的终端信息，指针仅在同步调用期间有效。
+        unsafe {
+            self.inner.submit_user_system_info(
+                (&mut raw as *mut sys::CThostFtdcUserSystemInfoField).cast(),
+            )
+        };
+        Ok(())
+    }
+
+    pub fn register_wechat_user_system_info(
+        &self,
+        request: &WechatUserSystemInfo,
+    ) -> Result<(), ConversionError> {
+        let mut raw = request.to_sys()?;
+        // SAFETY: raw 是完整初始化的微信终端信息，指针仅在同步调用期间有效。
+        unsafe {
+            self.inner.register_wechat_user_system_info(
+                (&mut raw as *mut sys::CThostFtdcWechatUserSystemInfoField).cast(),
+            )
+        };
+        Ok(())
+    }
+
+    pub fn submit_wechat_user_system_info(
+        &self,
+        request: &WechatUserSystemInfo,
+    ) -> Result<(), ConversionError> {
+        let mut raw = request.to_sys()?;
+        // SAFETY: raw 是完整初始化的微信终端信息，指针仅在同步调用期间有效。
+        unsafe {
+            self.inner.submit_wechat_user_system_info(
+                (&mut raw as *mut sys::CThostFtdcWechatUserSystemInfoField).cast(),
+            )
+        };
+        Ok(())
+    }
+
+    pub fn user_password_update(
+        &self,
+        request: &UserPasswordUpdate,
+        request_id: i32,
+    ) -> Result<i32, ConversionError> {
+        let mut raw = request.to_sys()?;
+        // SAFETY: raw 是完整初始化的口令更新请求，指针仅在同步请求调用期间有效。
+        let result = unsafe {
+            self.inner.user_password_update(
+                (&mut raw as *mut sys::CThostFtdcUserPasswordUpdateField).cast(),
+                request_id,
+            )
+        };
+        Ok(result)
+    }
+
+    pub fn trading_account_password_update(
+        &self,
+        request: &TradingAccountPasswordUpdate,
+        request_id: i32,
+    ) -> Result<i32, ConversionError> {
+        let mut raw = request.to_sys()?;
+        // SAFETY: raw 是完整初始化的资金账户口令更新请求，指针仅在同步请求调用期间有效。
+        let result = unsafe {
+            self.inner.trading_account_password_update(
+                (&mut raw as *mut sys::CThostFtdcTradingAccountPasswordUpdateField).cast(),
+                request_id,
+            )
+        };
+        Ok(result)
+    }
+
+    pub fn user_auth_method(
+        &self,
+        request: &ReqUserAuthMethod,
+        request_id: i32,
+    ) -> Result<i32, ConversionError> {
+        let mut raw = request.to_sys()?;
+        // SAFETY: raw 是完整初始化的认证模式查询请求，指针仅在同步请求调用期间有效。
+        let result = unsafe {
+            self.inner.user_auth_method(
+                (&mut raw as *mut sys::CThostFtdcReqUserAuthMethodField).cast(),
+                request_id,
+            )
+        };
+        Ok(result)
+    }
+
+    pub fn gen_user_captcha(
+        &self,
+        request: &ReqGenUserCaptcha,
+        request_id: i32,
+    ) -> Result<i32, ConversionError> {
+        let mut raw = request.to_sys()?;
+        // SAFETY: raw 是完整初始化的图形验证码请求，指针仅在同步请求调用期间有效。
+        let result = unsafe {
+            self.inner.gen_user_captcha(
+                (&mut raw as *mut sys::CThostFtdcReqGenUserCaptchaField).cast(),
+                request_id,
+            )
+        };
+        Ok(result)
+    }
+
+    pub fn gen_user_text(
+        &self,
+        request: &ReqGenUserText,
+        request_id: i32,
+    ) -> Result<i32, ConversionError> {
+        let mut raw = request.to_sys()?;
+        // SAFETY: raw 是完整初始化的短信验证码请求，指针仅在同步请求调用期间有效。
+        let result = unsafe {
+            self.inner.gen_user_text(
+                (&mut raw as *mut sys::CThostFtdcReqGenUserTextField).cast(),
+                request_id,
+            )
+        };
+        Ok(result)
+    }
+
+    pub fn user_login_with_captcha(
+        &self,
+        request: &ReqUserLoginWithCaptcha,
+        request_id: i32,
+    ) -> Result<i32, ConversionError> {
+        let mut raw = request.to_sys()?;
+        // SAFETY: raw 是完整初始化的图形验证码登录请求，指针仅在同步请求调用期间有效。
+        let result = unsafe {
+            self.inner.user_login_with_captcha(
+                (&mut raw as *mut sys::CThostFtdcReqUserLoginWithCaptchaField).cast(),
+                request_id,
+            )
+        };
+        Ok(result)
+    }
+
+    pub fn user_login_with_text(
+        &self,
+        request: &ReqUserLoginWithText,
+        request_id: i32,
+    ) -> Result<i32, ConversionError> {
+        let mut raw = request.to_sys()?;
+        // SAFETY: raw 是完整初始化的短信验证码登录请求，指针仅在同步请求调用期间有效。
+        let result = unsafe {
+            self.inner.user_login_with_text(
+                (&mut raw as *mut sys::CThostFtdcReqUserLoginWithTextField).cast(),
+                request_id,
+            )
+        };
+        Ok(result)
+    }
+
+    pub fn user_login_with_otp(
+        &self,
+        request: &ReqUserLoginWithOTP,
+        request_id: i32,
+    ) -> Result<i32, ConversionError> {
+        let mut raw = request.to_sys()?;
+        // SAFETY: raw 是完整初始化的动态口令登录请求，指针仅在同步请求调用期间有效。
+        let result = unsafe {
+            self.inner.user_login_with_otp(
+                (&mut raw as *mut sys::CThostFtdcReqUserLoginWithOTPField).cast(),
                 request_id,
             )
         };
