@@ -8,8 +8,8 @@
 |---|---|---|
 | Windows 10/11 | x86_64 | 支持 |
 | Linux | x86_64 | 支持 |
+| macOS | x86_64 / aarch64（Apple Silicon） | 支持 |
 | Windows 32 位 | x86 / i686 | 不支持 |
-| macOS | x86_64 / Apple Silicon | 暂未支持 |
 
 当前 crate 只携带 64 位 CTP SDK，不提供 32 位 Windows 库。
 
@@ -20,7 +20,7 @@
 | 0.1.0 | v6.7.11_20250617 | 历史版本 |
 | 0.1.1 | v6.7.13_20260225 | 当前已验证版本 |
 
-生成器会优先使用非商密 CTP SDK 压缩包；普通包不存在时才尝试商密包。SDK 结构体、枚举、字段、主动 API 或 SPI 与审核表不一致时会阻止生成，避免生成不可用的绑定。
+本项目使用的CTP版本均为非商密版本，若券商有要求使用商密版本，请自行将商密版sdk/文件夹下的文件按照对应位置，替换为商密版CTP SDK。
 
 ## 工具链要求
 
@@ -53,6 +53,23 @@ sudo apt-get install -y build-essential libclang-dev
 ```
 
 其他发行版需安装等价的 g++、C 标准库开发文件和 libclang。
+
+### macOS
+
+安装 Xcode 命令行工具，并通过 Homebrew 安装 LLVM（提供 libclang）：
+
+```bash
+xcode-select --install
+brew install llvm
+```
+
+如 bindgen 未自动找到 libclang，请设置：
+
+```bash
+export LIBCLANG_PATH="$(brew --prefix llvm)/lib"
+```
+
+macOS 版 CTP SDK 为 fat dylib，x86_64 与 Apple Silicon（aarch64）使用同一份库。
 
 ## 使用流程
 
@@ -132,4 +149,5 @@ ctp-base/
 └── tests/
 ```
 
-`ctp-base` 构建时只使用本目录内的 `sdk/`、`cpp/` 和 `src/`，不需要 `ctp-generator`。
+`ctp-base` 构建时只使用本目录内的 `sdk/`、`cpp/` 和 `src/`、`build.rs`、`Cargo.lock`、`Cargo.toml`。
+若不希望冗余文件，使用时，只需要`sdk/`、`cpp/` 和 `src/`、`Cargo.lock`、`Cargo.toml`打包到个人项目下的空`ctp-base`中即可。

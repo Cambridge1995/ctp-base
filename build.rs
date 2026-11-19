@@ -7,13 +7,16 @@ fn main() {
     let wrapper = root.join("cpp/wrapper.h");
     let target_os = env::var("CARGO_CFG_TARGET_OS").unwrap();
     let target_arch = env::var("CARGO_CFG_TARGET_ARCH").unwrap();
-    if target_arch != "x86_64" {
-        panic!("当前 CTP SDK 仅支持 x86_64，实际目标架构：{target_arch}");
+    match (target_os.as_str(), target_arch.as_str()) {
+        ("windows", "x86_64") | ("linux", "x86_64") => {}
+        ("macos", "x86_64") | ("macos", "aarch64") => {}
+        _ => panic!("当前 CTP SDK 不支持 {target_os} {target_arch}"),
     }
     let platform_dir = match target_os.as_str() {
         "windows" => "sdk/windows",
         "linux" => "sdk/linux",
-        other => panic!("当前原生桥接仅支持 Windows x64 和 Linux x64，实际目标系统：{other}"),
+        "macos" => "sdk/macos",
+        other => panic!("当前原生桥接仅支持 Windows、Linux 和 macOS，实际目标系统：{other}"),
     };
     const MD_API_BASENAME: &str = "thostmduserapi_se";
     const TRADER_API_BASENAME: &str = "thosttraderapi_se";
@@ -34,16 +37,19 @@ fn main() {
         println!("cargo:rerun-if-changed={file}");
     }
     println!("cargo:rerun-if-env-changed=LIBCLANG_PATH");
-    let runtime_libraries: [String; 2] = if target_os == "windows" {
-        [
+    let runtime_libraries: [String; 2] = match target_os.as_str() {
+        "windows" => [
             format!("{MD_API_BASENAME}.dll"),
             format!("{TRADER_API_BASENAME}.dll"),
-        ]
-    } else {
-        [
+        ],
+        "macos" => [
+            format!("lib{MD_API_BASENAME}.dylib"),
+            format!("lib{TRADER_API_BASENAME}.dylib"),
+        ],
+        _ => [
             format!("lib{MD_API_BASENAME}.so"),
             format!("lib{TRADER_API_BASENAME}.so"),
-        ]
+        ],
     };
     for library in &runtime_libraries {
         println!("cargo:rerun-if-changed={platform_dir}/{library}");
@@ -96,16 +102,19 @@ fn main() {
             out_dir.display()
         )
     });
-    let runtime_libraries: [String; 2] = if target_os == "windows" {
-        [
+    let runtime_libraries: [String; 2] = match target_os.as_str() {
+        "windows" => [
             format!("{MD_API_BASENAME}.dll"),
             format!("{TRADER_API_BASENAME}.dll"),
-        ]
-    } else {
-        [
+        ],
+        "macos" => [
+            format!("lib{MD_API_BASENAME}.dylib"),
+            format!("lib{TRADER_API_BASENAME}.dylib"),
+        ],
+        _ => [
             format!("lib{MD_API_BASENAME}.so"),
             format!("lib{TRADER_API_BASENAME}.so"),
-        ]
+        ],
     };
     for library in &runtime_libraries {
         let source = library_dir.join(library);
