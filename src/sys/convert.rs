@@ -5658,3 +5658,359 @@ impl crate::InputCombAction {
         Ok(raw)
     }
 }
+
+impl crate::QryInvestor {
+    pub(crate) fn to_sys(&self) -> Result<sys::CThostFtdcQryInvestorField, ConversionError> {
+        let raw = sys::CThostFtdcQryInvestorField {
+            BrokerID: self.broker_id.to_wire(),
+            InvestorID: self.investor_id.to_wire(),
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QryUserSession {
+    pub(crate) fn to_sys(&self) -> Result<sys::CThostFtdcQryUserSessionField, ConversionError> {
+        let raw = sys::CThostFtdcQryUserSessionField {
+            FrontID: self.front_id.get(),
+            SessionID: self.session_id.get(),
+            BrokerID: self.broker_id.to_wire(),
+            UserID: self.user_id.to_wire(),
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QryTraderOffer {
+    pub(crate) fn to_sys(&self) -> Result<sys::CThostFtdcQryTraderOfferField, ConversionError> {
+        let raw = sys::CThostFtdcQryTraderOfferField {
+            ExchangeID: self.exchange_id.to_wire(),
+            ParticipantID: string_field(&self.participant_id, "ParticipantID")?,
+            TraderID: string_field(&self.trader_id, "TraderID")?,
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QryTransferBank {
+    pub(crate) fn to_sys(&self) -> Result<sys::CThostFtdcQryTransferBankField, ConversionError> {
+        let raw = sys::CThostFtdcQryTransferBankField {
+            BankID: string_field(&self.bank_id, "BankID")?,
+            BankBrchID: string_field(&self.bank_branch_id, "BankBrchID")?,
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QryNotice {
+    pub(crate) fn to_sys(&self) -> Result<sys::CThostFtdcQryNoticeField, ConversionError> {
+        let raw = sys::CThostFtdcQryNoticeField {
+            BrokerID: self.broker_id.to_wire(),
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QryInvestorPositionCombineDetail {
+    pub(crate) fn to_sys(
+        &self,
+    ) -> Result<sys::CThostFtdcQryInvestorPositionCombineDetailField, ConversionError> {
+        let raw = sys::CThostFtdcQryInvestorPositionCombineDetailField {
+            BrokerID: self.broker_id.to_wire(),
+            InvestorID: self.investor_id.to_wire(),
+            ExchangeID: self.exchange_id.to_wire(),
+            InvestUnitID: self.invest_unit_id.to_wire(),
+            CombInstrumentID: self.comb_instrument_id.to_wire(),
+            ..Default::default()
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QryCFMMCTradingAccountKey {
+    pub(crate) fn to_sys(
+        &self,
+    ) -> Result<sys::CThostFtdcQryCFMMCTradingAccountKeyField, ConversionError> {
+        let raw = sys::CThostFtdcQryCFMMCTradingAccountKeyField {
+            BrokerID: self.broker_id.to_wire(),
+            InvestorID: self.investor_id.to_wire(),
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QryEWarrantOffset {
+    pub(crate) fn to_sys(&self) -> Result<sys::CThostFtdcQryEWarrantOffsetField, ConversionError> {
+        let raw = sys::CThostFtdcQryEWarrantOffsetField {
+            BrokerID: self.broker_id.to_wire(),
+            InvestorID: self.investor_id.to_wire(),
+            ExchangeID: self.exchange_id.to_wire(),
+            InvestUnitID: self.invest_unit_id.to_wire(),
+            InstrumentID: self.instrument_id.to_wire(),
+            ..Default::default()
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QryExchangeRate {
+    pub(crate) fn to_sys(&self) -> Result<sys::CThostFtdcQryExchangeRateField, ConversionError> {
+        let raw = sys::CThostFtdcQryExchangeRateField {
+            BrokerID: self.broker_id.to_wire(),
+            FromCurrencyID: string_field(&self.from_currency_id, "FromCurrencyID")?,
+            ToCurrencyID: string_field(&self.to_currency_id, "ToCurrencyID")?,
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QryProductExchRate {
+    pub(crate) fn to_sys(&self) -> Result<sys::CThostFtdcQryProductExchRateField, ConversionError> {
+        let raw = sys::CThostFtdcQryProductExchRateField {
+            ExchangeID: self.exchange_id.to_wire(),
+            ProductID: self.product_id.to_wire(),
+            ..Default::default()
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QryProductGroup {
+    pub(crate) fn to_sys(&self) -> Result<sys::CThostFtdcQryProductGroupField, ConversionError> {
+        let raw = sys::CThostFtdcQryProductGroupField {
+            ExchangeID: self.exchange_id.to_wire(),
+            ProductID: self.product_id.to_wire(),
+            ..Default::default()
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QryExecOrder {
+    pub(crate) fn to_sys(&self) -> Result<sys::CThostFtdcQryExecOrderField, ConversionError> {
+        let raw = sys::CThostFtdcQryExecOrderField {
+            BrokerID: self.broker_id.to_wire(),
+            InvestorID: self.investor_id.to_wire(),
+            ExchangeID: self.exchange_id.to_wire(),
+            ExecOrderSysID: string_field(&self.exec_order_system_id, "ExecOrderSysID")?,
+            InsertTimeStart: self.insert_time_start.to_wire(),
+            InsertTimeEnd: self.insert_time_end.to_wire(),
+            InstrumentID: self.instrument_id.to_wire(),
+            ..Default::default()
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QryForQuote {
+    pub(crate) fn to_sys(&self) -> Result<sys::CThostFtdcQryForQuoteField, ConversionError> {
+        let raw = sys::CThostFtdcQryForQuoteField {
+            BrokerID: self.broker_id.to_wire(),
+            InvestorID: self.investor_id.to_wire(),
+            ExchangeID: self.exchange_id.to_wire(),
+            InsertTimeStart: self.insert_time_start.to_wire(),
+            InsertTimeEnd: self.insert_time_end.to_wire(),
+            InvestUnitID: self.invest_unit_id.to_wire(),
+            InstrumentID: self.instrument_id.to_wire(),
+            ..Default::default()
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QryQuote {
+    pub(crate) fn to_sys(&self) -> Result<sys::CThostFtdcQryQuoteField, ConversionError> {
+        let raw = sys::CThostFtdcQryQuoteField {
+            BrokerID: self.broker_id.to_wire(),
+            InvestorID: self.investor_id.to_wire(),
+            ExchangeID: self.exchange_id.to_wire(),
+            QuoteSysID: self.quote_system_id.to_wire(),
+            InsertTimeStart: self.insert_time_start.to_wire(),
+            InsertTimeEnd: self.insert_time_end.to_wire(),
+            InvestUnitID: self.invest_unit_id.to_wire(),
+            InstrumentID: self.instrument_id.to_wire(),
+            ..Default::default()
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QryOptionSelfClose {
+    pub(crate) fn to_sys(&self) -> Result<sys::CThostFtdcQryOptionSelfCloseField, ConversionError> {
+        let raw = sys::CThostFtdcQryOptionSelfCloseField {
+            BrokerID: self.broker_id.to_wire(),
+            InvestorID: self.investor_id.to_wire(),
+            ExchangeID: self.exchange_id.to_wire(),
+            OptionSelfCloseSysID: self.option_self_close_system_id.to_wire(),
+            InsertTimeStart: self.insert_time_start.to_wire(),
+            InsertTimeEnd: self.insert_time_end.to_wire(),
+            InstrumentID: self.instrument_id.to_wire(),
+            ..Default::default()
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QryInvestUnit {
+    pub(crate) fn to_sys(&self) -> Result<sys::CThostFtdcQryInvestUnitField, ConversionError> {
+        let raw = sys::CThostFtdcQryInvestUnitField {
+            BrokerID: self.broker_id.to_wire(),
+            InvestorID: self.investor_id.to_wire(),
+            InvestUnitID: self.invest_unit_id.to_wire(),
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QryCombInstrumentGuard {
+    pub(crate) fn to_sys(
+        &self,
+    ) -> Result<sys::CThostFtdcQryCombInstrumentGuardField, ConversionError> {
+        let raw = sys::CThostFtdcQryCombInstrumentGuardField {
+            BrokerID: self.broker_id.to_wire(),
+            ExchangeID: self.exchange_id.to_wire(),
+            InstrumentID: self.instrument_id.to_wire(),
+            ..Default::default()
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QryCombAction {
+    pub(crate) fn to_sys(&self) -> Result<sys::CThostFtdcQryCombActionField, ConversionError> {
+        let raw = sys::CThostFtdcQryCombActionField {
+            BrokerID: self.broker_id.to_wire(),
+            InvestorID: self.investor_id.to_wire(),
+            ExchangeID: self.exchange_id.to_wire(),
+            InvestUnitID: self.invest_unit_id.to_wire(),
+            InstrumentID: self.instrument_id.to_wire(),
+            ..Default::default()
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QryTransferSerial {
+    pub(crate) fn to_sys(&self) -> Result<sys::CThostFtdcQryTransferSerialField, ConversionError> {
+        let raw = sys::CThostFtdcQryTransferSerialField {
+            BrokerID: self.broker_id.to_wire(),
+            AccountID: self.account_id.to_wire(),
+            BankID: string_field(&self.bank_id, "BankID")?,
+            CurrencyID: string_field(&self.currency_id, "CurrencyID")?,
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QryAccountRegister {
+    pub(crate) fn to_sys(&self) -> Result<sys::CThostFtdcQryAccountregisterField, ConversionError> {
+        let raw = sys::CThostFtdcQryAccountregisterField {
+            BrokerID: self.broker_id.to_wire(),
+            AccountID: self.account_id.to_wire(),
+            BankID: string_field(&self.bank_id, "BankID")?,
+            BankBranchID: string_field(&self.bank_branch_id, "BankBranchID")?,
+            CurrencyID: string_field(&self.currency_id, "CurrencyID")?,
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QryContractBank {
+    pub(crate) fn to_sys(&self) -> Result<sys::CThostFtdcQryContractBankField, ConversionError> {
+        let raw = sys::CThostFtdcQryContractBankField {
+            BrokerID: self.broker_id.to_wire(),
+            BankID: string_field(&self.bank_id, "BankID")?,
+            BankBrchID: string_field(&self.bank_branch_id, "BankBrchID")?,
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QryParkedOrder {
+    pub(crate) fn to_sys(&self) -> Result<sys::CThostFtdcQryParkedOrderField, ConversionError> {
+        let raw = sys::CThostFtdcQryParkedOrderField {
+            BrokerID: self.broker_id.to_wire(),
+            InvestorID: self.investor_id.to_wire(),
+            ExchangeID: self.exchange_id.to_wire(),
+            InvestUnitID: self.invest_unit_id.to_wire(),
+            InstrumentID: self.instrument_id.to_wire(),
+            ..Default::default()
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QryParkedOrderAction {
+    pub(crate) fn to_sys(
+        &self,
+    ) -> Result<sys::CThostFtdcQryParkedOrderActionField, ConversionError> {
+        let raw = sys::CThostFtdcQryParkedOrderActionField {
+            BrokerID: self.broker_id.to_wire(),
+            InvestorID: self.investor_id.to_wire(),
+            ExchangeID: self.exchange_id.to_wire(),
+            InvestUnitID: self.invest_unit_id.to_wire(),
+            InstrumentID: self.instrument_id.to_wire(),
+            ..Default::default()
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QryTradingNotice {
+    pub(crate) fn to_sys(&self) -> Result<sys::CThostFtdcQryTradingNoticeField, ConversionError> {
+        let raw = sys::CThostFtdcQryTradingNoticeField {
+            BrokerID: self.broker_id.to_wire(),
+            InvestorID: self.investor_id.to_wire(),
+            InvestUnitID: self.invest_unit_id.to_wire(),
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QueryCFMMCTradingAccountToken {
+    pub(crate) fn to_sys(
+        &self,
+    ) -> Result<sys::CThostFtdcQueryCFMMCTradingAccountTokenField, ConversionError> {
+        let raw = sys::CThostFtdcQueryCFMMCTradingAccountTokenField {
+            BrokerID: self.broker_id.to_wire(),
+            InvestorID: self.investor_id.to_wire(),
+            InvestUnitID: self.invest_unit_id.to_wire(),
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QryClassifiedInstrument {
+    pub(crate) fn to_sys(
+        &self,
+    ) -> Result<sys::CThostFtdcQryClassifiedInstrumentField, ConversionError> {
+        let raw =
+            sys::CThostFtdcQryClassifiedInstrumentField {
+                InstrumentID: self.instrument_id.to_wire(),
+                ExchangeID: self.exchange_id.to_wire(),
+                ExchangeInstID: self.exchange_instrument_id.to_wire(),
+                ProductID: self.product_id.to_wire(),
+                TradingType: self.trading_type.code().ok_or_else(|| {
+                    ConversionError::new("TradingType", TextError::UnknownEnumValue)
+                })? as c_char,
+                ClassType: self
+                    .class_type
+                    .code()
+                    .ok_or_else(|| ConversionError::new("ClassType", TextError::UnknownEnumValue))?
+                    as c_char,
+            };
+        Ok(raw)
+    }
+}
+
+impl crate::QryCombPromotionParam {
+    pub(crate) fn to_sys(
+        &self,
+    ) -> Result<sys::CThostFtdcQryCombPromotionParamField, ConversionError> {
+        let raw = sys::CThostFtdcQryCombPromotionParamField {
+            ExchangeID: self.exchange_id.to_wire(),
+            InstrumentID: self.instrument_id.to_wire(),
+        };
+        Ok(raw)
+    }
+}

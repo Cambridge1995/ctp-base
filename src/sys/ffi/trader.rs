@@ -200,6 +200,123 @@ mod bridge {
             request: *mut u8,
             request_id: i32,
         ) -> i32;
+        unsafe fn query_investor(self: &TraderApiBridge, request: *mut u8, request_id: i32) -> i32;
+        unsafe fn query_user_session(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn query_trader_offer(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn query_transfer_bank(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn query_notice(self: &TraderApiBridge, request: *mut u8, request_id: i32) -> i32;
+        unsafe fn query_investor_position_combine_detail(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn query_cfmmc_trading_account_key(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn query_ewarrant_offset(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn query_exchange_rate(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn query_product_exch_rate(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn query_product_group(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn query_exec_order(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn query_for_quote(self: &TraderApiBridge, request: *mut u8, request_id: i32)
+        -> i32;
+        unsafe fn query_quote(self: &TraderApiBridge, request: *mut u8, request_id: i32) -> i32;
+        unsafe fn query_option_self_close(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn query_invest_unit(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn query_comb_instrument_guard(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn query_comb_action(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn query_transfer_serial(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn query_account_register(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn query_contract_bank(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn query_parked_order(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn query_parked_actions(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn trading_notices(self: &TraderApiBridge, request: *mut u8, request_id: i32)
+        -> i32;
+        unsafe fn query_cfmmc_trading_account_token(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn query_classified_instrument(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn query_comb_promotion_param(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
         unsafe fn emit_trader_order(spi: Pin<&mut TraderSpiBridge>, data: *mut u8);
         unsafe fn emit_trader_callback(
             spi: Pin<&mut TraderSpiBridge>,

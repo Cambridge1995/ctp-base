@@ -982,6 +982,114 @@ std::int32_t TraderApiBridge::comb_action_insert(std::uint8_t* request, std::int
     return api_->ReqCombActionInsert(reinterpret_cast<CThostFtdcInputCombActionField*>(request), request_id);
 }
 
+std::int32_t TraderApiBridge::query_investor(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQryInvestor(reinterpret_cast<CThostFtdcQryInvestorField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_user_session(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQryUserSession(reinterpret_cast<CThostFtdcQryUserSessionField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_trader_offer(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQryTraderOffer(reinterpret_cast<CThostFtdcQryTraderOfferField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_transfer_bank(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQryTransferBank(reinterpret_cast<CThostFtdcQryTransferBankField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_notice(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQryNotice(reinterpret_cast<CThostFtdcQryNoticeField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_investor_position_combine_detail(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQryInvestorPositionCombineDetail(reinterpret_cast<CThostFtdcQryInvestorPositionCombineDetailField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_cfmmc_trading_account_key(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQryCFMMCTradingAccountKey(reinterpret_cast<CThostFtdcQryCFMMCTradingAccountKeyField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_ewarrant_offset(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQryEWarrantOffset(reinterpret_cast<CThostFtdcQryEWarrantOffsetField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_exchange_rate(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQryExchangeRate(reinterpret_cast<CThostFtdcQryExchangeRateField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_product_exch_rate(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQryProductExchRate(reinterpret_cast<CThostFtdcQryProductExchRateField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_product_group(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQryProductGroup(reinterpret_cast<CThostFtdcQryProductGroupField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_exec_order(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQryExecOrder(reinterpret_cast<CThostFtdcQryExecOrderField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_for_quote(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQryForQuote(reinterpret_cast<CThostFtdcQryForQuoteField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_quote(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQryQuote(reinterpret_cast<CThostFtdcQryQuoteField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_option_self_close(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQryOptionSelfClose(reinterpret_cast<CThostFtdcQryOptionSelfCloseField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_invest_unit(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQryInvestUnit(reinterpret_cast<CThostFtdcQryInvestUnitField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_comb_instrument_guard(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQryCombInstrumentGuard(reinterpret_cast<CThostFtdcQryCombInstrumentGuardField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_comb_action(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQryCombAction(reinterpret_cast<CThostFtdcQryCombActionField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_transfer_serial(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQryTransferSerial(reinterpret_cast<CThostFtdcQryTransferSerialField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_account_register(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQryAccountregister(reinterpret_cast<CThostFtdcQryAccountregisterField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_contract_bank(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQryContractBank(reinterpret_cast<CThostFtdcQryContractBankField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_parked_order(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQryParkedOrder(reinterpret_cast<CThostFtdcQryParkedOrderField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_parked_actions(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQryParkedOrderAction(reinterpret_cast<CThostFtdcQryParkedOrderActionField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::trading_notices(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQryTradingNotice(reinterpret_cast<CThostFtdcQryTradingNoticeField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_cfmmc_trading_account_token(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQueryCFMMCTradingAccountToken(reinterpret_cast<CThostFtdcQueryCFMMCTradingAccountTokenField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_classified_instrument(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQryClassifiedInstrument(reinterpret_cast<CThostFtdcQryClassifiedInstrumentField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_comb_promotion_param(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQryCombPromotionParam(reinterpret_cast<CThostFtdcQryCombPromotionParamField*>(request), request_id);
+}
+
 void emit_trader_order(TraderSpiBridge& spi, std::uint8_t* data) {
     spi.OnRtnOrder(reinterpret_cast<CThostFtdcOrderField*>(data));
 }

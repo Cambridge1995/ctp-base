@@ -331,6 +331,33 @@ public:
     std::int32_t option_self_close_action(std::uint8_t* request, std::int32_t request_id) const;
     std::int32_t comb_action_insert(std::uint8_t* request, std::int32_t request_id) const;
 
+    std::int32_t query_investor(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t query_user_session(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t query_trader_offer(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t query_transfer_bank(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t query_notice(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t query_investor_position_combine_detail(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t query_cfmmc_trading_account_key(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t query_ewarrant_offset(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t query_exchange_rate(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t query_product_exch_rate(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t query_product_group(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t query_exec_order(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t query_for_quote(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t query_quote(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t query_option_self_close(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t query_invest_unit(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t query_comb_instrument_guard(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t query_comb_action(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t query_transfer_serial(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t query_account_register(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t query_contract_bank(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t query_parked_order(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t query_parked_actions(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t trading_notices(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t query_cfmmc_trading_account_token(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t query_classified_instrument(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t query_comb_promotion_param(std::uint8_t* request, std::int32_t request_id) const;
 private:
     CThostFtdcTraderApi* api_;
     std::unique_ptr<TraderSpiBridge> spi_;
