@@ -65,7 +65,10 @@ MdApiBridge::MdApiBridge(CThostFtdcMdApi* api, std::unique_ptr<MdSpiBridge> spi)
 }
 
 MdApiBridge::~MdApiBridge() {
-    api_->Release();
+    // 仅释放调用过 Init 的实例；未初始化的实例没有工作线程，Release 会崩溃。
+    if (initialized_) {
+        api_->Release();
+    }
     spi_.reset();
 }
 
@@ -74,7 +77,7 @@ rust::String MdApiBridge::version() const {
     return value == nullptr ? rust::String() : rust::String(value);
 }
 
-void MdApiBridge::init() const { api_->Init(); }
+void MdApiBridge::init() const { initialized_ = true; api_->Init(); }
 
 std::int32_t MdApiBridge::join() const { return api_->Join(); }
 

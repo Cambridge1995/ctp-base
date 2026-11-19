@@ -725,7 +725,10 @@ TraderApiBridge::TraderApiBridge(CThostFtdcTraderApi* api, std::unique_ptr<Trade
 }
 
 TraderApiBridge::~TraderApiBridge() {
-    api_->Release();
+    // 仅释放调用过 Init 的实例；未初始化的实例没有工作线程，Release 会崩溃。
+    if (initialized_) {
+        api_->Release();
+    }
     spi_.reset();
 }
 
@@ -750,7 +753,7 @@ rust::String TraderApiBridge::version() const {
     return value == nullptr ? rust::String() : rust::String(value);
 }
 
-void TraderApiBridge::init() const { api_->Init(); }
+void TraderApiBridge::init() const { initialized_ = true; api_->Init(); }
 
 std::int32_t TraderApiBridge::join() const { return api_->Join(); }
 

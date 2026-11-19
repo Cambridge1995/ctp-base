@@ -64,6 +64,8 @@ public:
 private:
     CThostFtdcMdApi* api_;
     std::unique_ptr<MdSpiBridge> spi_;
+    // CTP 未调用 Init 时内部工作线程不存在，Release 会 join 空线程，新版 glibc 与 macOS 会直接崩溃。
+    mutable bool initialized_ = false;
 };
 
 std::unique_ptr<MdSpiBridge> create_md_spi(rust::Box<MdSpiSink> sink);
@@ -307,6 +309,8 @@ public:
 private:
     CThostFtdcTraderApi* api_;
     std::unique_ptr<TraderSpiBridge> spi_;
+    // CTP 未调用 Init 时内部工作线程不存在，Release 会 join 空线程，新版 glibc 与 macOS 会直接崩溃。
+    mutable bool initialized_ = false;
 };
 
 std::unique_ptr<TraderSpiBridge> create_trader_spi(rust::Box<TraderSpiSink> sink);
