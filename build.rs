@@ -94,6 +94,13 @@ fn main() {
     } else {
         println!("cargo:rustc-link-lib=dylib={MD_API_BASENAME}");
         println!("cargo:rustc-link-lib=dylib={TRADER_API_BASENAME}");
+        // Unix 动态加载器默认不搜索可执行文件所在目录，
+        // 运行时库已复制到目标目录旁边，按所在目录建立 rpath。
+        if target_os == "macos" {
+            println!("cargo:rustc-link-arg=-Wl,-rpath,@loader_path");
+        } else {
+            println!("cargo:rustc-link-arg=-Wl,-rpath,$ORIGIN");
+        }
     }
 
     let profile_dir = out_dir.ancestors().nth(3).unwrap_or_else(|| {
