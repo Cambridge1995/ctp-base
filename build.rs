@@ -42,20 +42,17 @@ fn main() {
             format!("{MD_API_BASENAME}.dll"),
             format!("{TRADER_API_BASENAME}.dll"),
         ],
-        "macos" => [MD_API_BASENAME.to_string(), TRADER_API_BASENAME.to_string()],
+        "macos" => [
+            format!("lib{MD_API_BASENAME}.dylib"),
+            format!("lib{TRADER_API_BASENAME}.dylib"),
+        ],
         _ => [
             format!("lib{MD_API_BASENAME}.so"),
             format!("lib{TRADER_API_BASENAME}.so"),
         ],
     };
     for library in &runtime_libraries {
-        if target_os == "macos" {
-            println!(
-                "cargo:rerun-if-changed={platform_dir}/{library}.framework/Versions/A/{library}"
-            );
-        } else {
-            println!("cargo:rerun-if-changed={platform_dir}/{library}");
-        }
+        println!("cargo:rerun-if-changed={platform_dir}/{library}");
     }
 
     let bindings = bindgen::Builder::default()
@@ -95,13 +92,38 @@ fn main() {
         println!("cargo:rustc-link-lib={MD_API_BASENAME}");
         println!("cargo:rustc-link-lib={TRADER_API_BASENAME}");
     } else if target_os == "macos" {
-        // macOS 官方库必须作为完整 framework Bundle 加载（dyld 按 Bundle
-        // 的 CodeResources 校验代码签名），通过 -F/-framework 链接，
-        // 运行时经 rpath 定位 sdk/macos 下的 framework。
-        println!("cargo:rustc-link-arg=-F{}", library_dir.display());
-        println!("cargo:rustc-link-arg=-framework {MD_API_BASENAME}");
-        println!("cargo:rustc-link-arg=-framework {TRADER_API_BASENAME}");
+        // 官方 dylib 的 install name 与代码签名面向 framework Bundle，
+        // 扁平存放时先改为 @rpath 形式并用 ad-hoc 签名替换本仓库内的副本，
+        // 否则 Apple Silicon 的 dyld 会拒绝加载。
+        for name in [MD_API_BASENAME, TRADER_API_BASENAME] {
+            let dylib = library_dir.join(format!("lib{name}.dylib"));
+            for mut command in [
+                std::process::Command::new("install_name_tool"),
+                std::process::Command::new("codesign"),
+            ] {
+                if command.get_program() == "install_name_tool" {
+                    command.args(["-id", &format!("@rpath/lib{name}.dylib")]);
+                } else {
+                    command.args(["-f", "-s", "-"]);
+                }
+                let output = command.arg(&dylib).output().unwrap_or_else(|error| {
+                    panic!("运行 {:?} 失败：{error}", command.get_program())
+                });
+                if !output.status.success() {
+                    panic!(
+                        "{:?} 处理 {} 失败：{}",
+                        command.get_program(),
+                        dylib.display(),
+                        String::from_utf8_lossy(&output.stderr)
+                    );
+                }
+            }
+            println!("cargo:rerun-if-changed={}", dylib.display());
+        }
+        println!("cargo:rustc-link-lib=dylib={MD_API_BASENAME}");
+        println!("cargo:rustc-link-lib=dylib={TRADER_API_BASENAME}");
         println!("cargo:rustc-link-arg=-Wl,-rpath,{}", library_dir.display());
+        println!("cargo:rustc-link-arg=-Wl,-rpath,@loader_path");
     } else {
         println!("cargo:rustc-link-lib=dylib={MD_API_BASENAME}");
         println!("cargo:rustc-link-lib=dylib={TRADER_API_BASENAME}");
@@ -130,7 +152,10 @@ fn main() {
             format!("{MD_API_BASENAME}.dll"),
             format!("{TRADER_API_BASENAME}.dll"),
         ],
-        "macos" => [MD_API_BASENAME.to_string(), TRADER_API_BASENAME.to_string()],
+        "macos" => [
+            format!("lib{MD_API_BASENAME}.dylib"),
+            format!("lib{TRADER_API_BASENAME}.dylib"),
+        ],
         _ => [
             format!("lib{MD_API_BASENAME}.so"),
             format!("lib{TRADER_API_BASENAME}.so"),
