@@ -140,7 +140,8 @@ api.close();
 
 ```text
 ctp-base/
-├── build.rs
+├── build.rs             # Cargo 构建脚本（无需手动运行）：生成 FFI 绑定、
+│                        # 编译 C++ 桥接、按平台链接 CTP 库
 ├── config/ctp-template.toml  # 配置模板，本地复制为 ctp.toml 使用
 ├── cpp/                 # C++ SPI 与 API 桥接
 ├── docs/接口.md
