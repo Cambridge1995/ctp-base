@@ -1226,6 +1226,90 @@ std::int32_t TraderApiBridge::query_investor_portf_setting(std::uint8_t* request
     return api_->ReqQryInvestorPortfSetting(reinterpret_cast<CThostFtdcQryInvestorPortfSettingField*>(request), request_id);
 }
 
+std::int32_t TraderApiBridge::bank_to_future(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqFromBankToFutureByFuture(reinterpret_cast<CThostFtdcReqTransferField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::future_to_bank(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqFromFutureToBankByFuture(reinterpret_cast<CThostFtdcReqTransferField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_bank_balance(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQueryBankAccountMoneyByFuture(reinterpret_cast<CThostFtdcReqQueryAccountField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_sec_agent_acid_map(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQrySecAgentACIDMap(reinterpret_cast<CThostFtdcQrySecAgentACIDMapField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_sec_agent_trading_account(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQrySecAgentTradingAccount(reinterpret_cast<CThostFtdcQryTradingAccountField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_sec_agent_check_mode(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQrySecAgentCheckMode(reinterpret_cast<CThostFtdcQrySecAgentCheckModeField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_sec_agent_trade_info(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQrySecAgentTradeInfo(reinterpret_cast<CThostFtdcQrySecAgentTradeInfoField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_broker_trading_params(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQryBrokerTradingParams(reinterpret_cast<CThostFtdcQryBrokerTradingParamsField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_broker_trading_algos(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQryBrokerTradingAlgos(reinterpret_cast<CThostFtdcQryBrokerTradingAlgosField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::set_offset(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqOffsetSetting(reinterpret_cast<CThostFtdcInputOffsetSettingField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::cancel_offset_setting(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqCancelOffsetSetting(reinterpret_cast<CThostFtdcInputOffsetSettingField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::offset_settings(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQryOffsetSetting(reinterpret_cast<CThostFtdcQryOffsetSettingField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::gen_sms_code(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqGenSMSCode(reinterpret_cast<CThostFtdcReqGenSMSCodeField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::hedge_cfm(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqHedgeCfm(reinterpret_cast<CThostFtdcInputHedgeCfmField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::hedge_cfm_action(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqHedgeCfmAction(reinterpret_cast<CThostFtdcInputHedgeCfmActionField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_hedge_cfm(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQryHedgeCfm(reinterpret_cast<CThostFtdcQryHedgeCfmField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_spd_apply(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQrySpdApply(reinterpret_cast<CThostFtdcQrySpdApplyField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::spd_apply(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqSpdApply(reinterpret_cast<CThostFtdcInputSpdApplyField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::spd_apply_action(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqSpdApplyAction(reinterpret_cast<CThostFtdcInputSpdApplyActionField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_investor_info_comm_rec(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQryInvestorInfoCommRec(reinterpret_cast<CThostFtdcQryInvestorInfoCommRecField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::query_comb_leg(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQryCombLeg(reinterpret_cast<CThostFtdcQryCombLegField*>(request), request_id);
+}
+
 void emit_trader_order(TraderSpiBridge& spi, std::uint8_t* data) {
     spi.OnRtnOrder(reinterpret_cast<CThostFtdcOrderField*>(data));
 }

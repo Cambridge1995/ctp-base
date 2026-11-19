@@ -5,18 +5,20 @@ use crate::sys::{
 };
 use crate::{
     FensUserInfo, FrontInfo, InputBatchOrderAction, InputCombAction, InputExecOrder,
-    InputExecOrderAction, InputForQuote, InputOptionSelfClose, InputOptionSelfCloseAction,
-    InputOrder, InputOrderAction, InputQuote, InputQuoteAction, ParkedOrder, ParkedOrderAction,
-    QryAccountRegister, QryCFMMCTradingAccountKey, QryClassifiedInstrument, QryCombAction,
-    QryCombInstrumentGuard, QryCombPromotionParam, QryContractBank, QryDepthMarketData,
-    QryEWarrantOffset, QryExchange, QryExchangeMarginRate, QryExchangeMarginRateAdjust,
-    QryExchangeRate, QryExecOrder, QryForQuote, QryInstrument, QryInstrumentCommissionRate,
-    QryInstrumentMarginRate, QryInstrumentOrderCommRate, QryInvestUnit, QryInvestor,
-    QryInvestorCommodityGroupSPMMMargin, QryInvestorCommoditySPMMMargin,
-    QryInvestorPortfMarginRatio, QryInvestorPortfSetting, QryInvestorPosition,
-    QryInvestorPositionCombineDetail, QryInvestorPositionDetail, QryInvestorProdRCAMSMargin,
-    QryInvestorProdRULEMargin, QryInvestorProdSPBMDetail, QryInvestorProductGroupMargin,
-    QryMMInstrumentCommissionRate, QryMMOptionInstrCommRate, QryMaxOrderVolume, QryNotice,
+    InputExecOrderAction, InputForQuote, InputHedgeCfm, InputHedgeCfmAction, InputOffsetSetting,
+    InputOptionSelfClose, InputOptionSelfCloseAction, InputOrder, InputOrderAction, InputQuote,
+    InputQuoteAction, InputSpdApply, InputSpdApplyAction, ParkedOrder, ParkedOrderAction,
+    QryAccountRegister, QryBrokerTradingAlgos, QryBrokerTradingParams, QryCFMMCTradingAccountKey,
+    QryClassifiedInstrument, QryCombAction, QryCombInstrumentGuard, QryCombLeg,
+    QryCombPromotionParam, QryContractBank, QryDepthMarketData, QryEWarrantOffset, QryExchange,
+    QryExchangeMarginRate, QryExchangeMarginRateAdjust, QryExchangeRate, QryExecOrder, QryForQuote,
+    QryHedgeCfm, QryInstrument, QryInstrumentCommissionRate, QryInstrumentMarginRate,
+    QryInstrumentOrderCommRate, QryInvestUnit, QryInvestor, QryInvestorCommodityGroupSPMMMargin,
+    QryInvestorCommoditySPMMMargin, QryInvestorInfoCommRec, QryInvestorPortfMarginRatio,
+    QryInvestorPortfSetting, QryInvestorPosition, QryInvestorPositionCombineDetail,
+    QryInvestorPositionDetail, QryInvestorProdRCAMSMargin, QryInvestorProdRULEMargin,
+    QryInvestorProdSPBMDetail, QryInvestorProductGroupMargin, QryMMInstrumentCommissionRate,
+    QryMMOptionInstrCommRate, QryMaxOrderVolume, QryNotice, QryOffsetSetting,
     QryOptionInstrCommRate, QryOptionInstrTradeCost, QryOptionSelfClose, QryOrder, QryParkedOrder,
     QryParkedOrderAction, QryProduct, QryProductExchRate, QryProductGroup, QryQuote,
     QryRCAMSCombProductInfo, QryRCAMSInstrParameter, QryRCAMSInterParameter,
@@ -25,12 +27,14 @@ use crate::{
     QryRiskSettleInvestPosition, QryRiskSettleProductStatus, QrySPBMAddOnInterParameter,
     QrySPBMFutureParameter, QrySPBMInterParameter, QrySPBMIntraParameter, QrySPBMInvestorPortfDef,
     QrySPBMOptionParameter, QrySPBMPortfDefinition, QrySPMMInstParam, QrySPMMProductParam,
-    QrySettlementInfo, QrySettlementInfoConfirm, QryTrade, QryTraderOffer, QryTradingAccount,
+    QrySecAgentACIDMap, QrySecAgentCheckMode, QrySecAgentTradeInfo, QrySettlementInfo,
+    QrySettlementInfoConfirm, QrySpdApply, QryTrade, QryTraderOffer, QryTradingAccount,
     QryTradingCode, QryTradingNotice, QryTransferBank, QryTransferSerial, QryUserSession,
     QueryCFMMCTradingAccountToken, RemoveParkedOrder, RemoveParkedOrderAction, ReqAuthenticate,
-    ReqGenUserCaptcha, ReqGenUserText, ReqUserAuthMethod, ReqUserLogin, ReqUserLoginWithCaptcha,
-    ReqUserLoginWithOTP, ReqUserLoginWithText, ResumeType, SettlementInfoConfirm, TextError,
-    TraderSpi, TradingAccountPasswordUpdate, UserLogout, UserPasswordUpdate, UserSystemInfo,
+    ReqGenSMSCode, ReqGenUserCaptcha, ReqGenUserText, ReqQueryAccount, ReqTransfer,
+    ReqUserAuthMethod, ReqUserLogin, ReqUserLoginWithCaptcha, ReqUserLoginWithOTP,
+    ReqUserLoginWithText, ResumeType, SettlementInfoConfirm, TextError, TraderSpi,
+    TradingAccountPasswordUpdate, UserLogout, UserPasswordUpdate, UserSystemInfo,
     WechatUserSystemInfo, sys,
 };
 use cxx::UniquePtr;
@@ -1872,6 +1876,342 @@ impl TraderApi {
         let result = unsafe {
             self.inner.query_investor_portf_setting(
                 (&mut raw as *mut sys::CThostFtdcQryInvestorPortfSettingField).cast(),
+                request_id,
+            )
+        };
+        Ok(result)
+    }
+
+    pub fn bank_to_future(
+        &self,
+        request: &ReqTransfer,
+        request_id: i32,
+    ) -> Result<i32, ConversionError> {
+        let mut raw = request.to_sys()?;
+        // SAFETY: raw 是完整初始化的请求，指针仅在同步请求调用期间有效。
+        let result = unsafe {
+            self.inner.bank_to_future(
+                (&mut raw as *mut sys::CThostFtdcReqTransferField).cast(),
+                request_id,
+            )
+        };
+        Ok(result)
+    }
+
+    pub fn future_to_bank(
+        &self,
+        request: &ReqTransfer,
+        request_id: i32,
+    ) -> Result<i32, ConversionError> {
+        let mut raw = request.to_sys()?;
+        // SAFETY: raw 是完整初始化的请求，指针仅在同步请求调用期间有效。
+        let result = unsafe {
+            self.inner.future_to_bank(
+                (&mut raw as *mut sys::CThostFtdcReqTransferField).cast(),
+                request_id,
+            )
+        };
+        Ok(result)
+    }
+
+    pub fn query_bank_balance(
+        &self,
+        request: &ReqQueryAccount,
+        request_id: i32,
+    ) -> Result<i32, ConversionError> {
+        let mut raw = request.to_sys()?;
+        // SAFETY: raw 是完整初始化的请求，指针仅在同步请求调用期间有效。
+        let result = unsafe {
+            self.inner.query_bank_balance(
+                (&mut raw as *mut sys::CThostFtdcReqQueryAccountField).cast(),
+                request_id,
+            )
+        };
+        Ok(result)
+    }
+
+    pub fn query_sec_agent_acid_map(
+        &self,
+        request: &QrySecAgentACIDMap,
+        request_id: i32,
+    ) -> Result<i32, ConversionError> {
+        let mut raw = request.to_sys()?;
+        // SAFETY: raw 是完整初始化的请求，指针仅在同步请求调用期间有效。
+        let result = unsafe {
+            self.inner.query_sec_agent_acid_map(
+                (&mut raw as *mut sys::CThostFtdcQrySecAgentACIDMapField).cast(),
+                request_id,
+            )
+        };
+        Ok(result)
+    }
+
+    pub fn query_sec_agent_trading_account(
+        &self,
+        request: &QryTradingAccount,
+        request_id: i32,
+    ) -> Result<i32, ConversionError> {
+        let mut raw = request.to_sys()?;
+        // SAFETY: raw 是完整初始化的请求，指针仅在同步请求调用期间有效。
+        let result = unsafe {
+            self.inner.query_sec_agent_trading_account(
+                (&mut raw as *mut sys::CThostFtdcQryTradingAccountField).cast(),
+                request_id,
+            )
+        };
+        Ok(result)
+    }
+
+    pub fn query_sec_agent_check_mode(
+        &self,
+        request: &QrySecAgentCheckMode,
+        request_id: i32,
+    ) -> Result<i32, ConversionError> {
+        let mut raw = request.to_sys()?;
+        // SAFETY: raw 是完整初始化的请求，指针仅在同步请求调用期间有效。
+        let result = unsafe {
+            self.inner.query_sec_agent_check_mode(
+                (&mut raw as *mut sys::CThostFtdcQrySecAgentCheckModeField).cast(),
+                request_id,
+            )
+        };
+        Ok(result)
+    }
+
+    pub fn query_sec_agent_trade_info(
+        &self,
+        request: &QrySecAgentTradeInfo,
+        request_id: i32,
+    ) -> Result<i32, ConversionError> {
+        let mut raw = request.to_sys()?;
+        // SAFETY: raw 是完整初始化的请求，指针仅在同步请求调用期间有效。
+        let result = unsafe {
+            self.inner.query_sec_agent_trade_info(
+                (&mut raw as *mut sys::CThostFtdcQrySecAgentTradeInfoField).cast(),
+                request_id,
+            )
+        };
+        Ok(result)
+    }
+
+    pub fn query_broker_trading_params(
+        &self,
+        request: &QryBrokerTradingParams,
+        request_id: i32,
+    ) -> Result<i32, ConversionError> {
+        let mut raw = request.to_sys()?;
+        // SAFETY: raw 是完整初始化的请求，指针仅在同步请求调用期间有效。
+        let result = unsafe {
+            self.inner.query_broker_trading_params(
+                (&mut raw as *mut sys::CThostFtdcQryBrokerTradingParamsField).cast(),
+                request_id,
+            )
+        };
+        Ok(result)
+    }
+
+    pub fn query_broker_trading_algos(
+        &self,
+        request: &QryBrokerTradingAlgos,
+        request_id: i32,
+    ) -> Result<i32, ConversionError> {
+        let mut raw = request.to_sys()?;
+        // SAFETY: raw 是完整初始化的请求，指针仅在同步请求调用期间有效。
+        let result = unsafe {
+            self.inner.query_broker_trading_algos(
+                (&mut raw as *mut sys::CThostFtdcQryBrokerTradingAlgosField).cast(),
+                request_id,
+            )
+        };
+        Ok(result)
+    }
+
+    pub fn set_offset(
+        &self,
+        request: &InputOffsetSetting,
+        request_id: i32,
+    ) -> Result<i32, ConversionError> {
+        let mut raw = request.to_sys()?;
+        // SAFETY: raw 是完整初始化的请求，指针仅在同步请求调用期间有效。
+        let result = unsafe {
+            self.inner.set_offset(
+                (&mut raw as *mut sys::CThostFtdcInputOffsetSettingField).cast(),
+                request_id,
+            )
+        };
+        Ok(result)
+    }
+
+    pub fn cancel_offset_setting(
+        &self,
+        request: &InputOffsetSetting,
+        request_id: i32,
+    ) -> Result<i32, ConversionError> {
+        let mut raw = request.to_sys()?;
+        // SAFETY: raw 是完整初始化的请求，指针仅在同步请求调用期间有效。
+        let result = unsafe {
+            self.inner.cancel_offset_setting(
+                (&mut raw as *mut sys::CThostFtdcInputOffsetSettingField).cast(),
+                request_id,
+            )
+        };
+        Ok(result)
+    }
+
+    pub fn offset_settings(
+        &self,
+        request: &QryOffsetSetting,
+        request_id: i32,
+    ) -> Result<i32, ConversionError> {
+        let mut raw = request.to_sys()?;
+        // SAFETY: raw 是完整初始化的请求，指针仅在同步请求调用期间有效。
+        let result = unsafe {
+            self.inner.offset_settings(
+                (&mut raw as *mut sys::CThostFtdcQryOffsetSettingField).cast(),
+                request_id,
+            )
+        };
+        Ok(result)
+    }
+
+    pub fn gen_sms_code(
+        &self,
+        request: &ReqGenSMSCode,
+        request_id: i32,
+    ) -> Result<i32, ConversionError> {
+        let mut raw = request.to_sys()?;
+        // SAFETY: raw 是完整初始化的请求，指针仅在同步请求调用期间有效。
+        let result = unsafe {
+            self.inner.gen_sms_code(
+                (&mut raw as *mut sys::CThostFtdcReqGenSMSCodeField).cast(),
+                request_id,
+            )
+        };
+        Ok(result)
+    }
+
+    pub fn hedge_cfm(
+        &self,
+        request: &InputHedgeCfm,
+        request_id: i32,
+    ) -> Result<i32, ConversionError> {
+        let mut raw = request.to_sys()?;
+        // SAFETY: raw 是完整初始化的请求，指针仅在同步请求调用期间有效。
+        let result = unsafe {
+            self.inner.hedge_cfm(
+                (&mut raw as *mut sys::CThostFtdcInputHedgeCfmField).cast(),
+                request_id,
+            )
+        };
+        Ok(result)
+    }
+
+    pub fn hedge_cfm_action(
+        &self,
+        request: &InputHedgeCfmAction,
+        request_id: i32,
+    ) -> Result<i32, ConversionError> {
+        let mut raw = request.to_sys()?;
+        // SAFETY: raw 是完整初始化的请求，指针仅在同步请求调用期间有效。
+        let result = unsafe {
+            self.inner.hedge_cfm_action(
+                (&mut raw as *mut sys::CThostFtdcInputHedgeCfmActionField).cast(),
+                request_id,
+            )
+        };
+        Ok(result)
+    }
+
+    pub fn query_hedge_cfm(
+        &self,
+        request: &QryHedgeCfm,
+        request_id: i32,
+    ) -> Result<i32, ConversionError> {
+        let mut raw = request.to_sys()?;
+        // SAFETY: raw 是完整初始化的请求，指针仅在同步请求调用期间有效。
+        let result = unsafe {
+            self.inner.query_hedge_cfm(
+                (&mut raw as *mut sys::CThostFtdcQryHedgeCfmField).cast(),
+                request_id,
+            )
+        };
+        Ok(result)
+    }
+
+    pub fn query_spd_apply(
+        &self,
+        request: &QrySpdApply,
+        request_id: i32,
+    ) -> Result<i32, ConversionError> {
+        let mut raw = request.to_sys()?;
+        // SAFETY: raw 是完整初始化的请求，指针仅在同步请求调用期间有效。
+        let result = unsafe {
+            self.inner.query_spd_apply(
+                (&mut raw as *mut sys::CThostFtdcQrySpdApplyField).cast(),
+                request_id,
+            )
+        };
+        Ok(result)
+    }
+
+    pub fn spd_apply(
+        &self,
+        request: &InputSpdApply,
+        request_id: i32,
+    ) -> Result<i32, ConversionError> {
+        let mut raw = request.to_sys()?;
+        // SAFETY: raw 是完整初始化的请求，指针仅在同步请求调用期间有效。
+        let result = unsafe {
+            self.inner.spd_apply(
+                (&mut raw as *mut sys::CThostFtdcInputSpdApplyField).cast(),
+                request_id,
+            )
+        };
+        Ok(result)
+    }
+
+    pub fn spd_apply_action(
+        &self,
+        request: &InputSpdApplyAction,
+        request_id: i32,
+    ) -> Result<i32, ConversionError> {
+        let mut raw = request.to_sys()?;
+        // SAFETY: raw 是完整初始化的请求，指针仅在同步请求调用期间有效。
+        let result = unsafe {
+            self.inner.spd_apply_action(
+                (&mut raw as *mut sys::CThostFtdcInputSpdApplyActionField).cast(),
+                request_id,
+            )
+        };
+        Ok(result)
+    }
+
+    pub fn query_investor_info_comm_rec(
+        &self,
+        request: &QryInvestorInfoCommRec,
+        request_id: i32,
+    ) -> Result<i32, ConversionError> {
+        let mut raw = request.to_sys()?;
+        // SAFETY: raw 是完整初始化的请求，指针仅在同步请求调用期间有效。
+        let result = unsafe {
+            self.inner.query_investor_info_comm_rec(
+                (&mut raw as *mut sys::CThostFtdcQryInvestorInfoCommRecField).cast(),
+                request_id,
+            )
+        };
+        Ok(result)
+    }
+
+    pub fn query_comb_leg(
+        &self,
+        request: &QryCombLeg,
+        request_id: i32,
+    ) -> Result<i32, ConversionError> {
+        let mut raw = request.to_sys()?;
+        // SAFETY: raw 是完整初始化的请求，指针仅在同步请求调用期间有效。
+        let result = unsafe {
+            self.inner.query_comb_leg(
+                (&mut raw as *mut sys::CThostFtdcQryCombLegField).cast(),
                 request_id,
             )
         };

@@ -392,6 +392,27 @@ public:
     std::int32_t query_rule_inter_parameter(std::uint8_t* request, std::int32_t request_id) const;
     std::int32_t query_investor_prod_rule_margin(std::uint8_t* request, std::int32_t request_id) const;
     std::int32_t query_investor_portf_setting(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t bank_to_future(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t future_to_bank(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t query_bank_balance(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t query_sec_agent_acid_map(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t query_sec_agent_trading_account(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t query_sec_agent_check_mode(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t query_sec_agent_trade_info(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t query_broker_trading_params(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t query_broker_trading_algos(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t set_offset(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t cancel_offset_setting(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t offset_settings(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t gen_sms_code(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t hedge_cfm(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t hedge_cfm_action(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t query_hedge_cfm(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t query_spd_apply(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t spd_apply(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t spd_apply_action(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t query_investor_info_comm_rec(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t query_comb_leg(std::uint8_t* request, std::int32_t request_id) const;
 private:
     CThostFtdcTraderApi* api_;
     std::unique_ptr<TraderSpiBridge> spi_;

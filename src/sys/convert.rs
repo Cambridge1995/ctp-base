@@ -6480,3 +6480,399 @@ impl crate::QryInvestorPortfSetting {
         Ok(raw)
     }
 }
+
+impl crate::ReqTransfer {
+    pub(crate) fn to_sys(&self) -> Result<sys::CThostFtdcReqTransferField, ConversionError> {
+        let raw =
+            sys::CThostFtdcReqTransferField {
+                TradeCode: string_field(&self.trade_code, "TradeCode")?,
+                BankID: string_field(&self.bank_id, "BankID")?,
+                BankBranchID: string_field(&self.bank_branch_id, "BankBranchID")?,
+                BrokerID: self.broker_id.to_wire(),
+                BrokerBranchID: string_field(&self.broker_branch_id, "BrokerBranchID")?,
+                TradeDate: string_field(&self.trade_date, "TradeDate")?,
+                TradeTime: string_field(&self.trade_time, "TradeTime")?,
+                BankSerial: string_field(&self.bank_serial, "BankSerial")?,
+                TradingDay: string_field(&self.trading_day, "TradingDay")?,
+                PlateSerial: self.plate_serial,
+                LastFragment: self.last_fragment.code().ok_or_else(|| {
+                    ConversionError::new("LastFragment", TextError::UnknownEnumValue)
+                })? as c_char,
+                SessionID: self.session_id.get(),
+                CustomerName: string_field(&self.customer_name, "CustomerName")?,
+                IdCardType: self.id_card_type.code().ok_or_else(|| {
+                    ConversionError::new("IdCardType", TextError::UnknownEnumValue)
+                })? as c_char,
+                IdentifiedCardNo: string_field(&self.identified_card_no, "IdentifiedCardNo")?,
+                CustType: self
+                    .cust_type
+                    .code()
+                    .ok_or_else(|| ConversionError::new("CustType", TextError::UnknownEnumValue))?
+                    as c_char,
+                BankAccount: string_field(&self.bank_account, "BankAccount")?,
+                BankPassWord: string_field(&self.bank_pass_word, "BankPassWord")?,
+                AccountID: self.account_id.to_wire(),
+                Password: string_field(&self.password, "Password")?,
+                InstallID: self.install_id,
+                FutureSerial: self.future_serial,
+                UserID: self.user_id.to_wire(),
+                VerifyCertNoFlag: self.verify_cert_no_flag.code().ok_or_else(|| {
+                    ConversionError::new("VerifyCertNoFlag", TextError::UnknownEnumValue)
+                })? as c_char,
+                CurrencyID: string_field(&self.currency_id, "CurrencyID")?,
+                TradeAmount: self.trade_amount,
+                FutureFetchAmount: self.future_fetch_amount,
+                FeePayFlag: self.fee_pay_flag.code().ok_or_else(|| {
+                    ConversionError::new("FeePayFlag", TextError::UnknownEnumValue)
+                })? as c_char,
+                CustFee: self.cust_fee,
+                BrokerFee: self.broker_fee,
+                Message: string_field(&self.message, "Message")?,
+                Digest: string_field(&self.digest, "Digest")?,
+                BankAccType: self.bank_acc_type.code().ok_or_else(|| {
+                    ConversionError::new("BankAccType", TextError::UnknownEnumValue)
+                })? as c_char,
+                DeviceID: string_field(&self.device_id, "DeviceID")?,
+                BankSecuAccType: self.bank_secu_acc_type.code().ok_or_else(|| {
+                    ConversionError::new("BankSecuAccType", TextError::UnknownEnumValue)
+                })? as c_char,
+                BrokerIDByBank: string_field(&self.broker_id_by_bank, "BrokerIDByBank")?,
+                BankSecuAcc: string_field(&self.bank_secu_acc, "BankSecuAcc")?,
+                BankPwdFlag: self.bank_password_flag.code().ok_or_else(|| {
+                    ConversionError::new("BankPwdFlag", TextError::UnknownEnumValue)
+                })? as c_char,
+                SecuPwdFlag: self.secu_password_flag.code().ok_or_else(|| {
+                    ConversionError::new("SecuPwdFlag", TextError::UnknownEnumValue)
+                })? as c_char,
+                OperNo: string_field(&self.oper_no, "OperNo")?,
+                RequestID: self.request_id.get(),
+                TID: self.tid,
+                TransferStatus: self.transfer_status.code().ok_or_else(|| {
+                    ConversionError::new("TransferStatus", TextError::UnknownEnumValue)
+                })? as c_char,
+                LongCustomerName: string_field(&self.long_customer_name, "LongCustomerName")?,
+            };
+        Ok(raw)
+    }
+}
+
+impl crate::ReqQueryAccount {
+    pub(crate) fn to_sys(&self) -> Result<sys::CThostFtdcReqQueryAccountField, ConversionError> {
+        let raw =
+            sys::CThostFtdcReqQueryAccountField {
+                TradeCode: string_field(&self.trade_code, "TradeCode")?,
+                BankID: string_field(&self.bank_id, "BankID")?,
+                BankBranchID: string_field(&self.bank_branch_id, "BankBranchID")?,
+                BrokerID: self.broker_id.to_wire(),
+                BrokerBranchID: string_field(&self.broker_branch_id, "BrokerBranchID")?,
+                TradeDate: string_field(&self.trade_date, "TradeDate")?,
+                TradeTime: string_field(&self.trade_time, "TradeTime")?,
+                BankSerial: string_field(&self.bank_serial, "BankSerial")?,
+                TradingDay: string_field(&self.trading_day, "TradingDay")?,
+                PlateSerial: self.plate_serial,
+                LastFragment: self.last_fragment.code().ok_or_else(|| {
+                    ConversionError::new("LastFragment", TextError::UnknownEnumValue)
+                })? as c_char,
+                SessionID: self.session_id.get(),
+                CustomerName: string_field(&self.customer_name, "CustomerName")?,
+                IdCardType: self.id_card_type.code().ok_or_else(|| {
+                    ConversionError::new("IdCardType", TextError::UnknownEnumValue)
+                })? as c_char,
+                IdentifiedCardNo: string_field(&self.identified_card_no, "IdentifiedCardNo")?,
+                CustType: self
+                    .cust_type
+                    .code()
+                    .ok_or_else(|| ConversionError::new("CustType", TextError::UnknownEnumValue))?
+                    as c_char,
+                BankAccount: string_field(&self.bank_account, "BankAccount")?,
+                BankPassWord: string_field(&self.bank_pass_word, "BankPassWord")?,
+                AccountID: self.account_id.to_wire(),
+                Password: string_field(&self.password, "Password")?,
+                FutureSerial: self.future_serial,
+                InstallID: self.install_id,
+                UserID: self.user_id.to_wire(),
+                VerifyCertNoFlag: self.verify_cert_no_flag.code().ok_or_else(|| {
+                    ConversionError::new("VerifyCertNoFlag", TextError::UnknownEnumValue)
+                })? as c_char,
+                CurrencyID: string_field(&self.currency_id, "CurrencyID")?,
+                Digest: string_field(&self.digest, "Digest")?,
+                BankAccType: self.bank_acc_type.code().ok_or_else(|| {
+                    ConversionError::new("BankAccType", TextError::UnknownEnumValue)
+                })? as c_char,
+                DeviceID: string_field(&self.device_id, "DeviceID")?,
+                BankSecuAccType: self.bank_secu_acc_type.code().ok_or_else(|| {
+                    ConversionError::new("BankSecuAccType", TextError::UnknownEnumValue)
+                })? as c_char,
+                BrokerIDByBank: string_field(&self.broker_id_by_bank, "BrokerIDByBank")?,
+                BankSecuAcc: string_field(&self.bank_secu_acc, "BankSecuAcc")?,
+                BankPwdFlag: self.bank_password_flag.code().ok_or_else(|| {
+                    ConversionError::new("BankPwdFlag", TextError::UnknownEnumValue)
+                })? as c_char,
+                SecuPwdFlag: self.secu_password_flag.code().ok_or_else(|| {
+                    ConversionError::new("SecuPwdFlag", TextError::UnknownEnumValue)
+                })? as c_char,
+                OperNo: string_field(&self.oper_no, "OperNo")?,
+                RequestID: self.request_id.get(),
+                TID: self.tid,
+                LongCustomerName: string_field(&self.long_customer_name, "LongCustomerName")?,
+            };
+        Ok(raw)
+    }
+}
+
+impl crate::QrySecAgentACIDMap {
+    pub(crate) fn to_sys(&self) -> Result<sys::CThostFtdcQrySecAgentACIDMapField, ConversionError> {
+        let raw = sys::CThostFtdcQrySecAgentACIDMapField {
+            BrokerID: self.broker_id.to_wire(),
+            UserID: self.user_id.to_wire(),
+            AccountID: self.account_id.to_wire(),
+            CurrencyID: string_field(&self.currency_id, "CurrencyID")?,
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QrySecAgentCheckMode {
+    pub(crate) fn to_sys(
+        &self,
+    ) -> Result<sys::CThostFtdcQrySecAgentCheckModeField, ConversionError> {
+        let raw = sys::CThostFtdcQrySecAgentCheckModeField {
+            BrokerID: self.broker_id.to_wire(),
+            InvestorID: self.investor_id.to_wire(),
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QrySecAgentTradeInfo {
+    pub(crate) fn to_sys(
+        &self,
+    ) -> Result<sys::CThostFtdcQrySecAgentTradeInfoField, ConversionError> {
+        let raw = sys::CThostFtdcQrySecAgentTradeInfoField {
+            BrokerID: self.broker_id.to_wire(),
+            BrokerSecAgentID: self.broker_sec_agent_id.to_wire(),
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QryBrokerTradingParams {
+    pub(crate) fn to_sys(
+        &self,
+    ) -> Result<sys::CThostFtdcQryBrokerTradingParamsField, ConversionError> {
+        let raw = sys::CThostFtdcQryBrokerTradingParamsField {
+            BrokerID: self.broker_id.to_wire(),
+            InvestorID: self.investor_id.to_wire(),
+            CurrencyID: string_field(&self.currency_id, "CurrencyID")?,
+            AccountID: self.account_id.to_wire(),
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QryBrokerTradingAlgos {
+    pub(crate) fn to_sys(
+        &self,
+    ) -> Result<sys::CThostFtdcQryBrokerTradingAlgosField, ConversionError> {
+        let raw = sys::CThostFtdcQryBrokerTradingAlgosField {
+            BrokerID: self.broker_id.to_wire(),
+            ExchangeID: self.exchange_id.to_wire(),
+            InstrumentID: self.instrument_id.to_wire(),
+            ..Default::default()
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::InputOffsetSetting {
+    pub(crate) fn to_sys(&self) -> Result<sys::CThostFtdcInputOffsetSettingField, ConversionError> {
+        let raw =
+            sys::CThostFtdcInputOffsetSettingField {
+                BrokerID: self.broker_id.to_wire(),
+                InvestorID: self.investor_id.to_wire(),
+                InstrumentID: self.instrument_id.to_wire(),
+                UnderlyingInstrID: self.underlying_instrument_id.to_wire(),
+                ProductID: self.product_id.to_wire(),
+                OffsetType: self.offset_type.code().ok_or_else(|| {
+                    ConversionError::new("OffsetType", TextError::UnknownEnumValue)
+                })? as c_char,
+                Volume: self.volume,
+                IsOffset: self.is_offset as std::os::raw::c_int,
+                RequestID: self.request_id.get(),
+                UserID: self.user_id.to_wire(),
+                ExchangeID: self.exchange_id.to_wire(),
+                IPAddress: string_field(&self.ip_address, "IPAddress")?,
+                MacAddress: string_field(&self.mac_address, "MacAddress")?,
+            };
+        Ok(raw)
+    }
+}
+
+impl crate::QryOffsetSetting {
+    pub(crate) fn to_sys(&self) -> Result<sys::CThostFtdcQryOffsetSettingField, ConversionError> {
+        let raw =
+            sys::CThostFtdcQryOffsetSettingField {
+                BrokerID: self.broker_id.to_wire(),
+                InvestorID: self.investor_id.to_wire(),
+                ProductID: self.product_id.to_wire(),
+                OffsetType: self.offset_type.code().ok_or_else(|| {
+                    ConversionError::new("OffsetType", TextError::UnknownEnumValue)
+                })? as c_char,
+            };
+        Ok(raw)
+    }
+}
+
+impl crate::ReqGenSMSCode {
+    pub(crate) fn to_sys(&self) -> Result<sys::CThostFtdcReqGenSMSCodeField, ConversionError> {
+        let raw = sys::CThostFtdcReqGenSMSCodeField {
+            BrokerID: self.broker_id.to_wire(),
+            UserID: self.user_id.to_wire(),
+            Mobile: string_field(&self.mobile, "Mobile")?,
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::InputHedgeCfm {
+    pub(crate) fn to_sys(&self) -> Result<sys::CThostFtdcInputHedgeCfmField, ConversionError> {
+        let raw = sys::CThostFtdcInputHedgeCfmField {
+            BrokerID: self.broker_id.to_wire(),
+            UserID: self.user_id.to_wire(),
+            InvestorID: self.investor_id.to_wire(),
+            ExchangeID: self.exchange_id.to_wire(),
+            InstrumentID: self.instrument_id.to_wire(),
+            Volume: self.volume,
+            Direction: self
+                .direction
+                .code()
+                .ok_or_else(|| ConversionError::new("Direction", TextError::UnknownEnumValue))?
+                as c_char,
+            RequestID: self.request_id.get(),
+            OrderRef: self.order_ref.to_wire(),
+            IPAddress: string_field(&self.ip_address, "IPAddress")?,
+            MacAddress: string_field(&self.mac_address, "MacAddress")?,
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::InputHedgeCfmAction {
+    pub(crate) fn to_sys(
+        &self,
+    ) -> Result<sys::CThostFtdcInputHedgeCfmActionField, ConversionError> {
+        let raw = sys::CThostFtdcInputHedgeCfmActionField {
+            BrokerID: self.broker_id.to_wire(),
+            UserID: self.user_id.to_wire(),
+            InvestorID: self.investor_id.to_wire(),
+            ExchangeID: self.exchange_id.to_wire(),
+            OrderSysID: self.order_system_id.to_wire(),
+            OrderRef: self.order_ref.to_wire(),
+            FrontID: self.front_id.get(),
+            SessionID: self.session_id.get(),
+            RequestID: self.request_id.get(),
+            IPAddress: string_field(&self.ip_address, "IPAddress")?,
+            MacAddress: string_field(&self.mac_address, "MacAddress")?,
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QryHedgeCfm {
+    pub(crate) fn to_sys(&self) -> Result<sys::CThostFtdcQryHedgeCfmField, ConversionError> {
+        let raw = sys::CThostFtdcQryHedgeCfmField {
+            BrokerID: self.broker_id.to_wire(),
+            InvestorID: self.investor_id.to_wire(),
+            ExchangeID: self.exchange_id.to_wire(),
+            OrderSysID: self.order_system_id.to_wire(),
+            InstrumentID: self.instrument_id.to_wire(),
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QrySpdApply {
+    pub(crate) fn to_sys(&self) -> Result<sys::CThostFtdcQrySpdApplyField, ConversionError> {
+        let raw = sys::CThostFtdcQrySpdApplyField {
+            BrokerID: self.broker_id.to_wire(),
+            InvestorID: self.investor_id.to_wire(),
+            ExchangeID: self.exchange_id.to_wire(),
+            OrderSysID: self.order_system_id.to_wire(),
+            FirstLegInstrumentID: self.first_leg_instrument_id.to_wire(),
+            SecondLegInstrumentID: self.second_leg_instrument_id.to_wire(),
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::InputSpdApply {
+    pub(crate) fn to_sys(&self) -> Result<sys::CThostFtdcInputSpdApplyField, ConversionError> {
+        let raw = sys::CThostFtdcInputSpdApplyField {
+            BrokerID: self.broker_id.to_wire(),
+            UserID: self.user_id.to_wire(),
+            InvestorID: self.investor_id.to_wire(),
+            ExchangeID: self.exchange_id.to_wire(),
+            FirstLegInstrumentID: self.first_leg_instrument_id.to_wire(),
+            SecondLegInstrumentID: self.second_leg_instrument_id.to_wire(),
+            Volume: self.volume,
+            Direction: self
+                .direction
+                .code()
+                .ok_or_else(|| ConversionError::new("Direction", TextError::UnknownEnumValue))?
+                as c_char,
+            CmbType: self
+                .cmb_type
+                .code()
+                .ok_or_else(|| ConversionError::new("CmbType", TextError::UnknownEnumValue))?
+                as c_char,
+            RequestID: self.request_id.get(),
+            OrderRef: self.order_ref.to_wire(),
+            IPAddress: string_field(&self.ip_address, "IPAddress")?,
+            MacAddress: string_field(&self.mac_address, "MacAddress")?,
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::InputSpdApplyAction {
+    pub(crate) fn to_sys(
+        &self,
+    ) -> Result<sys::CThostFtdcInputSpdApplyActionField, ConversionError> {
+        let raw = sys::CThostFtdcInputSpdApplyActionField {
+            BrokerID: self.broker_id.to_wire(),
+            UserID: self.user_id.to_wire(),
+            InvestorID: self.investor_id.to_wire(),
+            ExchangeID: self.exchange_id.to_wire(),
+            OrderSysID: self.order_system_id.to_wire(),
+            OrderRef: self.order_ref.to_wire(),
+            FrontID: self.front_id.get(),
+            SessionID: self.session_id.get(),
+            RequestID: self.request_id.get(),
+            IPAddress: string_field(&self.ip_address, "IPAddress")?,
+            MacAddress: string_field(&self.mac_address, "MacAddress")?,
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QryInvestorInfoCommRec {
+    pub(crate) fn to_sys(
+        &self,
+    ) -> Result<sys::CThostFtdcQryInvestorInfoCommRecField, ConversionError> {
+        let raw = sys::CThostFtdcQryInvestorInfoCommRecField {
+            InvestorID: self.investor_id.to_wire(),
+            InstrumentID: self.instrument_id.to_wire(),
+            BrokerID: self.broker_id.to_wire(),
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QryCombLeg {
+    pub(crate) fn to_sys(&self) -> Result<sys::CThostFtdcQryCombLegField, ConversionError> {
+        let raw = sys::CThostFtdcQryCombLegField {
+            LegInstrumentID: self.leg_instrument_id.to_wire(),
+        };
+        Ok(raw)
+    }
+}
