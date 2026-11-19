@@ -94,11 +94,20 @@ fn main() {
     } else {
         println!("cargo:rustc-link-lib=dylib={MD_API_BASENAME}");
         println!("cargo:rustc-link-lib=dylib={TRADER_API_BASENAME}");
-        // Unix 动态加载器默认不搜索可执行文件所在目录，
-        // 运行时库已复制到目标目录旁边，按所在目录建立 rpath。
+        // Unix 动态加载器默认不搜索可执行文件所在目录，且 CI 中
+        // 测试二进制的输出位置不在 deps/，因此对 SDK 库目录和
+        // 可执行文件所在目录同时建立 rpath。
         if target_os == "macos" {
+            println!(
+                "cargo:rustc-link-arg=-Wl,-rpath,{}/sdk/macos",
+                root.display()
+            );
             println!("cargo:rustc-link-arg=-Wl,-rpath,@loader_path");
         } else {
+            println!(
+                "cargo:rustc-link-arg=-Wl,-rpath,{}/sdk/linux",
+                root.display()
+            );
             println!("cargo:rustc-link-arg=-Wl,-rpath,$ORIGIN");
         }
     }
