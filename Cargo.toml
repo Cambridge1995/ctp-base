@@ -1,0 +1,18 @@
+[package]
+name = "ctp-base"
+version = "0.1.1"
+edition = "2024"
+publish = false
+
+[dependencies]
+cxx = "1.0"
+encoding_rs = "0.8"
+
+[build-dependencies]
+bindgen = "0.72"
+cc = "1.0"
+cxx-build = "1.0"
+
+[[test]]
+name = "unit"
+path = "tests/unit.rs"

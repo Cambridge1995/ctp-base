@@ -1,0 +1,12 @@
+# Rust 构建产物
+target/
+
+# IDE 文件
+.idea/
+*.iml
+
+# 示例运行产生的流量目录
+flow/
+
+# 本地真实配置不提交；模板见 config/ctp-template.toml
+config/ctp.toml
