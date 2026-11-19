@@ -6030,6 +6030,7 @@ impl crate::QryInvestorProductGroupMargin {
             ExchangeID: self.exchange_id.to_wire(),
             InvestUnitID: self.invest_unit_id.to_wire(),
             ProductGroupID: self.product_group_id.to_wire(),
+            ..Default::default()
         };
         Ok(raw)
     }
@@ -6048,6 +6049,7 @@ impl crate::QryExchangeMarginRate {
                 as c_char,
             ExchangeID: self.exchange_id.to_wire(),
             InstrumentID: self.instrument_id.to_wire(),
+            ..Default::default()
         };
         Ok(raw)
     }
@@ -6065,6 +6067,7 @@ impl crate::QryExchangeMarginRateAdjust {
                 .ok_or_else(|| ConversionError::new("HedgeFlag", TextError::UnknownEnumValue))?
                 as c_char,
             InstrumentID: self.instrument_id.to_wire(),
+            ..Default::default()
         };
         Ok(raw)
     }
@@ -6078,6 +6081,7 @@ impl crate::QryMMInstrumentCommissionRate {
             BrokerID: self.broker_id.to_wire(),
             InvestorID: self.investor_id.to_wire(),
             InstrumentID: self.instrument_id.to_wire(),
+            ..Default::default()
         };
         Ok(raw)
     }
@@ -6091,6 +6095,7 @@ impl crate::QryMMOptionInstrCommRate {
             BrokerID: self.broker_id.to_wire(),
             InvestorID: self.investor_id.to_wire(),
             InstrumentID: self.instrument_id.to_wire(),
+            ..Default::default()
         };
         Ok(raw)
     }
@@ -6113,6 +6118,7 @@ impl crate::QryOptionInstrTradeCost {
             ExchangeID: self.exchange_id.to_wire(),
             InvestUnitID: self.invest_unit_id.to_wire(),
             InstrumentID: self.instrument_id.to_wire(),
+            ..Default::default()
         };
         Ok(raw)
     }
@@ -6128,6 +6134,7 @@ impl crate::QryOptionInstrCommRate {
             ExchangeID: self.exchange_id.to_wire(),
             InvestUnitID: self.invest_unit_id.to_wire(),
             InstrumentID: self.instrument_id.to_wire(),
+            ..Default::default()
         };
         Ok(raw)
     }
