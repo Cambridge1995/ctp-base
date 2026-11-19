@@ -24,7 +24,7 @@ jobs:
       - name: 配置运行时库路径
         run: |
           if [ "$RUNNER_OS" = "Windows" ]; then
-            echo "$PWD/sdk/windows" | sed 's/^\/d\//D:\//' >> $GITHUB_PATH
+            cygpath -m "$PWD/sdk/windows" >> $GITHUB_PATH
           elif [ "$RUNNER_OS" = "macOS" ]; then
             echo "DYLD_FALLBACK_LIBRARY_PATH=$PWD/sdk/macos" >> $GITHUB_ENV
           else
@@ -46,7 +46,7 @@ jobs:
       - name: 抓取段错误回溯
         if: failure() && runner.os != 'Windows'
         run: |
-          BIN=$(find target/debug -type f -name 'unit-*' ! -name '*.d' | head -1)
+          BIN=$(find target/debug -type f -name 'unit-*' ! -name '*.d' ! -name '*.o' | head -1)
           echo "BIN=$BIN"
           if [ "$RUNNER_OS" = "macOS" ]; then
             lldb -b -o run -o bt -- "$BIN" --test-threads=1 || true

@@ -42,17 +42,20 @@ fn main() {
             format!("{MD_API_BASENAME}.dll"),
             format!("{TRADER_API_BASENAME}.dll"),
         ],
-        "macos" => [
-            format!("lib{MD_API_BASENAME}.dylib"),
-            format!("lib{TRADER_API_BASENAME}.dylib"),
-        ],
+        "macos" => [MD_API_BASENAME.to_string(), TRADER_API_BASENAME.to_string()],
         _ => [
             format!("lib{MD_API_BASENAME}.so"),
             format!("lib{TRADER_API_BASENAME}.so"),
         ],
     };
     for library in &runtime_libraries {
-        println!("cargo:rerun-if-changed={platform_dir}/{library}");
+        if target_os == "macos" {
+            println!(
+                "cargo:rerun-if-changed={platform_dir}/{library}.framework/Versions/A/{library}"
+            );
+        } else {
+            println!("cargo:rerun-if-changed={platform_dir}/{library}");
+        }
     }
 
     let bindings = bindgen::Builder::default()
@@ -91,25 +94,33 @@ fn main() {
     if target_os == "windows" {
         println!("cargo:rustc-link-lib={MD_API_BASENAME}");
         println!("cargo:rustc-link-lib={TRADER_API_BASENAME}");
+    } else if target_os == "macos" {
+        // macOS 官方库的 install name 指向 framework 布局，直接按路径链接，
+        // 运行时经 rpath 定位 sdk/macos 下的 framework。
+        println!(
+            "cargo:rustc-link-arg={}/{}.framework/Versions/A/{}",
+            library_dir.display(),
+            MD_API_BASENAME,
+            MD_API_BASENAME
+        );
+        println!(
+            "cargo:rustc-link-arg={}/{}.framework/Versions/A/{}",
+            library_dir.display(),
+            TRADER_API_BASENAME,
+            TRADER_API_BASENAME
+        );
+        println!("cargo:rustc-link-arg=-Wl,-rpath,{}", library_dir.display());
     } else {
         println!("cargo:rustc-link-lib=dylib={MD_API_BASENAME}");
         println!("cargo:rustc-link-lib=dylib={TRADER_API_BASENAME}");
         // Unix 动态加载器默认不搜索可执行文件所在目录，且 CI 中
         // 测试二进制的输出位置不在 deps/，因此对 SDK 库目录和
         // 可执行文件所在目录同时建立 rpath。
-        if target_os == "macos" {
-            println!(
-                "cargo:rustc-link-arg=-Wl,-rpath,{}/sdk/macos",
-                root.display()
-            );
-            println!("cargo:rustc-link-arg=-Wl,-rpath,@loader_path");
-        } else {
-            println!(
-                "cargo:rustc-link-arg=-Wl,-rpath,{}/sdk/linux",
-                root.display()
-            );
-            println!("cargo:rustc-link-arg=-Wl,-rpath,$ORIGIN");
-        }
+        println!(
+            "cargo:rustc-link-arg=-Wl,-rpath,{}/sdk/linux",
+            root.display()
+        );
+        println!("cargo:rustc-link-arg=-Wl,-rpath,$ORIGIN");
     }
 
     let profile_dir = out_dir.ancestors().nth(3).unwrap_or_else(|| {
@@ -118,15 +129,16 @@ fn main() {
             out_dir.display()
         )
     });
+    if target_os == "macos" {
+        // macOS 库经 rpath 直接从 sdk/macos 加载，无需复制到目标目录。
+        return;
+    }
     let runtime_libraries: [String; 2] = match target_os.as_str() {
         "windows" => [
             format!("{MD_API_BASENAME}.dll"),
             format!("{TRADER_API_BASENAME}.dll"),
         ],
-        "macos" => [
-            format!("lib{MD_API_BASENAME}.dylib"),
-            format!("lib{TRADER_API_BASENAME}.dylib"),
-        ],
+        "macos" => [MD_API_BASENAME.to_string(), TRADER_API_BASENAME.to_string()],
         _ => [
             format!("lib{MD_API_BASENAME}.so"),
             format!("lib{TRADER_API_BASENAME}.so"),
