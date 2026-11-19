@@ -25,9 +25,8 @@ impl CtpConfig {
                 Ok(config)
             }
             Err(_) => {
-                let config = Self::from_environment().ok_or_else(
-                    || "缺少配置文件 config/ctp.toml，且未通过 CTP_* 环境变量提供连接参数",
-                )?;
+                let config = Self::from_environment()
+                    .ok_or("缺少配置文件 config/ctp.toml，且未通过 CTP_* 环境变量提供连接参数")?;
                 Ok(config)
             }
         }
