@@ -1,4 +1,4 @@
-use std::{env, fs, path::PathBuf};
+use std::{env, fs, path::PathBuf, process::Command};
 
 fn main() {
     let root = PathBuf::from(env::var_os("CARGO_MANIFEST_DIR").unwrap());
@@ -53,35 +53,30 @@ fn main() {
         ],
     };
 
-    // 三平台二进制以 xz 压缩包随 crate 分发（低于 crates.io 10MB 限制），
-    // 构建时把当前平台的库解压到 OUT_DIR，不修改源码目录。
+    // 三平台二进制以 xz 压缩包随 crate 分发（低于 crates.io 10MB 限制）。
+    // 构建时用系统自带 tar（Windows 10+/macOS/Linux 均支持 xz）解压当前
+    // 平台的库到 OUT_DIR，不引入任何额外的 Rust 依赖。
     let sdk_archive = root.join("sdk/binaries.tar.xz");
-    let extract_dir = out_dir.join("ctp-sdk-libs").join(platform);
+    let extract_root = out_dir.join("ctp-sdk-libs");
+    let extract_dir = extract_root.join(platform);
     if !extract_dir.join(&runtime_libraries[0]).exists() {
-        fs::create_dir_all(&extract_dir)
-            .unwrap_or_else(|error| panic!("创建 {} 失败：{error}", extract_dir.display()));
-        let file = fs::File::open(&sdk_archive)
-            .unwrap_or_else(|error| panic!("打开 {} 失败：{error}", sdk_archive.display()));
-        let decoder = xz2::read::XzDecoder::new(file);
-        let mut archive = tar::Archive::new(decoder);
-        for entry in archive
-            .entries()
-            .unwrap_or_else(|error| panic!("读取 SDK 压缩包失败：{error}"))
-        {
-            let mut entry = entry.unwrap_or_else(|error| panic!("读取压缩包条目失败：{error}"));
-            let path = entry
-                .path()
-                .unwrap_or_else(|error| panic!("压缩包条目路径无效：{error}"))
-                .to_path_buf();
-            if path
-                .components()
-                .next()
-                .is_some_and(|part| part.as_os_str() == platform)
-            {
-                entry
-                    .unpack_in(out_dir.join("ctp-sdk-libs"))
-                    .unwrap_or_else(|error| panic!("解压 {} 失败：{error}", path.display()));
-            }
+        fs::create_dir_all(&extract_root)
+            .unwrap_or_else(|error| panic!("创建 {} 失败：{error}", extract_root.display()));
+        let status = Command::new("tar")
+            .arg("-xJf")
+            .arg(&sdk_archive)
+            .arg("-C")
+            .arg(&extract_root)
+            .arg(platform)
+            .status()
+            .unwrap_or_else(|error| {
+                panic!(
+                    "无法运行 tar 解压 {}：{error}。请确认系统自带 tar（Windows 10 及以上、macOS、Linux 均内置）",
+                    sdk_archive.display()
+                )
+            });
+        if !status.success() {
+            panic!("tar 解压 {} 失败（{status}）", sdk_archive.display());
         }
     }
     let library_dir = extract_dir;
