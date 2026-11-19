@@ -65,10 +65,16 @@ MdApiBridge::MdApiBridge(CThostFtdcMdApi* api, std::unique_ptr<MdSpiBridge> spi)
 }
 
 MdApiBridge::~MdApiBridge() {
-    // 仅释放调用过 Init 的实例；未初始化的实例没有工作线程，Release 会崩溃。
+    // 未调用 Init 的实例没有工作线程，Release 内部 join 空线程在新版
+    // glibc 与 macOS 上会崩溃；Windows 的 Release 对未初始化实例安全，
+    // 且必须调用才能关闭流量文件句柄。
+#ifdef _WIN32
+    api_->Release();
+#else
     if (initialized_) {
         api_->Release();
     }
+#endif
     spi_.reset();
 }
 
