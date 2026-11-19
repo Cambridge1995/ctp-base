@@ -21,5 +21,10 @@ jobs:
       - name: 配置 Windows libclang
         if: runner.os == 'Windows'
         run: echo "LIBCLANG_PATH=C:\Program Files\LLVM\bin" >> $env:GITHUB_ENV
+      - name: 诊断环境
+        run: |
+          cargo -vV
+          env | grep -iE 'cargo|rust' | sort
+          cargo config get --format toml 2>/dev/null || true
       - run: cargo test --verbose
       - run: cargo clippy --all-targets -- -D warnings
