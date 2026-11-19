@@ -90,10 +90,23 @@ macOS 版 CTP SDK 为 fat dylib，x86_64 与 Apple Silicon（aarch64）使用同
 
    **方法3：**
 
-   直接使用Cargo.toml的dependencies进行导入：
-    ```bash
-    ctp-base = 1.0.0
-    ```
+   直接通过 crates.io 引入（推荐，无需手动拷贝 SDK 与桥接代码）：
+
+   `Cargo.toml`：
+
+   ```toml
+   [dependencies]
+   ctp-base = "1.0.0"
+   ```
+
+   或使用 cargo 命令：
+
+   ```bash
+   cargo add ctp-base@1.0.0
+   ```
+
+   引入后按下方「配置文件」准备 `config/ctp.toml` 即可使用；crate 内含三平台
+   CTP 库（构建时自动解压），本机仍需 Rust 工具链、C++ 编译器和 libclang（见「工具链要求」）。
    
 
 
