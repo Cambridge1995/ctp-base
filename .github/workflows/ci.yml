@@ -21,10 +21,36 @@ jobs:
       - name: 配置 Windows libclang
         if: runner.os == 'Windows'
         run: echo "LIBCLANG_PATH=C:\Program Files\LLVM\bin" >> $env:GITHUB_ENV
+      - name: 配置运行时库路径
+        run: |
+          if [ "$RUNNER_OS" = "Windows" ]; then
+            echo "$PWD/sdk/windows" | sed 's/^\/d\//D:\//' >> $GITHUB_PATH
+          elif [ "$RUNNER_OS" = "macOS" ]; then
+            echo "DYLD_FALLBACK_LIBRARY_PATH=$PWD/sdk/macos" >> $GITHUB_ENV
+          else
+            echo "LD_LIBRARY_PATH=$PWD/sdk/linux" >> $GITHUB_ENV
+          fi
+      - name: 安装调试器
+        if: runner.os != 'Windows'
+        run: |
+          if [ "$RUNNER_OS" = "macOS" ]; then
+            echo lldb 随 Xcode 自带
+          else
+            sudo apt-get install -y gdb
+          fi
       - name: 诊断环境
         run: |
           cargo -vV
           env | grep -iE 'cargo|rust' | sort
-          cargo config get --format toml 2>/dev/null || true
       - run: cargo test --verbose
+      - name: 抓取段错误回溯
+        if: failure() && runner.os != 'Windows'
+        run: |
+          BIN=$(find target/debug -type f -name 'unit-*' ! -name '*.d' | head -1)
+          echo "BIN=$BIN"
+          if [ "$RUNNER_OS" = "macOS" ]; then
+            lldb -b -o run -o bt -- "$BIN" --test-threads=1 || true
+          else
+            gdb -batch -ex run -ex bt --args "$BIN" --test-threads=1 || true
+          fi
       - run: cargo clippy --all-targets -- -D warnings
