@@ -930,6 +930,58 @@ std::int32_t TraderApiBridge::user_login_with_otp(std::uint8_t* request, std::in
     return api_->ReqUserLoginWithOTP(reinterpret_cast<CThostFtdcReqUserLoginWithOTPField*>(request), request_id);
 }
 
+std::int32_t TraderApiBridge::parked_order_insert(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqParkedOrderInsert(reinterpret_cast<CThostFtdcParkedOrderField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::cancel_parked_order(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqParkedOrderAction(reinterpret_cast<CThostFtdcParkedOrderActionField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::remove_parked_order(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqRemoveParkedOrder(reinterpret_cast<CThostFtdcRemoveParkedOrderField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::remove_parked_order_action(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqRemoveParkedOrderAction(reinterpret_cast<CThostFtdcRemoveParkedOrderActionField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::exec_order_insert(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqExecOrderInsert(reinterpret_cast<CThostFtdcInputExecOrderField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::exec_order_action(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqExecOrderAction(reinterpret_cast<CThostFtdcInputExecOrderActionField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::for_quote_insert(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqForQuoteInsert(reinterpret_cast<CThostFtdcInputForQuoteField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::quote_insert(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQuoteInsert(reinterpret_cast<CThostFtdcInputQuoteField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::quote_action(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqQuoteAction(reinterpret_cast<CThostFtdcInputQuoteActionField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::batch_order_action(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqBatchOrderAction(reinterpret_cast<CThostFtdcInputBatchOrderActionField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::option_self_close_insert(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqOptionSelfCloseInsert(reinterpret_cast<CThostFtdcInputOptionSelfCloseField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::option_self_close_action(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqOptionSelfCloseAction(reinterpret_cast<CThostFtdcInputOptionSelfCloseActionField*>(request), request_id);
+}
+
+std::int32_t TraderApiBridge::comb_action_insert(std::uint8_t* request, std::int32_t request_id) const {
+    return api_->ReqCombActionInsert(reinterpret_cast<CThostFtdcInputCombActionField*>(request), request_id);
+}
+
 void emit_trader_order(TraderSpiBridge& spi, std::uint8_t* data) {
     spi.OnRtnOrder(reinterpret_cast<CThostFtdcOrderField*>(data));
 }

@@ -317,6 +317,19 @@ public:
     std::int32_t user_login_with_captcha(std::uint8_t* request, std::int32_t request_id) const;
     std::int32_t user_login_with_text(std::uint8_t* request, std::int32_t request_id) const;
     std::int32_t user_login_with_otp(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t parked_order_insert(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t cancel_parked_order(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t remove_parked_order(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t remove_parked_order_action(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t exec_order_insert(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t exec_order_action(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t for_quote_insert(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t quote_insert(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t quote_action(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t batch_order_action(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t option_self_close_insert(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t option_self_close_action(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t comb_action_insert(std::uint8_t* request, std::int32_t request_id) const;
 
 private:
     CThostFtdcTraderApi* api_;

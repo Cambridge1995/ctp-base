@@ -4,11 +4,14 @@ use crate::sys::{
     ffi,
 };
 use crate::{
-    FensUserInfo, FrontInfo, InputOrder, InputOrderAction, QryDepthMarketData, QryExchange,
-    QryInstrument, QryInstrumentCommissionRate, QryInstrumentMarginRate,
-    QryInstrumentOrderCommRate, QryInvestorPosition, QryInvestorPositionDetail, QryMaxOrderVolume,
-    QryOrder, QryProduct, QrySettlementInfo, QrySettlementInfoConfirm, QryTrade, QryTradingAccount,
-    QryTradingCode, ReqAuthenticate, ReqGenUserCaptcha, ReqGenUserText, ReqUserAuthMethod,
+    FensUserInfo, FrontInfo, InputBatchOrderAction, InputCombAction, InputExecOrder,
+    InputExecOrderAction, InputForQuote, InputOptionSelfClose, InputOptionSelfCloseAction,
+    InputOrder, InputOrderAction, InputQuote, InputQuoteAction, ParkedOrder, ParkedOrderAction,
+    QryDepthMarketData, QryExchange, QryInstrument, QryInstrumentCommissionRate,
+    QryInstrumentMarginRate, QryInstrumentOrderCommRate, QryInvestorPosition,
+    QryInvestorPositionDetail, QryMaxOrderVolume, QryOrder, QryProduct, QrySettlementInfo,
+    QrySettlementInfoConfirm, QryTrade, QryTradingAccount, QryTradingCode, RemoveParkedOrder,
+    RemoveParkedOrderAction, ReqAuthenticate, ReqGenUserCaptcha, ReqGenUserText, ReqUserAuthMethod,
     ReqUserLogin, ReqUserLoginWithCaptcha, ReqUserLoginWithOTP, ReqUserLoginWithText, ResumeType,
     SettlementInfoConfirm, TextError, TraderSpi, TradingAccountPasswordUpdate, UserLogout,
     UserPasswordUpdate, UserSystemInfo, WechatUserSystemInfo, sys,
@@ -672,6 +675,214 @@ impl TraderApi {
         let result = unsafe {
             self.inner.user_login_with_otp(
                 (&mut raw as *mut sys::CThostFtdcReqUserLoginWithOTPField).cast(),
+                request_id,
+            )
+        };
+        Ok(result)
+    }
+
+    pub fn parked_order_insert(
+        &self,
+        request: &ParkedOrder,
+        request_id: i32,
+    ) -> Result<i32, ConversionError> {
+        let mut raw = request.to_sys()?;
+        // SAFETY: raw 是完整初始化的预埋单请求，指针仅在同步请求调用期间有效。
+        let result = unsafe {
+            self.inner.parked_order_insert(
+                (&mut raw as *mut sys::CThostFtdcParkedOrderField).cast(),
+                request_id,
+            )
+        };
+        Ok(result)
+    }
+
+    pub fn cancel_parked_order(
+        &self,
+        request: &ParkedOrderAction,
+        request_id: i32,
+    ) -> Result<i32, ConversionError> {
+        let mut raw = request.to_sys()?;
+        // SAFETY: raw 是完整初始化的预埋撤单请求，指针仅在同步请求调用期间有效。
+        let result = unsafe {
+            self.inner.cancel_parked_order(
+                (&mut raw as *mut sys::CThostFtdcParkedOrderActionField).cast(),
+                request_id,
+            )
+        };
+        Ok(result)
+    }
+
+    pub fn remove_parked_order(
+        &self,
+        request: &RemoveParkedOrder,
+        request_id: i32,
+    ) -> Result<i32, ConversionError> {
+        let mut raw = request.to_sys()?;
+        // SAFETY: raw 是完整初始化的预埋单删除请求，指针仅在同步请求调用期间有效。
+        let result = unsafe {
+            self.inner.remove_parked_order(
+                (&mut raw as *mut sys::CThostFtdcRemoveParkedOrderField).cast(),
+                request_id,
+            )
+        };
+        Ok(result)
+    }
+
+    pub fn remove_parked_order_action(
+        &self,
+        request: &RemoveParkedOrderAction,
+        request_id: i32,
+    ) -> Result<i32, ConversionError> {
+        let mut raw = request.to_sys()?;
+        // SAFETY: raw 是完整初始化的预埋撤单删除请求，指针仅在同步请求调用期间有效。
+        let result = unsafe {
+            self.inner.remove_parked_order_action(
+                (&mut raw as *mut sys::CThostFtdcRemoveParkedOrderActionField).cast(),
+                request_id,
+            )
+        };
+        Ok(result)
+    }
+
+    pub fn exec_order_insert(
+        &self,
+        request: &InputExecOrder,
+        request_id: i32,
+    ) -> Result<i32, ConversionError> {
+        let mut raw = request.to_sys()?;
+        // SAFETY: raw 是完整初始化的执行宣告请求，指针仅在同步请求调用期间有效。
+        let result = unsafe {
+            self.inner.exec_order_insert(
+                (&mut raw as *mut sys::CThostFtdcInputExecOrderField).cast(),
+                request_id,
+            )
+        };
+        Ok(result)
+    }
+
+    pub fn exec_order_action(
+        &self,
+        request: &InputExecOrderAction,
+        request_id: i32,
+    ) -> Result<i32, ConversionError> {
+        let mut raw = request.to_sys()?;
+        // SAFETY: raw 是完整初始化的执行宣告撤销请求，指针仅在同步请求调用期间有效。
+        let result = unsafe {
+            self.inner.exec_order_action(
+                (&mut raw as *mut sys::CThostFtdcInputExecOrderActionField).cast(),
+                request_id,
+            )
+        };
+        Ok(result)
+    }
+
+    pub fn for_quote_insert(
+        &self,
+        request: &InputForQuote,
+        request_id: i32,
+    ) -> Result<i32, ConversionError> {
+        let mut raw = request.to_sys()?;
+        // SAFETY: raw 是完整初始化的询价录入请求，指针仅在同步请求调用期间有效。
+        let result = unsafe {
+            self.inner.for_quote_insert(
+                (&mut raw as *mut sys::CThostFtdcInputForQuoteField).cast(),
+                request_id,
+            )
+        };
+        Ok(result)
+    }
+
+    pub fn quote_insert(
+        &self,
+        request: &InputQuote,
+        request_id: i32,
+    ) -> Result<i32, ConversionError> {
+        let mut raw = request.to_sys()?;
+        // SAFETY: raw 是完整初始化的报价录入请求，指针仅在同步请求调用期间有效。
+        let result = unsafe {
+            self.inner.quote_insert(
+                (&mut raw as *mut sys::CThostFtdcInputQuoteField).cast(),
+                request_id,
+            )
+        };
+        Ok(result)
+    }
+
+    pub fn quote_action(
+        &self,
+        request: &InputQuoteAction,
+        request_id: i32,
+    ) -> Result<i32, ConversionError> {
+        let mut raw = request.to_sys()?;
+        // SAFETY: raw 是完整初始化的报价操作请求，指针仅在同步请求调用期间有效。
+        let result = unsafe {
+            self.inner.quote_action(
+                (&mut raw as *mut sys::CThostFtdcInputQuoteActionField).cast(),
+                request_id,
+            )
+        };
+        Ok(result)
+    }
+
+    pub fn batch_order_action(
+        &self,
+        request: &InputBatchOrderAction,
+        request_id: i32,
+    ) -> Result<i32, ConversionError> {
+        let mut raw = request.to_sys()?;
+        // SAFETY: raw 是完整初始化的批量撤单请求，指针仅在同步请求调用期间有效。
+        let result = unsafe {
+            self.inner.batch_order_action(
+                (&mut raw as *mut sys::CThostFtdcInputBatchOrderActionField).cast(),
+                request_id,
+            )
+        };
+        Ok(result)
+    }
+
+    pub fn option_self_close_insert(
+        &self,
+        request: &InputOptionSelfClose,
+        request_id: i32,
+    ) -> Result<i32, ConversionError> {
+        let mut raw = request.to_sys()?;
+        // SAFETY: raw 是完整初始化的期权自对冲请求，指针仅在同步请求调用期间有效。
+        let result = unsafe {
+            self.inner.option_self_close_insert(
+                (&mut raw as *mut sys::CThostFtdcInputOptionSelfCloseField).cast(),
+                request_id,
+            )
+        };
+        Ok(result)
+    }
+
+    pub fn option_self_close_action(
+        &self,
+        request: &InputOptionSelfCloseAction,
+        request_id: i32,
+    ) -> Result<i32, ConversionError> {
+        let mut raw = request.to_sys()?;
+        // SAFETY: raw 是完整初始化的期权自对冲撤销请求，指针仅在同步请求调用期间有效。
+        let result = unsafe {
+            self.inner.option_self_close_action(
+                (&mut raw as *mut sys::CThostFtdcInputOptionSelfCloseActionField).cast(),
+                request_id,
+            )
+        };
+        Ok(result)
+    }
+
+    pub fn comb_action_insert(
+        &self,
+        request: &InputCombAction,
+        request_id: i32,
+    ) -> Result<i32, ConversionError> {
+        let mut raw = request.to_sys()?;
+        // SAFETY: raw 是完整初始化的组合申请请求，指针仅在同步请求调用期间有效。
+        let result = unsafe {
+            self.inner.comb_action_insert(
+                (&mut raw as *mut sys::CThostFtdcInputCombActionField).cast(),
                 request_id,
             )
         };

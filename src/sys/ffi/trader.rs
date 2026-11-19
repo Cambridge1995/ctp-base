@@ -143,6 +143,63 @@ mod bridge {
             request: *mut u8,
             request_id: i32,
         ) -> i32;
+        unsafe fn parked_order_insert(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn cancel_parked_order(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn remove_parked_order(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn remove_parked_order_action(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn exec_order_insert(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn exec_order_action(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn for_quote_insert(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn quote_insert(self: &TraderApiBridge, request: *mut u8, request_id: i32) -> i32;
+        unsafe fn quote_action(self: &TraderApiBridge, request: *mut u8, request_id: i32) -> i32;
+        unsafe fn batch_order_action(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn option_self_close_insert(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn option_self_close_action(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn comb_action_insert(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
         unsafe fn emit_trader_order(spi: Pin<&mut TraderSpiBridge>, data: *mut u8);
         unsafe fn emit_trader_callback(
             spi: Pin<&mut TraderSpiBridge>,
