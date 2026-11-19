@@ -158,6 +158,13 @@ api.close();
 - 回调参数已经 owned 化，可直接保存或转移；
 - 慢 IO 不应在 CTP 原生回调线程中执行，应转移到调用方自己的线程或队列。
 
+## 许可证
+
+本 crate 的 Rust 代码采用 **MIT OR Apache-2.0** 双许可，详见 `LICENSE-MIT` 与 `LICENSE-APACHE`。
+
+`sdk/binaries.tar.xz` 中的 CTP 动态库版权归上海期货信息技术有限公司（上期技术）所有，
+仅随本 crate 作为官方接口的绑定依赖原样再分发，适用其官方使用协议，详见 `NOTICE`。
+
 ## 目录结构
 
 ```text

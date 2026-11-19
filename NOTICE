@@ -1,0 +1,13 @@
+ctp-base
+Copyright (c) 2026 Cambridge
+
+本 crate 的 Rust 代码采用 MIT OR Apache-2.0 双许可，详见 LICENSE-MIT
+与 LICENSE-APACHE。
+
+第三方库声明：
+
+本 crate 的 sdk/binaries.tar.xz 中包含 CTP 行情与交易 API 动态库，
+其版权归上海期货信息技术有限公司（上期技术）所有。这些库仅随本 crate
+作为 CTP 官方接口的绑定依赖原样再分发，适用其随附的官方使用协议，
+不适用上述开源许可。使用者应自行确认对 CTP SDK 的使用符合上期技术的
+许可要求。
