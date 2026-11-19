@@ -15,9 +15,66 @@ pub struct CtpConfig {
 
 impl CtpConfig {
     pub fn load() -> Result<Self, Box<dyn Error>> {
+        // 优先读取环境变量（用于 GitHub Actions 等无配置文件的环境），
+        // 未设置的项回退到本地 config/ctp.toml。
         let path = Path::new(env!("CARGO_MANIFEST_DIR")).join("config/ctp.toml");
-        let content = fs::read_to_string(&path)?;
-        Self::from_simple_toml(&content).map_err(Into::into)
+        match fs::read_to_string(&path) {
+            Ok(content) => {
+                let mut config = Self::from_simple_toml(&content)?;
+                config.apply_environment();
+                Ok(config)
+            }
+            Err(_) => {
+                let config = Self::from_environment().ok_or_else(
+                    || "缺少配置文件 config/ctp.toml，且未通过 CTP_* 环境变量提供连接参数",
+                )?;
+                Ok(config)
+            }
+        }
+    }
+
+    fn apply_environment(&mut self) {
+        if let Some(value) = Self::env("CTP_BROKER_ID") {
+            self.broker_id = value;
+        }
+        if let Some(value) = Self::env("CTP_USER_ID") {
+            self.user_id = value;
+        }
+        if let Some(value) = Self::env("CTP_PASSWORD") {
+            self.password = value;
+        }
+        if let Some(value) = Self::env("CTP_APP_ID") {
+            self.app_id = value;
+        }
+        if let Some(value) = Self::env("CTP_AUTH_CODE") {
+            self.auth_code = value;
+        }
+        if let Some(value) = Self::env("CTP_MARKET_FRONT") {
+            self.market_front = value;
+        }
+        if let Some(value) = Self::env("CTP_TRADE_FRONT") {
+            self.trade_front = value;
+        }
+        if let Some(value) = Self::env("CTP_INSTRUMENT") {
+            self.instrument = value;
+        }
+    }
+
+    fn env(name: &str) -> Option<String> {
+        std::env::var(name).ok().filter(|value| !value.is_empty())
+    }
+
+    fn from_environment() -> Option<Self> {
+        Some(Self {
+            broker_id: Self::env("CTP_BROKER_ID")?,
+            user_id: Self::env("CTP_USER_ID")?,
+            password: Self::env("CTP_PASSWORD")?,
+            app_id: Self::env("CTP_APP_ID")?,
+            auth_code: Self::env("CTP_AUTH_CODE")?,
+            market_front: Self::env("CTP_MARKET_FRONT")?,
+            trade_front: Self::env("CTP_TRADE_FRONT")?,
+            instrument: Self::env("CTP_INSTRUMENT").unwrap_or_else(|| "ag2612".to_string()),
+        })
     }
 
     fn from_simple_toml(content: &str) -> Result<Self, String> {

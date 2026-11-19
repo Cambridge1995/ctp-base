@@ -151,6 +151,16 @@ api.close();
 
 更多接口请查看 [docs/接口.md](docs/接口.md)。
 
+## 在 GitHub Actions 中运行示例
+
+示例支持两种配置来源：环境变量优先，缺失时读取 `config/ctp.toml`。
+
+推送仓库后，在 `Settings → Secrets and variables → Actions` 配置
+`CTP_BROKER_ID`、`CTP_USER_ID`、`CTP_PASSWORD`、`CTP_APP_ID`、`CTP_AUTH_CODE`、
+`CTP_MARKET_FRONT`、`CTP_TRADE_FRONT` 七个 Repository secrets，
+然后到 `Actions → examples → Run workflow` 手动触发，即可在
+Windows / Linux / macOS 三个平台并行运行真实连接示例。
+
 ## 生命周期说明
 
 - `close()` 只释放本地 CTP API，不发送柜台登出请求；
