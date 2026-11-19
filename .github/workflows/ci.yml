@@ -31,31 +31,5 @@ jobs:
           else
             echo "LD_LIBRARY_PATH=$PWD/sdk/linux" >> $GITHUB_ENV
           fi
-      - name: 安装调试器
-        if: runner.os != 'Windows'
-        run: |
-          if [ "$RUNNER_OS" = "macOS" ]; then
-            echo lldb 随 Xcode 自带
-          else
-            sudo apt-get install -y gdb
-          fi
-      - name: 诊断环境
-        run: |
-          cargo -vV
-          env | grep -iE 'cargo|rust' | sort
       - run: cargo test --verbose
-      - name: 抓取段错误回溯
-        if: failure() && runner.os != 'Windows'
-        run: |
-          BIN=$(find target/debug -type f -name 'unit-*' ! -name '*.d' ! -name '*.o' | head -1)
-          LIBBIN=$(find target/debug -type f -name 'ctp_base-*' ! -name '*.d' ! -name '*.o' ! -name '*.rlib' ! -name '*.rmeta' | head -1)
-          echo "BIN=$BIN LIBBIN=$LIBBIN"
-          otool -l "$BIN" 2>/dev/null | grep -A3 LC_RPATH || true
-          echo "--- lib unittest rpath:"
-          otool -l "$LIBBIN" 2>/dev/null | grep -A3 LC_RPATH || true
-          if [ "$RUNNER_OS" = "macOS" ]; then
-            lldb -b -o run -o bt -- "$BIN" --test-threads=1 || true
-          else
-            gdb -batch -ex run -ex bt --args "$BIN" --test-threads=1 || true
-          fi
       - run: cargo clippy --all-targets -- -D warnings
