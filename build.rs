@@ -12,10 +12,10 @@ fn main() {
         ("macos", "x86_64") | ("macos", "aarch64") => {}
         _ => panic!("当前 CTP SDK 不支持 {target_os} {target_arch}"),
     }
-    let platform_dir = match target_os.as_str() {
-        "windows" => "sdk/windows",
-        "linux" => "sdk/linux",
-        "macos" => "sdk/macos",
+    let platform = match target_os.as_str() {
+        "windows" => "windows",
+        "linux" => "linux",
+        "macos" => "macos",
         other => panic!("当前原生桥接仅支持 Windows、Linux 和 macOS，实际目标系统：{other}"),
     };
     const MD_API_BASENAME: &str = "thostmduserapi_se";
@@ -29,6 +29,7 @@ fn main() {
         "cpp/trader_bridge.cpp",
         "src/sys/ffi/md.rs",
         "src/sys/ffi/trader.rs",
+        "sdk/binaries.tar.xz",
         "sdk/include/ThostFtdcMdApi.h",
         "sdk/include/ThostFtdcTraderApi.h",
         "sdk/include/ThostFtdcUserApiDataType.h",
@@ -51,9 +52,40 @@ fn main() {
             format!("lib{TRADER_API_BASENAME}.so"),
         ],
     };
-    for library in &runtime_libraries {
-        println!("cargo:rerun-if-changed={platform_dir}/{library}");
+
+    // 三平台二进制以 xz 压缩包随 crate 分发（低于 crates.io 10MB 限制），
+    // 构建时把当前平台的库解压到 OUT_DIR，不修改源码目录。
+    let sdk_archive = root.join("sdk/binaries.tar.xz");
+    let extract_dir = out_dir.join("ctp-sdk-libs").join(platform);
+    if !extract_dir.join(&runtime_libraries[0]).exists() {
+        fs::create_dir_all(&extract_dir)
+            .unwrap_or_else(|error| panic!("创建 {} 失败：{error}", extract_dir.display()));
+        let file = fs::File::open(&sdk_archive)
+            .unwrap_or_else(|error| panic!("打开 {} 失败：{error}", sdk_archive.display()));
+        let decoder = xz2::read::XzDecoder::new(file);
+        let mut archive = tar::Archive::new(decoder);
+        for entry in archive
+            .entries()
+            .unwrap_or_else(|error| panic!("读取 SDK 压缩包失败：{error}"))
+        {
+            let mut entry = entry.unwrap_or_else(|error| panic!("读取压缩包条目失败：{error}"));
+            let path = entry
+                .path()
+                .unwrap_or_else(|error| panic!("压缩包条目路径无效：{error}"))
+                .to_path_buf();
+            if path
+                .components()
+                .next()
+                .is_some_and(|part| part.as_os_str() == platform)
+            {
+                entry
+                    .unpack_in(out_dir.join("ctp-sdk-libs"))
+                    .unwrap_or_else(|error| panic!("解压 {} 失败：{error}", path.display()));
+            }
+        }
     }
+    let library_dir = extract_dir;
+    println!("cargo:rustc-link-search=native={}", library_dir.display());
 
     let bindings = bindgen::Builder::default()
         .header(wrapper.to_string_lossy())
@@ -86,14 +118,12 @@ fn main() {
         .flag_if_supported("-fPIC")
         .compile("ctp_native_bridge");
 
-    let library_dir = root.join(platform_dir);
-    println!("cargo:rustc-link-search=native={}", library_dir.display());
     if target_os == "windows" {
         println!("cargo:rustc-link-lib={MD_API_BASENAME}");
         println!("cargo:rustc-link-lib={TRADER_API_BASENAME}");
     } else if target_os == "macos" {
         // 官方 dylib 的 install name 与代码签名面向 framework Bundle，
-        // 扁平存放时先改为 @rpath 形式并用 ad-hoc 签名替换本仓库内的副本，
+        // 解压后先改为 @rpath 形式并用 ad-hoc 签名替换，
         // 否则 Apple Silicon 的 dyld 会拒绝加载。
         for name in [MD_API_BASENAME, TRADER_API_BASENAME] {
             let dylib = library_dir.join(format!("lib{name}.dylib"));
@@ -118,7 +148,6 @@ fn main() {
                     );
                 }
             }
-            println!("cargo:rerun-if-changed={}", dylib.display());
         }
         println!("cargo:rustc-link-lib=dylib={MD_API_BASENAME}");
         println!("cargo:rustc-link-lib=dylib={TRADER_API_BASENAME}");
@@ -130,37 +159,20 @@ fn main() {
         // Unix 动态加载器默认不搜索可执行文件所在目录，且 CI 中
         // 测试二进制的输出位置不在 deps/，因此对 SDK 库目录和
         // 可执行文件所在目录同时建立 rpath。
-        println!(
-            "cargo:rustc-link-arg=-Wl,-rpath,{}/sdk/linux",
-            root.display()
-        );
+        println!("cargo:rustc-link-arg=-Wl,-rpath,{}", library_dir.display());
         println!("cargo:rustc-link-arg=-Wl,-rpath,$ORIGIN");
     }
 
+    if target_os == "macos" {
+        // macOS 库经 rpath 直接从解压目录加载，无需复制到目标目录。
+        return;
+    }
     let profile_dir = out_dir.ancestors().nth(3).unwrap_or_else(|| {
         panic!(
             "无法从 OUT_DIR 定位 Cargo profile 目录：{}",
             out_dir.display()
         )
     });
-    if target_os == "macos" {
-        // macOS 库经 rpath 直接从 sdk/macos 加载，无需复制到目标目录。
-        return;
-    }
-    let runtime_libraries: [String; 2] = match target_os.as_str() {
-        "windows" => [
-            format!("{MD_API_BASENAME}.dll"),
-            format!("{TRADER_API_BASENAME}.dll"),
-        ],
-        "macos" => [
-            format!("lib{MD_API_BASENAME}.dylib"),
-            format!("lib{TRADER_API_BASENAME}.dylib"),
-        ],
-        _ => [
-            format!("lib{MD_API_BASENAME}.so"),
-            format!("lib{TRADER_API_BASENAME}.so"),
-        ],
-    };
     for library in &runtime_libraries {
         let source = library_dir.join(library);
         for destination_dir in [profile_dir.to_path_buf(), profile_dir.join("deps")] {

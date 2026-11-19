@@ -17,8 +17,6 @@
 
 | ctp-base | CTP SDK | 状态 |
 |---|---|---|
-| 0.1.0 | v6.7.11_20250617 | 历史版本 |
-| 0.1.1 | v6.7.13_20260225 | 历史版本 |
 | 0.1.3 | v6.7.13_20260225 | 当前已验证版本 |
 
 本项目使用的CTP版本均为非商密版本，若券商有要求使用商密版本，请自行将商密版sdk/文件夹下的文件按照对应位置，替换为商密版CTP SDK。
@@ -74,17 +72,41 @@ macOS 版 CTP SDK 为 fat dylib，x86_64 与 Apple Silicon（aarch64）使用同
 
 ## 使用流程
 
-1. 复制或发布 `ctp-base` 目录；
-2. 复制 `config/ctp-template.toml` 为 `config/ctp.toml`，填写柜台、用户、密码、AppID、授权码和前置地址；
-3. 运行测试或示例。
+1. 复制或拉取 `ctp-base` 目录；
+    
+    **方法1：**
 
-```bash
-cargo test
-cargo run --example md
-cargo run --example trader
-```
+    若不希望冗余文件，使用时，只需要`sdk/`、`cpp/` 和 `src/`、`build.rs`、`Cargo.lock`、`Cargo.toml`打包到个人项目下的空`ctp-base`中即可。
 
-示例会在当前目录创建 `./flow/` 流量目录。首次连接真实或仿真柜台前，请确认配置正确。
+    **方法2：**
+
+    若不介意冗余文件，直接使用以下命令，克隆到自己项目就行。
+    ```bash
+    git clone git@github.com:Cambridge1995/ctp-base.git
+    # 或者使用
+    git clone https://github.com/Cambridge1995/ctp-base.git
+    ```
+
+   **方法3：**
+
+   直接使用Cargo.toml的dependencies进行导入：
+    ```bash
+    ctp-base = 1.0.0
+    ```
+   
+
+
+2. 快速验证：
+
+    复制 `config/ctp-template.toml` 为 `config/ctp.toml`，填写柜台、用户、密码、AppID、授权码和前置地址；
+运行测试或示例。
+
+    ```bash
+    cargo test
+    cargo run --example md
+    cargo run --example trader
+    ```
+    示例会在当前目录创建 `./flow/` 流量目录。首次连接真实或仿真柜台前，请确认配置正确。
 
 ## 配置文件
 
@@ -146,10 +168,9 @@ ctp-base/
 ├── cpp/                 # C++ SPI 与 API 桥接
 ├── docs/接口.md
 ├── examples/            # 行情与交易示例
-├── sdk/                 # CTP 头文件与 64 位库
+├── sdk/                 # CTP 头文件与 xz 压缩的三平台库（构建时自动解压）
 ├── src/                 # Rust 公共 API、SPI 与内部桥接
 └── tests/
 ```
 
 `ctp-base` 构建时只使用本目录内的 `sdk/`、`cpp/` 和 `src/`、`build.rs`、`Cargo.lock`、`Cargo.toml`。
-若不希望冗余文件，使用时，只需要`sdk/`、`cpp/` 和 `src/`、`Cargo.lock`、`Cargo.toml`打包到个人项目下的空`ctp-base`中即可。

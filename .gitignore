@@ -10,3 +10,8 @@ flow/
 
 # 本地真实配置不提交；模板见 config/ctp-template.toml
 config/ctp.toml
+
+# 平台库由 build.rs 从 sdk/binaries.tar.xz 解压到构建目录，不提交解包产物
+/sdk/windows/
+/sdk/linux/
+/sdk/macos/

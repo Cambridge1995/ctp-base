@@ -12,6 +12,8 @@ encoding_rs = "0.8"
 bindgen = "0.72"
 cc = "1.0"
 cxx-build = "1.0"
+tar = "0.4"
+xz2 = { version = "0.1", features = ["static"] }
 
 [[test]]
 name = "unit"
