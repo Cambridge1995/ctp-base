@@ -24,7 +24,7 @@ jobs:
       - name: 配置运行时库路径
         run: |
           if [ "$RUNNER_OS" = "Windows" ]; then
-            cygpath -m "$PWD/sdk/windows" >> $GITHUB_PATH
+            echo "$(pwd -W)/sdk/windows" >> $GITHUB_PATH
           elif [ "$RUNNER_OS" = "macOS" ]; then
             echo "DYLD_FALLBACK_LIBRARY_PATH=$PWD/sdk/macos" >> $GITHUB_ENV
           else
@@ -47,7 +47,11 @@ jobs:
         if: failure() && runner.os != 'Windows'
         run: |
           BIN=$(find target/debug -type f -name 'unit-*' ! -name '*.d' ! -name '*.o' | head -1)
-          echo "BIN=$BIN"
+          LIBBIN=$(find target/debug -type f -name 'ctp_base-*' ! -name '*.d' ! -name '*.o' ! -name '*.rlib' ! -name '*.rmeta' | head -1)
+          echo "BIN=$BIN LIBBIN=$LIBBIN"
+          otool -l "$BIN" 2>/dev/null | grep -A3 LC_RPATH || true
+          echo "--- lib unittest rpath:"
+          otool -l "$LIBBIN" 2>/dev/null | grep -A3 LC_RPATH || true
           if [ "$RUNNER_OS" = "macOS" ]; then
             lldb -b -o run -o bt -- "$BIN" --test-threads=1 || true
           else
