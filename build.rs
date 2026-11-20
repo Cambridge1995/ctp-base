@@ -57,17 +57,28 @@ fn main() {
     // 构建时用系统自带 tar（Windows 10+/macOS/Linux 均支持 xz）解压当前
     // 平台的库到 OUT_DIR，不引入任何额外的 Rust 依赖。
     let sdk_archive = root.join("sdk/binaries.tar.xz");
-    // 解压到持久目录 sdk/<平台>/：已存在时直接复用，只在首次使用时解压。
-    // 不使用 OUT_DIR，因为其哈希目录会随依赖指纹变化而重建。
-    let library_dir = root.join("sdk").join(platform);
+    // 解压到 target 下的持久缓存目录：已存在时直接复用，只在首次使用时解压。
+    // 不放在源码目录（会破坏 cargo package 的校验），也不放在 OUT_DIR
+    //（其哈希目录会随依赖指纹变化而重建）。
+    let target_root = env::var_os("CARGO_TARGET_DIR")
+        .map(PathBuf::from)
+        .map(|path| {
+            if path.is_absolute() {
+                path
+            } else {
+                root.join(path)
+            }
+        })
+        .unwrap_or_else(|| root.join("target"));
+    let library_dir = target_root.join("ctp-sdk-libs").join(platform);
     if !library_dir.join(&runtime_libraries[0]).exists() {
-        fs::create_dir_all(root.join("sdk"))
-            .unwrap_or_else(|error| panic!("创建 sdk 目录失败：{error}"));
+        fs::create_dir_all(&library_dir)
+            .unwrap_or_else(|error| panic!("创建缓存目录失败：{error}"));
         let status = Command::new("tar")
             .arg("-xJf")
             .arg(&sdk_archive)
             .arg("-C")
-            .arg(root.join("sdk"))
+            .arg(target_root.join("ctp-sdk-libs"))
             .arg(platform)
             .status()
             .unwrap_or_else(|error| {
