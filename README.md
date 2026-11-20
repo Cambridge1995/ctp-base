@@ -200,7 +200,7 @@ ctp-base/
 ├── cpp/                 # C++ SPI 与 API 桥接
 ├── docs/接口.md
 ├── examples/            # 行情与交易示例
-├── sdk/                 # CTP 头文件与 xz 压缩的三平台库（构建时自动解压）
+├── sdk/                 # CTP 头文件与 xz 压缩的三平台库（首次构建解压到 target/ctp-sdk-libs，之后复用）
 ├── src/                 # Rust 公共 API、SPI 与内部桥接
 └── tests/
 ```
