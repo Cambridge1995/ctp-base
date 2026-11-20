@@ -21,7 +21,8 @@
 | 1.0.0 | v6.7.13_20260225 | 历史版本 |
 | 1.0.1 | v6.7.13_20260225 | 当前版本（接口文档补全、SDK 库只解压一次） |
 
-本项目使用的CTP版本均为非商密版本，若券商有要求使用商密版本，请自行将商密版sdk/文件夹下的文件按照对应位置，替换为商密版CTP SDK。
+本项目使用的 CTP 版本均为非商密版本。若券商要求使用商密（SM）版本，crates.io 包无法直接替换，
+请从 GitHub 克隆源码后按「二次开发与商密（SM）版本」一节操作。
 
 ## 工具链要求
 
@@ -122,6 +123,28 @@ macOS 版 CTP SDK 为 fat dylib，x86_64 与 Apple Silicon（aarch64）使用同
     cargo run --example trader
     ```
     示例会在当前目录创建 `./flow/` 流量目录。首次连接真实或仿真柜台前，请确认配置正确。
+
+## 二次开发与商密（SM）版本
+
+通过 crates.io（`cargo add ctp-base`）引入的是**只读的发布包**，其中
+`sdk/binaries.tar.xz` 仅包含非商密（`_se`）三平台库，无法直接替换。
+
+如果需要进行二次开发，或改用商密（SM）版 CTP 接口，请**不要使用 crates.io 方式**，
+改为从 GitHub 克隆源码：
+
+```bash
+git clone https://github.com/Cambridge1995/ctp-base.git
+```
+
+源码方式下可自行：
+
+1. 用商密安装包重新打包 `sdk/binaries.tar.xz`，归档结构与现有一致：
+   `windows/`、`linux/`、`macos/` 三个目录，放入对应平台的 `.dll/.lib`、`.so`、`.dylib`；
+2. 商密库文件名不同（如 `thosttraderapi_sm`、`thostmduserapi_sm`），
+   同步修改 `build.rs` 顶部的 `MD_API_BASENAME` 与 `TRADER_API_BASENAME` 常量；
+3. 解压目录为 `target/ctp-sdk-libs/<平台>/`，替换后删除该目录即可在下次构建时重新解压。
+
+crates.io 上的历史版本内容不可修改，上述定制请以 GitHub 源码为准。
 
 ## 配置文件
 
