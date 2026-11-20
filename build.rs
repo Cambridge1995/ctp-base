@@ -57,16 +57,17 @@ fn main() {
     // 构建时用系统自带 tar（Windows 10+/macOS/Linux 均支持 xz）解压当前
     // 平台的库到 OUT_DIR，不引入任何额外的 Rust 依赖。
     let sdk_archive = root.join("sdk/binaries.tar.xz");
-    let extract_root = out_dir.join("ctp-sdk-libs");
-    let extract_dir = extract_root.join(platform);
-    if !extract_dir.join(&runtime_libraries[0]).exists() {
-        fs::create_dir_all(&extract_root)
-            .unwrap_or_else(|error| panic!("创建 {} 失败：{error}", extract_root.display()));
+    // 解压到持久目录 sdk/<平台>/：已存在时直接复用，只在首次使用时解压。
+    // 不使用 OUT_DIR，因为其哈希目录会随依赖指纹变化而重建。
+    let library_dir = root.join("sdk").join(platform);
+    if !library_dir.join(&runtime_libraries[0]).exists() {
+        fs::create_dir_all(root.join("sdk"))
+            .unwrap_or_else(|error| panic!("创建 sdk 目录失败：{error}"));
         let status = Command::new("tar")
             .arg("-xJf")
             .arg(&sdk_archive)
             .arg("-C")
-            .arg(&extract_root)
+            .arg(root.join("sdk"))
             .arg(platform)
             .status()
             .unwrap_or_else(|error| {
@@ -78,8 +79,36 @@ fn main() {
         if !status.success() {
             panic!("tar 解压 {} 失败（{status}）", sdk_archive.display());
         }
+        if target_os == "macos" {
+            // 官方 dylib 的 install name 与代码签名面向 framework Bundle，
+            // 解压后改为 @rpath 形式并用 ad-hoc 签名替换，否则 Apple Silicon
+            // 的 dyld 会拒绝加载；只在解压后处理一次。
+            for name in [MD_API_BASENAME, TRADER_API_BASENAME] {
+                let dylib = library_dir.join(format!("lib{name}.dylib"));
+                for mut command in [
+                    std::process::Command::new("install_name_tool"),
+                    std::process::Command::new("codesign"),
+                ] {
+                    if command.get_program() == "install_name_tool" {
+                        command.args(["-id", &format!("@rpath/lib{name}.dylib")]);
+                    } else {
+                        command.args(["-f", "-s", "-"]);
+                    }
+                    let output = command.arg(&dylib).output().unwrap_or_else(|error| {
+                        panic!("运行 {:?} 失败：{error}", command.get_program())
+                    });
+                    if !output.status.success() {
+                        panic!(
+                            "{:?} 处理 {} 失败：{}",
+                            command.get_program(),
+                            dylib.display(),
+                            String::from_utf8_lossy(&output.stderr)
+                        );
+                    }
+                }
+            }
+        }
     }
-    let library_dir = extract_dir;
     println!("cargo:rustc-link-search=native={}", library_dir.display());
 
     let bindings = bindgen::Builder::default()
@@ -117,33 +146,6 @@ fn main() {
         println!("cargo:rustc-link-lib={MD_API_BASENAME}");
         println!("cargo:rustc-link-lib={TRADER_API_BASENAME}");
     } else if target_os == "macos" {
-        // 官方 dylib 的 install name 与代码签名面向 framework Bundle，
-        // 解压后先改为 @rpath 形式并用 ad-hoc 签名替换，
-        // 否则 Apple Silicon 的 dyld 会拒绝加载。
-        for name in [MD_API_BASENAME, TRADER_API_BASENAME] {
-            let dylib = library_dir.join(format!("lib{name}.dylib"));
-            for mut command in [
-                std::process::Command::new("install_name_tool"),
-                std::process::Command::new("codesign"),
-            ] {
-                if command.get_program() == "install_name_tool" {
-                    command.args(["-id", &format!("@rpath/lib{name}.dylib")]);
-                } else {
-                    command.args(["-f", "-s", "-"]);
-                }
-                let output = command.arg(&dylib).output().unwrap_or_else(|error| {
-                    panic!("运行 {:?} 失败：{error}", command.get_program())
-                });
-                if !output.status.success() {
-                    panic!(
-                        "{:?} 处理 {} 失败：{}",
-                        command.get_program(),
-                        dylib.display(),
-                        String::from_utf8_lossy(&output.stderr)
-                    );
-                }
-            }
-        }
         println!("cargo:rustc-link-lib=dylib={MD_API_BASENAME}");
         println!("cargo:rustc-link-lib=dylib={TRADER_API_BASENAME}");
         println!("cargo:rustc-link-arg=-Wl,-rpath,{}", library_dir.display());
