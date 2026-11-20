@@ -1,5 +1,80 @@
 use std::{env, fs, path::PathBuf, process::Command};
 
+/// 当前平台的库文件名。
+fn library_file(base: &str, os: &str) -> String {
+    match os {
+        "windows" => format!("{base}.dll"),
+        "macos" => format!("lib{base}.dylib"),
+        _ => format!("lib{base}.so"),
+    }
+}
+
+/// 目录中是否存在当前平台的 CTP 库（不区分商密/非商密）。
+fn dir_has_libs(dir: &std::path::Path, os: &str) -> bool {
+    let Ok(entries) = fs::read_dir(dir) else {
+        return false;
+    };
+    entries.filter_map(|entry| entry.ok()).any(|entry| {
+        let name = entry.file_name().to_string_lossy().to_string();
+        let extension_matches = match os {
+            "windows" => name.ends_with(".dll"),
+            "macos" => name.ends_with(".dylib"),
+            _ => name.ends_with(".so"),
+        };
+        extension_matches && name.contains("userapi")
+    })
+}
+
+/// 解析实际使用的库基名：优先非商密（se），不存在时降级匹配 sm 等其他变体，
+/// 使使用者只需放入对应版本的库文件，无需修改 build.rs。
+fn resolve_basename(
+    dir: &std::path::Path,
+    preferred: &str,
+    family: &str,
+    os: &str,
+) -> Option<String> {
+    if dir.join(library_file(preferred, os)).exists() {
+        return Some(preferred.to_string());
+    }
+    let mut found: Vec<String> = fs::read_dir(dir)
+        .ok()?
+        .filter_map(|entry| entry.ok())
+        .filter_map(|entry| {
+            let name = entry.file_name().to_string_lossy().to_string();
+            match os {
+                "windows" => {
+                    if !name.ends_with(".dll") || !name.starts_with(&format!("{family}_")) {
+                        return None;
+                    }
+                    Some(name.trim_end_matches(".dll").to_string())
+                }
+                "macos" => {
+                    if !name.ends_with(".dylib") || !name.starts_with(&format!("lib{family}_")) {
+                        return None;
+                    }
+                    Some(
+                        name.trim_end_matches(".dylib")
+                            .trim_start_matches("lib")
+                            .to_string(),
+                    )
+                }
+                _ => {
+                    if !name.ends_with(".so") || !name.starts_with(&format!("lib{family}_")) {
+                        return None;
+                    }
+                    Some(
+                        name.trim_end_matches(".so")
+                            .trim_start_matches("lib")
+                            .to_string(),
+                    )
+                }
+            }
+        })
+        .collect();
+    found.sort();
+    found.into_iter().next()
+}
+
 fn main() {
     let root = PathBuf::from(env::var_os("CARGO_MANIFEST_DIR").unwrap());
     let out_dir = PathBuf::from(env::var_os("OUT_DIR").unwrap());
@@ -38,28 +113,13 @@ fn main() {
         println!("cargo:rerun-if-changed={file}");
     }
     println!("cargo:rerun-if-env-changed=LIBCLANG_PATH");
-    let runtime_libraries: [String; 2] = match target_os.as_str() {
-        "windows" => [
-            format!("{MD_API_BASENAME}.dll"),
-            format!("{TRADER_API_BASENAME}.dll"),
-        ],
-        "macos" => [
-            format!("lib{MD_API_BASENAME}.dylib"),
-            format!("lib{TRADER_API_BASENAME}.dylib"),
-        ],
-        _ => [
-            format!("lib{MD_API_BASENAME}.so"),
-            format!("lib{TRADER_API_BASENAME}.so"),
-        ],
-    };
 
-    // 三平台二进制以 xz 压缩包随 crate 分发（低于 crates.io 10MB 限制）。
-    // 构建时用系统自带 tar（Windows 10+/macOS/Linux 均支持 xz）解压当前
-    // 平台的库到 OUT_DIR，不引入任何额外的 Rust 依赖。
-    let sdk_archive = root.join("sdk/binaries.tar.xz");
-    // 解压到 target 下的持久缓存目录：已存在时直接复用，只在首次使用时解压。
-    // 不放在源码目录（会破坏 cargo package 的校验），也不放在 OUT_DIR
+    // 库来源优先级：
+    // 1. 源码目录 sdk/<平台>/（使用者自行放入的库，se/sm 均可）；
+    // 2. target 下的持久缓存（从 sdk/binaries.tar.xz 解压，存在即复用）。
+    // 缓存不放在源码目录（会破坏 cargo package 校验），也不放 OUT_DIR
     //（其哈希目录会随依赖指纹变化而重建）。
+    let manifest_libs = root.join("sdk").join(platform);
     let target_root = env::var_os("CARGO_TARGET_DIR")
         .map(PathBuf::from)
         .map(|path| {
@@ -70,57 +130,106 @@ fn main() {
             }
         })
         .unwrap_or_else(|| root.join("target"));
-    let library_dir = target_root.join("ctp-sdk-libs").join(platform);
-    if !library_dir.join(&runtime_libraries[0]).exists() {
-        fs::create_dir_all(&library_dir)
-            .unwrap_or_else(|error| panic!("创建缓存目录失败：{error}"));
-        let status = Command::new("tar")
-            .arg("-xJf")
-            .arg(&sdk_archive)
-            .arg("-C")
-            .arg(target_root.join("ctp-sdk-libs"))
-            .arg(platform)
-            .status()
-            .unwrap_or_else(|error| {
-                panic!(
-                    "无法运行 tar 解压 {}：{error}。请确认系统自带 tar（Windows 10 及以上、macOS、Linux 均内置）",
-                    sdk_archive.display()
-                )
-            });
-        if !status.success() {
-            panic!("tar 解压 {} 失败（{status}）", sdk_archive.display());
+    let cache_libs = target_root.join("ctp-sdk-libs").join(platform);
+    let sdk_archive = root.join("sdk/binaries.tar.xz");
+
+    let library_dir = if dir_has_libs(&manifest_libs, &target_os) {
+        println!("cargo:rerun-if-changed={}", manifest_libs.display());
+        manifest_libs
+    } else {
+        // 缓存指纹：SDK 压缩包变化（升级）时自动重新解压。
+        let fingerprint = {
+            use std::hash::{Hash, Hasher};
+            let data = fs::read(&sdk_archive)
+                .unwrap_or_else(|error| panic!("读取 {} 失败：{error}", sdk_archive.display()));
+            let mut hasher = std::collections::hash_map::DefaultHasher::new();
+            data.hash(&mut hasher);
+            format!("{:x}", hasher.finish())
+        };
+        let stamp_file = target_root.join("ctp-sdk-libs").join("fingerprint");
+        let cached = dir_has_libs(&cache_libs, &target_os)
+            && fs::read_to_string(&stamp_file).is_ok_and(|stamp| stamp.trim() == fingerprint);
+        if !cached {
+            let _ = fs::remove_dir_all(target_root.join("ctp-sdk-libs"));
+            fs::create_dir_all(&cache_libs)
+                .unwrap_or_else(|error| panic!("创建缓存目录失败：{error}"));
+            let status = Command::new("tar")
+                .arg("-xJf")
+                .arg(&sdk_archive)
+                .arg("-C")
+                .arg(target_root.join("ctp-sdk-libs"))
+                .arg(platform)
+                .status()
+                .unwrap_or_else(|error| {
+                    panic!(
+                        "无法运行 tar 解压 {}：{error}。请确认系统自带 tar（Windows 10 及以上、macOS、Linux 均内置）",
+                        sdk_archive.display()
+                    )
+                });
+            if !status.success() {
+                panic!("tar 解压 {} 失败（{status}）", sdk_archive.display());
+            }
+            fs::write(
+                target_root.join("ctp-sdk-libs").join("fingerprint"),
+                &fingerprint,
+            )
+            .unwrap_or_else(|error| panic!("写入缓存指纹失败：{error}"));
         }
-        if target_os == "macos" {
-            // 官方 dylib 的 install name 与代码签名面向 framework Bundle，
-            // 解压后改为 @rpath 形式并用 ad-hoc 签名替换，否则 Apple Silicon
-            // 的 dyld 会拒绝加载；只在解压后处理一次。
-            for name in [MD_API_BASENAME, TRADER_API_BASENAME] {
-                let dylib = library_dir.join(format!("lib{name}.dylib"));
-                for mut command in [
-                    std::process::Command::new("install_name_tool"),
-                    std::process::Command::new("codesign"),
-                ] {
-                    if command.get_program() == "install_name_tool" {
-                        command.args(["-id", &format!("@rpath/lib{name}.dylib")]);
-                    } else {
-                        command.args(["-f", "-s", "-"]);
-                    }
-                    let output = command.arg(&dylib).output().unwrap_or_else(|error| {
-                        panic!("运行 {:?} 失败：{error}", command.get_program())
-                    });
-                    if !output.status.success() {
-                        panic!(
-                            "{:?} 处理 {} 失败：{}",
-                            command.get_program(),
-                            dylib.display(),
-                            String::from_utf8_lossy(&output.stderr)
-                        );
-                    }
+        cache_libs
+    };
+
+    let md_base = resolve_basename(&library_dir, MD_API_BASENAME, "thostmduserapi", &target_os)
+        .unwrap_or_else(|| {
+            panic!(
+                "在 {} 中未找到行情库（thostmduserapi_se 或 sm 版本）",
+                library_dir.display()
+            )
+        });
+    let trader_base = resolve_basename(
+        &library_dir,
+        TRADER_API_BASENAME,
+        "thosttraderapi",
+        &target_os,
+    )
+    .unwrap_or_else(|| {
+        panic!(
+            "在 {} 中未找到交易库（thosttraderapi_se 或 sm 版本）",
+            library_dir.display()
+        )
+    });
+    println!("cargo:rustc-link-search=native={}", library_dir.display());
+
+    if target_os == "macos" {
+        // 官方 dylib 的 install name 与代码签名面向 framework Bundle，
+        // 处理后改为 @rpath 形式并用 ad-hoc 签名替换，否则 Apple Silicon
+        // 的 dyld 会拒绝加载。重复执行是幂等的。
+        for base in [&md_base, &trader_base] {
+            let dylib = library_dir.join(library_file(base, "macos"));
+            for (program, args) in [
+                (
+                    "install_name_tool",
+                    vec!["-id".to_string(), format!("@rpath/lib{base}.dylib")],
+                ),
+                (
+                    "codesign",
+                    vec!["-f".to_string(), "-s".to_string(), "-".to_string()],
+                ),
+            ] {
+                let output = Command::new(program)
+                    .args(&args)
+                    .arg(&dylib)
+                    .output()
+                    .unwrap_or_else(|error| panic!("运行 {program} 失败：{error}"));
+                if !output.status.success() {
+                    panic!(
+                        "{program} 处理 {} 失败：{}",
+                        dylib.display(),
+                        String::from_utf8_lossy(&output.stderr)
+                    );
                 }
             }
         }
     }
-    println!("cargo:rustc-link-search=native={}", library_dir.display());
 
     let bindings = bindgen::Builder::default()
         .header(wrapper.to_string_lossy())
@@ -154,25 +263,23 @@ fn main() {
         .compile("ctp_native_bridge");
 
     if target_os == "windows" {
-        println!("cargo:rustc-link-lib={MD_API_BASENAME}");
-        println!("cargo:rustc-link-lib={TRADER_API_BASENAME}");
-    } else if target_os == "macos" {
-        println!("cargo:rustc-link-lib=dylib={MD_API_BASENAME}");
-        println!("cargo:rustc-link-lib=dylib={TRADER_API_BASENAME}");
-        println!("cargo:rustc-link-arg=-Wl,-rpath,{}", library_dir.display());
-        println!("cargo:rustc-link-arg=-Wl,-rpath,@loader_path");
+        println!("cargo:rustc-link-lib={md_base}");
+        println!("cargo:rustc-link-lib={trader_base}");
     } else {
-        println!("cargo:rustc-link-lib=dylib={MD_API_BASENAME}");
-        println!("cargo:rustc-link-lib=dylib={TRADER_API_BASENAME}");
-        // Unix 动态加载器默认不搜索可执行文件所在目录，且 CI 中
-        // 测试二进制的输出位置不在 deps/，因此对 SDK 库目录和
-        // 可执行文件所在目录同时建立 rpath。
+        println!("cargo:rustc-link-lib=dylib={md_base}");
+        println!("cargo:rustc-link-lib=dylib={trader_base}");
         println!("cargo:rustc-link-arg=-Wl,-rpath,{}", library_dir.display());
-        println!("cargo:rustc-link-arg=-Wl,-rpath,$ORIGIN");
+        if target_os == "macos" {
+            println!("cargo:rustc-link-arg=-Wl,-rpath,@loader_path");
+        } else {
+            // Unix 动态加载器默认不搜索可执行文件所在目录，且 CI 中
+            // 测试二进制的输出位置不在 deps/，因此同时建立 $ORIGIN rpath。
+            println!("cargo:rustc-link-arg=-Wl,-rpath,$ORIGIN");
+        }
     }
 
     if target_os == "macos" {
-        // macOS 库经 rpath 直接从解压目录加载，无需复制到目标目录。
+        // macOS 库经 rpath 直接从库目录加载，无需复制到目标目录。
         return;
     }
     let profile_dir = out_dir.ancestors().nth(3).unwrap_or_else(|| {
@@ -181,13 +288,14 @@ fn main() {
             out_dir.display()
         )
     });
-    for library in &runtime_libraries {
-        let source = library_dir.join(library);
+    for base in [&md_base, &trader_base] {
+        let library = library_file(base, &target_os);
+        let source = library_dir.join(&library);
         for destination_dir in [profile_dir.to_path_buf(), profile_dir.join("deps")] {
             fs::create_dir_all(&destination_dir).unwrap_or_else(|error| {
                 panic!("创建目录 {} 失败：{error}", destination_dir.display())
             });
-            let destination = destination_dir.join(library);
+            let destination = destination_dir.join(&library);
             fs::copy(&source, &destination).unwrap_or_else(|error| {
                 panic!(
                     "复制 {} 到 {} 失败：{error}",

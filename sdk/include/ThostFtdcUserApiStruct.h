@@ -13933,6 +13933,41 @@ struct CThostFtdcHedgeCfmActionField
 	TThostFtdcMacAddressType	MacAddress;
 };
 
+///交易所报撤频率限制
+struct CThostFtdcExchOrderFreqParamField
+{
+	///投资者代码
+	TThostFtdcInvestorIDType	InvestorID;
+	///交易所代码
+	TThostFtdcExchangeIDType	ExchangeID;
+	///投机套保标志
+	TThostFtdcHedgeFlagType	HedgeFlag;
+	///经纪公司代码
+	TThostFtdcBrokerIDType	BrokerID;
+	///频率限制
+	TThostFtdcVolumeType	FreqLimit;
+};
+
+///合约交易限制
+struct CThostFtdcInstrTradeLimitField
+{
+	///合约代码
+	TThostFtdcInstrumentIDType	InstrumentID;
+	///交易所代码
+	TThostFtdcExchangeIDType	ExchangeID;
+	///最小开仓手数
+	TThostFtdcVolumeType	MinOpenVolume;
+};
+
+///合约交易限制查询
+struct CThostFtdcQryInstrTradeLimitField
+{
+	///合约代码
+	TThostFtdcInstrumentIDType	InstrumentID;
+	///交易所代码
+	TThostFtdcExchangeIDType	ExchangeID;
+};
+
 
 ///前置信息
 struct CThostFtdcFrontInfoField

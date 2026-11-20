@@ -1571,6 +1571,8 @@ typedef char TThostFtdcSystemParamIDType;
 #define THOST_FTDC_TPID_IsDceFutCloseFrozen 'm'
 ///是否启用短信验证
 #define THOST_FTDC_TPID_UseSMSVerify 'n'
+///是否启用交易所级别报撤单频率限制
+#define THOST_FTDC_TPID_IsExchOrderFreq 'e'
 
 typedef char TThostFtdcTradeParamIDType;
 
@@ -2661,6 +2663,8 @@ typedef char TThostFtdcStatModeType;
 #define THOST_FTDC_PAOS_Send '2'
 ///已删除
 #define THOST_FTDC_PAOS_Deleted '3'
+///发送失败
+#define THOST_FTDC_PAOS_SendFailed '4'
 
 typedef char TThostFtdcParkedOrderStatusType;
 

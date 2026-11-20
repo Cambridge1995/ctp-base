@@ -136,13 +136,14 @@ macOS 版 CTP SDK 为 fat dylib，x86_64 与 Apple Silicon（aarch64）使用同
 git clone https://github.com/Cambridge1995/ctp-base.git
 ```
 
-源码方式下可自行：
+源码方式下，只需把对应平台的库文件放入 `sdk/<平台>/`（`windows`、`linux`、`macos`），
+构建脚本会自动识别，无需修改代码：
 
-1. 用商密安装包重新打包 `sdk/binaries.tar.xz`，归档结构与现有一致：
-   `windows/`、`linux/`、`macos/` 三个目录，放入对应平台的 `.dll/.lib`、`.so`、`.dylib`；
-2. 商密库文件名不同（如 `thosttraderapi_sm`、`thostmduserapi_sm`），
-   同步修改 `build.rs` 顶部的 `MD_API_BASENAME` 与 `TRADER_API_BASENAME` 常量；
-3. 解压目录为 `target/ctp-sdk-libs/<平台>/`，替换后删除该目录即可在下次构建时重新解压。
+- 目录中只有非商密库时使用 `_se`；没有 `_se` 时自动降级使用 `_sm`
+  （匹配 `thostmduserapi_*` / `thosttraderapi_*`）；
+- 也可用你自己的库重新打包 `sdk/binaries.tar.xz`（目录结构
+  `windows/`、`linux/`、`macos/`），首次构建会解压到 `target/ctp-sdk-libs/<平台>/`；
+- 替换库文件后删除 `target/ctp-sdk-libs/<平台>/`，下次构建会重新解压或直接使用新文件。
 
 crates.io 上的历史版本内容不可修改，上述定制请以 GitHub 源码为准。
 

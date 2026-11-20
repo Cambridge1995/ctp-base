@@ -11,27 +11,27 @@ use crate::{
     HedgeCfm, HedgeCfmAction, InputBatchOrderAction, InputCombAction, InputExecOrder,
     InputExecOrderAction, InputForQuote, InputHedgeCfm, InputHedgeCfmAction, InputOffsetSetting,
     InputOptionSelfClose, InputOptionSelfCloseAction, InputOrder, InputOrderAction, InputQuote,
-    InputQuoteAction, InputSpdApply, InputSpdApplyAction, Instrument, InstrumentCommissionRate,
-    InstrumentMarginRate, InstrumentOrderCommRate, InstrumentStatus, InvestUnit, Investor,
-    InvestorCommodityGroupSPMMMargin, InvestorCommoditySPMMMargin, InvestorInfoCommRec,
-    InvestorPortfMarginRatio, InvestorPortfSetting, InvestorPosition,
+    InputQuoteAction, InputSpdApply, InputSpdApplyAction, InstrTradeLimit, Instrument,
+    InstrumentCommissionRate, InstrumentMarginRate, InstrumentOrderCommRate, InstrumentStatus,
+    InvestUnit, Investor, InvestorCommodityGroupSPMMMargin, InvestorCommoditySPMMMargin,
+    InvestorInfoCommRec, InvestorPortfMarginRatio, InvestorPortfSetting, InvestorPosition,
     InvestorPositionCombineDetail, InvestorPositionDetail, InvestorProdRCAMSMargin,
     InvestorProdRULEMargin, InvestorProdSPBMDetail, InvestorProductGroupMargin,
     MMInstrumentCommissionRate, MMOptionInstrCommRate, Notice, NotifyQueryAccount, OffsetSetting,
     OpenAccount, OptionInstrCommRate, OptionInstrTradeCost, OptionSelfClose, OptionSelfCloseAction,
     Order, OrderAction, ParkedOrder, ParkedOrderAction, Product, ProductExchRate, ProductGroup,
-    QryMaxOrderVolume, QueryCFMMCTradingAccountToken, Quote, QuoteAction, RCAMSCombProductInfo,
-    RCAMSInstrParameter, RCAMSInterParameter, RCAMSIntraParameter, RCAMSInvestorCombPosition,
-    RCAMSShortOptAdjustParam, RULEInstrParameter, RULEInterParameter, RULEIntraParameter,
-    RemoveParkedOrder, RemoveParkedOrderAction, ReqQueryAccount, ReqRepeal, ReqTransfer,
-    RiskSettleInvestPosition, RiskSettleProductStatus, RspAuthenticate, RspGenSMSCode,
-    RspGenUserCaptcha, RspGenUserText, RspInfo, RspRepeal, RspTransfer, RspUserAuthMethod,
-    RspUserLogin, SPBMAddOnInterParameter, SPBMFutureParameter, SPBMInterParameter,
-    SPBMIntraParameter, SPBMInvestorPortfDef, SPBMOptionParameter, SPBMPortfDefinition,
-    SPMMInstParam, SPMMProductParam, SecAgentACIDMap, SecAgentCheckMode, SecAgentTradeInfo,
-    SettlementInfo, SettlementInfoConfirm, SpdApply, SpdApplyAction, Trade, TraderOffer,
-    TradingAccount, TradingAccountPasswordUpdate, TradingCode, TradingNotice, TradingNoticeInfo,
-    TransferBank, TransferSerial, UserLogout, UserPasswordUpdate, UserSession,
+    QryMaxOrderVolume, QryMaxOrderVolumeWithPrice, QueryCFMMCTradingAccountToken, Quote,
+    QuoteAction, RCAMSCombProductInfo, RCAMSInstrParameter, RCAMSInterParameter,
+    RCAMSIntraParameter, RCAMSInvestorCombPosition, RCAMSShortOptAdjustParam, RULEInstrParameter,
+    RULEInterParameter, RULEIntraParameter, RemoveParkedOrder, RemoveParkedOrderAction,
+    ReqQueryAccount, ReqRepeal, ReqTransfer, RiskSettleInvestPosition, RiskSettleProductStatus,
+    RspAuthenticate, RspGenSMSCode, RspGenUserCaptcha, RspGenUserText, RspInfo, RspRepeal,
+    RspTransfer, RspUserAuthMethod, RspUserLogin, SPBMAddOnInterParameter, SPBMFutureParameter,
+    SPBMInterParameter, SPBMIntraParameter, SPBMInvestorPortfDef, SPBMOptionParameter,
+    SPBMPortfDefinition, SPMMInstParam, SPMMProductParam, SecAgentACIDMap, SecAgentCheckMode,
+    SecAgentTradeInfo, SettlementInfo, SettlementInfoConfirm, SpdApply, SpdApplyAction, Trade,
+    TraderOffer, TradingAccount, TradingAccountPasswordUpdate, TradingCode, TradingNotice,
+    TradingNoticeInfo, TransferBank, TransferSerial, UserLogout, UserPasswordUpdate, UserSession,
 };
 
 pub struct TraderSpiSink {
@@ -306,6 +306,25 @@ pub(crate) unsafe fn remove_parked_order_action_response(
     invoke(|| {
         sink.spi.remove_parked_order_action_response(
             remove_parked_order_action,
+            rsp_info,
+            request_id,
+            is_last,
+        )
+    });
+}
+
+pub(crate) unsafe fn max_order_volume_with_price_query_response(
+    sink: &mut TraderSpiSink,
+    qry_max_order_volume_with_price: *const u8,
+    rsp_info: *const u8,
+    request_id: i32,
+    is_last: bool,
+) {
+    owned_params!(sink, qry_max_order_volume_with_price: QryMaxOrderVolumeWithPrice,
+        rsp_info: RspInfo);
+    invoke(|| {
+        sink.spi.max_order_volume_with_price_query_response(
+            qry_max_order_volume_with_price,
             rsp_info,
             request_id,
             is_last,
@@ -2552,4 +2571,36 @@ pub(crate) unsafe fn hedge_cfm_action_error(
     owned_params!(sink, hedge_cfm_action: HedgeCfmAction,
         rsp_info: RspInfo);
     invoke(|| sink.spi.hedge_cfm_action_error(hedge_cfm_action, rsp_info));
+}
+
+pub(crate) unsafe fn parked_order_report(sink: &mut TraderSpiSink, parked_order: *const u8) {
+    owned_params!(sink, parked_order: ParkedOrder);
+    invoke(|| sink.spi.parked_order_report(parked_order));
+}
+
+pub(crate) unsafe fn parked_order_action_report(
+    sink: &mut TraderSpiSink,
+    parked_order_action: *const u8,
+) {
+    owned_params!(sink, parked_order_action: ParkedOrderAction);
+    invoke(|| sink.spi.parked_order_action_report(parked_order_action));
+}
+
+pub(crate) unsafe fn instrument_trade_limit_query_response(
+    sink: &mut TraderSpiSink,
+    instr_trade_limit: *const u8,
+    rsp_info: *const u8,
+    request_id: i32,
+    is_last: bool,
+) {
+    owned_params!(sink, instr_trade_limit: InstrTradeLimit,
+        rsp_info: RspInfo);
+    invoke(|| {
+        sink.spi.instrument_trade_limit_query_response(
+            instr_trade_limit,
+            rsp_info,
+            request_id,
+            is_last,
+        )
+    });
 }

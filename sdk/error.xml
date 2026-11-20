@@ -142,6 +142,7 @@
 	<error id="PRICE_OVER_LIMIT" value="163" prompt="CTP:报单价格不在涨跌停板价范围内"/>
 	<error id="VOLUME_NOT_VALID" value="164" prompt="CTP:下单数量不符合交易所规范"/>
 	<error id="PRICE_WRONG_TICK" value="165" prompt="CTP:报单价格非最小变动价位整数倍"/>
+	<error id="PARKEDORDER_SEND_FAILED" value="166" prompt="CTP:预埋（撤单）单发送失败"/>
 	<!--转帐系统错误代码 -->
 	<error id="SEND_INSTITUTION_CODE_ERROR" value="1000" prompt="CTP:银期转账：发送机构代码错误"/>
 	<error id="NO_GET_PLATFORM_SN" value="1001" prompt="CTP:银期转账：取平台流水号错误"/>

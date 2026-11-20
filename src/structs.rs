@@ -1506,6 +1506,21 @@ pub struct ErrorConditionalOrder {
     pub ip_address: String,
 }
 
+/// 交易所报撤频率限制
+#[derive(Debug, Clone)]
+pub struct ExchOrderFreqParam {
+    /// 投资者代码。CTP：`InvestorID`，`TThostFtdcInvestorIDType`。
+    pub investor_id: InvestorId,
+    /// 交易所代码。CTP：`ExchangeID`，`TThostFtdcExchangeIDType`。
+    pub exchange_id: ExchangeId,
+    /// 投机套保标志。CTP：`HedgeFlag`，`TThostFtdcHedgeFlagType`。
+    pub hedge_flag: HedgeFlag,
+    /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
+    pub broker_id: BrokerId,
+    /// 频率限制。CTP：`FreqLimit`，`TThostFtdcVolumeType`。
+    pub frequency_limit: i32,
+}
+
 /// 交易所
 #[derive(Debug, Clone)]
 pub struct Exchange {
@@ -3341,6 +3356,17 @@ pub struct InputSpdApplyAction {
     pub ip_address: String,
     /// Mac地址。CTP：`MacAddress`，`TThostFtdcMacAddressType`。
     pub mac_address: String,
+}
+
+/// 合约交易限制
+#[derive(Debug, Clone)]
+pub struct InstrTradeLimit {
+    /// 合约代码。CTP：`InstrumentID`，`TThostFtdcInstrumentIDType`。
+    pub instrument_id: InstrumentId,
+    /// 交易所代码。CTP：`ExchangeID`，`TThostFtdcExchangeIDType`。
+    pub exchange_id: ExchangeId,
+    /// 最小开仓手数。CTP：`MinOpenVolume`，`TThostFtdcVolumeType`。
+    pub min_open_volume: i32,
 }
 
 /// 合约
@@ -6659,6 +6685,15 @@ pub struct QryHisOrder {
 pub struct QryIPList {
     /// IP地址。CTP：`IPAddress`，`TThostFtdcIPAddressType`。
     pub ip_address: String,
+}
+
+/// 合约交易限制查询
+#[derive(Debug, Clone)]
+pub struct QryInstrTradeLimit {
+    /// 合约代码。CTP：`InstrumentID`，`TThostFtdcInstrumentIDType`。
+    pub instrument_id: InstrumentId,
+    /// 交易所代码。CTP：`ExchangeID`，`TThostFtdcExchangeIDType`。
+    pub exchange_id: ExchangeId,
 }
 
 /// 查询合约

@@ -102,6 +102,7 @@ public:
     void OnRspSettlementInfoConfirm(CThostFtdcSettlementInfoConfirmField* pSettlementInfoConfirm, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast) override;
     void OnRspRemoveParkedOrder(CThostFtdcRemoveParkedOrderField* pRemoveParkedOrder, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast) override;
     void OnRspRemoveParkedOrderAction(CThostFtdcRemoveParkedOrderActionField* pRemoveParkedOrderAction, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast) override;
+    void OnRspQryMaxOrderVolumeWithPrice(CThostFtdcQryMaxOrderVolumeWithPriceField* pQryMaxOrderVolumeWithPrice, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast) override;
     void OnRspExecOrderInsert(CThostFtdcInputExecOrderField* pInputExecOrder, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast) override;
     void OnRspExecOrderAction(CThostFtdcInputExecOrderActionField* pInputExecOrderAction, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast) override;
     void OnRspForQuoteInsert(CThostFtdcInputForQuoteField* pInputForQuote, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast) override;
@@ -260,6 +261,9 @@ public:
     void OnRtnHedgeCfm(CThostFtdcHedgeCfmField* pHedgeCfm) override;
     void OnErrRtnHedgeCfm(CThostFtdcInputHedgeCfmField* pInputHedgeCfm, CThostFtdcRspInfoField* pRspInfo) override;
     void OnErrRtnHedgeCfmAction(CThostFtdcHedgeCfmActionField* pHedgeCfmAction, CThostFtdcRspInfoField* pRspInfo) override;
+    void OnRtnParkedOrder(CThostFtdcParkedOrderField* pParkedOrder) override;
+    void OnRtnParkedOrderAction(CThostFtdcParkedOrderActionField* pParkedOrderAction) override;
+    void OnRspQryInstrTradeLimit(CThostFtdcInstrTradeLimitField* pInstrTradeLimit, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast) override;
 
 private:
     rust::Box<TraderSpiSink> sink_;
@@ -413,6 +417,8 @@ public:
     std::int32_t spd_apply_action(std::uint8_t* request, std::int32_t request_id) const;
     std::int32_t query_investor_info_comm_rec(std::uint8_t* request, std::int32_t request_id) const;
     std::int32_t query_comb_leg(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t query_instr_trade_limit(std::uint8_t* request, std::int32_t request_id) const;
+    std::int32_t query_max_order_volume_with_price(std::uint8_t* request, std::int32_t request_id) const;
 private:
     CThostFtdcTraderApi* api_;
     std::unique_ptr<TraderSpiBridge> spi_;

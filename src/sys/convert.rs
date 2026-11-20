@@ -1634,6 +1634,20 @@ impl FromSys for crate::InputSpdApplyAction {
     }
 }
 
+impl FromSys for crate::InstrTradeLimit {
+    type Raw = sys::CThostFtdcInstrTradeLimitField;
+
+    fn from_sys(raw: &Self::Raw) -> Result<Self, ConversionError> {
+        Ok(Self {
+            instrument_id: crate::InstrumentId::from_wire(&raw.InstrumentID)
+                .map_err(|source| ConversionError::new("InstrumentID", source))?,
+            exchange_id: crate::ExchangeId::from_wire(&raw.ExchangeID)
+                .map_err(|source| ConversionError::new("ExchangeID", source))?,
+            min_open_volume: raw.MinOpenVolume,
+        })
+    }
+}
+
 impl FromSys for crate::Instrument {
     type Raw = sys::CThostFtdcInstrumentField;
 
@@ -3032,6 +3046,30 @@ impl FromSys for crate::QryMaxOrderVolume {
             offset_flag: crate::OffsetFlag::from_code(raw.OffsetFlag as u8),
             hedge_flag: crate::HedgeFlag::from_code(raw.HedgeFlag as u8),
             max_volume: raw.MaxVolume,
+            exchange_id: crate::ExchangeId::from_wire(&raw.ExchangeID)
+                .map_err(|source| ConversionError::new("ExchangeID", source))?,
+            invest_unit_id: crate::InvestUnitId::from_wire(&raw.InvestUnitID)
+                .map_err(|source| ConversionError::new("InvestUnitID", source))?,
+            instrument_id: crate::InstrumentId::from_wire(&raw.InstrumentID)
+                .map_err(|source| ConversionError::new("InstrumentID", source))?,
+        })
+    }
+}
+
+impl FromSys for crate::QryMaxOrderVolumeWithPrice {
+    type Raw = sys::CThostFtdcQryMaxOrderVolumeWithPriceField;
+
+    fn from_sys(raw: &Self::Raw) -> Result<Self, ConversionError> {
+        Ok(Self {
+            broker_id: crate::BrokerId::from_wire(&raw.BrokerID)
+                .map_err(|source| ConversionError::new("BrokerID", source))?,
+            investor_id: crate::InvestorId::from_wire(&raw.InvestorID)
+                .map_err(|source| ConversionError::new("InvestorID", source))?,
+            direction: crate::Direction::from_code(raw.Direction as u8),
+            offset_flag: crate::OffsetFlag::from_code(raw.OffsetFlag as u8),
+            hedge_flag: crate::HedgeFlag::from_code(raw.HedgeFlag as u8),
+            max_volume: raw.MaxVolume,
+            price: raw.Price,
             exchange_id: crate::ExchangeId::from_wire(&raw.ExchangeID)
                 .map_err(|source| ConversionError::new("ExchangeID", source))?,
             invest_unit_id: crate::InvestUnitId::from_wire(&raw.InvestUnitID)
@@ -6873,6 +6911,48 @@ impl crate::QryCombLeg {
         let raw = sys::CThostFtdcQryCombLegField {
             LegInstrumentID: self.leg_instrument_id.to_wire(),
         };
+        Ok(raw)
+    }
+}
+
+impl crate::QryInstrTradeLimit {
+    pub(crate) fn to_sys(&self) -> Result<sys::CThostFtdcQryInstrTradeLimitField, ConversionError> {
+        let raw = sys::CThostFtdcQryInstrTradeLimitField {
+            InstrumentID: self.instrument_id.to_wire(),
+            ExchangeID: self.exchange_id.to_wire(),
+        };
+        Ok(raw)
+    }
+}
+
+impl crate::QryMaxOrderVolumeWithPrice {
+    pub(crate) fn to_sys(
+        &self,
+    ) -> Result<sys::CThostFtdcQryMaxOrderVolumeWithPriceField, ConversionError> {
+        let raw =
+            sys::CThostFtdcQryMaxOrderVolumeWithPriceField {
+                BrokerID: self.broker_id.to_wire(),
+                InvestorID: self.investor_id.to_wire(),
+                Direction: self
+                    .direction
+                    .code()
+                    .ok_or_else(|| ConversionError::new("Direction", TextError::UnknownEnumValue))?
+                    as c_char,
+                OffsetFlag: self.offset_flag.code().ok_or_else(|| {
+                    ConversionError::new("OffsetFlag", TextError::UnknownEnumValue)
+                })? as c_char,
+                HedgeFlag: self
+                    .hedge_flag
+                    .code()
+                    .ok_or_else(|| ConversionError::new("HedgeFlag", TextError::UnknownEnumValue))?
+                    as c_char,
+                MaxVolume: self.max_volume,
+                Price: self.price,
+                ExchangeID: self.exchange_id.to_wire(),
+                InvestUnitID: self.invest_unit_id.to_wire(),
+                InstrumentID: self.instrument_id.to_wire(),
+                ..Default::default()
+            };
         Ok(raw)
     }
 }

@@ -12,30 +12,30 @@ use crate::{
     QryClassifiedInstrument, QryCombAction, QryCombInstrumentGuard, QryCombLeg,
     QryCombPromotionParam, QryContractBank, QryDepthMarketData, QryEWarrantOffset, QryExchange,
     QryExchangeMarginRate, QryExchangeMarginRateAdjust, QryExchangeRate, QryExecOrder, QryForQuote,
-    QryHedgeCfm, QryInstrument, QryInstrumentCommissionRate, QryInstrumentMarginRate,
-    QryInstrumentOrderCommRate, QryInvestUnit, QryInvestor, QryInvestorCommodityGroupSPMMMargin,
-    QryInvestorCommoditySPMMMargin, QryInvestorInfoCommRec, QryInvestorPortfMarginRatio,
-    QryInvestorPortfSetting, QryInvestorPosition, QryInvestorPositionCombineDetail,
-    QryInvestorPositionDetail, QryInvestorProdRCAMSMargin, QryInvestorProdRULEMargin,
-    QryInvestorProdSPBMDetail, QryInvestorProductGroupMargin, QryMMInstrumentCommissionRate,
-    QryMMOptionInstrCommRate, QryMaxOrderVolume, QryNotice, QryOffsetSetting,
-    QryOptionInstrCommRate, QryOptionInstrTradeCost, QryOptionSelfClose, QryOrder, QryParkedOrder,
-    QryParkedOrderAction, QryProduct, QryProductExchRate, QryProductGroup, QryQuote,
-    QryRCAMSCombProductInfo, QryRCAMSInstrParameter, QryRCAMSInterParameter,
-    QryRCAMSIntraParameter, QryRCAMSInvestorCombPosition, QryRCAMSShortOptAdjustParam,
-    QryRULEInstrParameter, QryRULEInterParameter, QryRULEIntraParameter,
-    QryRiskSettleInvestPosition, QryRiskSettleProductStatus, QrySPBMAddOnInterParameter,
-    QrySPBMFutureParameter, QrySPBMInterParameter, QrySPBMIntraParameter, QrySPBMInvestorPortfDef,
-    QrySPBMOptionParameter, QrySPBMPortfDefinition, QrySPMMInstParam, QrySPMMProductParam,
-    QrySecAgentACIDMap, QrySecAgentCheckMode, QrySecAgentTradeInfo, QrySettlementInfo,
-    QrySettlementInfoConfirm, QrySpdApply, QryTrade, QryTraderOffer, QryTradingAccount,
-    QryTradingCode, QryTradingNotice, QryTransferBank, QryTransferSerial, QryUserSession,
-    QueryCFMMCTradingAccountToken, RemoveParkedOrder, RemoveParkedOrderAction, ReqAuthenticate,
-    ReqGenSMSCode, ReqGenUserCaptcha, ReqGenUserText, ReqQueryAccount, ReqTransfer,
-    ReqUserAuthMethod, ReqUserLogin, ReqUserLoginWithCaptcha, ReqUserLoginWithOTP,
-    ReqUserLoginWithText, ResumeType, SettlementInfoConfirm, TextError, TraderSpi,
-    TradingAccountPasswordUpdate, UserLogout, UserPasswordUpdate, UserSystemInfo,
-    WechatUserSystemInfo, sys,
+    QryHedgeCfm, QryInstrTradeLimit, QryInstrument, QryInstrumentCommissionRate,
+    QryInstrumentMarginRate, QryInstrumentOrderCommRate, QryInvestUnit, QryInvestor,
+    QryInvestorCommodityGroupSPMMMargin, QryInvestorCommoditySPMMMargin, QryInvestorInfoCommRec,
+    QryInvestorPortfMarginRatio, QryInvestorPortfSetting, QryInvestorPosition,
+    QryInvestorPositionCombineDetail, QryInvestorPositionDetail, QryInvestorProdRCAMSMargin,
+    QryInvestorProdRULEMargin, QryInvestorProdSPBMDetail, QryInvestorProductGroupMargin,
+    QryMMInstrumentCommissionRate, QryMMOptionInstrCommRate, QryMaxOrderVolume,
+    QryMaxOrderVolumeWithPrice, QryNotice, QryOffsetSetting, QryOptionInstrCommRate,
+    QryOptionInstrTradeCost, QryOptionSelfClose, QryOrder, QryParkedOrder, QryParkedOrderAction,
+    QryProduct, QryProductExchRate, QryProductGroup, QryQuote, QryRCAMSCombProductInfo,
+    QryRCAMSInstrParameter, QryRCAMSInterParameter, QryRCAMSIntraParameter,
+    QryRCAMSInvestorCombPosition, QryRCAMSShortOptAdjustParam, QryRULEInstrParameter,
+    QryRULEInterParameter, QryRULEIntraParameter, QryRiskSettleInvestPosition,
+    QryRiskSettleProductStatus, QrySPBMAddOnInterParameter, QrySPBMFutureParameter,
+    QrySPBMInterParameter, QrySPBMIntraParameter, QrySPBMInvestorPortfDef, QrySPBMOptionParameter,
+    QrySPBMPortfDefinition, QrySPMMInstParam, QrySPMMProductParam, QrySecAgentACIDMap,
+    QrySecAgentCheckMode, QrySecAgentTradeInfo, QrySettlementInfo, QrySettlementInfoConfirm,
+    QrySpdApply, QryTrade, QryTraderOffer, QryTradingAccount, QryTradingCode, QryTradingNotice,
+    QryTransferBank, QryTransferSerial, QryUserSession, QueryCFMMCTradingAccountToken,
+    RemoveParkedOrder, RemoveParkedOrderAction, ReqAuthenticate, ReqGenSMSCode, ReqGenUserCaptcha,
+    ReqGenUserText, ReqQueryAccount, ReqTransfer, ReqUserAuthMethod, ReqUserLogin,
+    ReqUserLoginWithCaptcha, ReqUserLoginWithOTP, ReqUserLoginWithText, ResumeType,
+    SettlementInfoConfirm, TextError, TraderSpi, TradingAccountPasswordUpdate, UserLogout,
+    UserPasswordUpdate, UserSystemInfo, WechatUserSystemInfo, sys,
 };
 use cxx::UniquePtr;
 use std::{error::Error, fmt, ops::Deref};
@@ -2212,6 +2212,38 @@ impl TraderApi {
         let result = unsafe {
             self.inner.query_comb_leg(
                 (&mut raw as *mut sys::CThostFtdcQryCombLegField).cast(),
+                request_id,
+            )
+        };
+        Ok(result)
+    }
+
+    pub fn query_instr_trade_limit(
+        &self,
+        request: &QryInstrTradeLimit,
+        request_id: i32,
+    ) -> Result<i32, ConversionError> {
+        let mut raw = request.to_sys()?;
+        // SAFETY: raw 是完整初始化的查询请求，指针仅在同步请求调用期间有效。
+        let result = unsafe {
+            self.inner.query_instr_trade_limit(
+                (&mut raw as *mut sys::CThostFtdcQryInstrTradeLimitField).cast(),
+                request_id,
+            )
+        };
+        Ok(result)
+    }
+
+    pub fn query_max_order_volume_with_price(
+        &self,
+        request: &QryMaxOrderVolumeWithPrice,
+        request_id: i32,
+    ) -> Result<i32, ConversionError> {
+        let mut raw = request.to_sys()?;
+        // SAFETY: raw 是完整初始化的查询请求，指针仅在同步请求调用期间有效。
+        let result = unsafe {
+            self.inner.query_max_order_volume_with_price(
+                (&mut raw as *mut sys::CThostFtdcQryMaxOrderVolumeWithPriceField).cast(),
                 request_id,
             )
         };

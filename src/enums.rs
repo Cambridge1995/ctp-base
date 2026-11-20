@@ -9822,6 +9822,8 @@ pub enum ParkedOrderStatus {
     Send,
     /// 已删除。CTP：`THOST_FTDC_PAOS_Deleted = '3'`。
     Deleted,
+    /// 发送失败。CTP：`THOST_FTDC_PAOS_SendFailed = '4'`。
+    SendFailed,
     /// 未识别的响应值，保留原始字节；请求发送时拒绝。
     UnknownValue(u8),
 }
@@ -9832,6 +9834,7 @@ impl ParkedOrderStatus {
             49 => Self::NotSend,
             50 => Self::Send,
             51 => Self::Deleted,
+            52 => Self::SendFailed,
             value => Self::UnknownValue(value),
         }
     }
@@ -9841,6 +9844,7 @@ impl ParkedOrderStatus {
             Self::NotSend => Some(49),
             Self::Send => Some(50),
             Self::Deleted => Some(51),
+            Self::SendFailed => Some(52),
             Self::UnknownValue(_) => None,
         }
     }
@@ -13734,6 +13738,8 @@ pub enum TradeParamID {
     IsDceFutCloseFrozen,
     /// 是否启用短信验证。CTP：`THOST_FTDC_TPID_UseSMSVerify = 'n'`。
     UseSMSVerify,
+    /// 是否启用交易所级别报撤单频率限制。CTP：`THOST_FTDC_TPID_IsExchOrderFreq = 'e'`。
+    IsExchOrderFreq,
     /// 未识别的响应值，保留原始字节；请求发送时拒绝。
     UnknownValue(u8),
 }
@@ -13769,6 +13775,7 @@ impl TradeParamID {
             108 => Self::NewBESMarginAlgo,
             109 => Self::IsDceFutCloseFrozen,
             110 => Self::UseSMSVerify,
+            101 => Self::IsExchOrderFreq,
             value => Self::UnknownValue(value),
         }
     }
@@ -13803,6 +13810,7 @@ impl TradeParamID {
             Self::NewBESMarginAlgo => Some(108),
             Self::IsDceFutCloseFrozen => Some(109),
             Self::UseSMSVerify => Some(110),
+            Self::IsExchOrderFreq => Some(101),
             Self::UnknownValue(_) => None,
         }
     }

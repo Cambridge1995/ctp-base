@@ -555,6 +555,16 @@ mod bridge {
             request_id: i32,
         ) -> i32;
         unsafe fn query_comb_leg(self: &TraderApiBridge, request: *mut u8, request_id: i32) -> i32;
+        unsafe fn query_instr_trade_limit(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
+        unsafe fn query_max_order_volume_with_price(
+            self: &TraderApiBridge,
+            request: *mut u8,
+            request_id: i32,
+        ) -> i32;
         unsafe fn emit_trader_order(spi: Pin<&mut TraderSpiBridge>, data: *mut u8);
         unsafe fn emit_trader_callback(
             spi: Pin<&mut TraderSpiBridge>,
@@ -681,6 +691,13 @@ mod bridge {
         unsafe fn remove_parked_order_action_response(
             sink: &mut TraderSpiSink,
             remove_parked_order_action: *const u8,
+            rsp_info: *const u8,
+            request_id: i32,
+            is_last: bool,
+        );
+        unsafe fn max_order_volume_with_price_query_response(
+            sink: &mut TraderSpiSink,
+            qry_max_order_volume_with_price: *const u8,
             rsp_info: *const u8,
             request_id: i32,
             is_last: bool,
@@ -1616,6 +1633,18 @@ mod bridge {
             sink: &mut TraderSpiSink,
             hedge_cfm_action: *const u8,
             rsp_info: *const u8,
+        );
+        unsafe fn parked_order_report(sink: &mut TraderSpiSink, parked_order: *const u8);
+        unsafe fn parked_order_action_report(
+            sink: &mut TraderSpiSink,
+            parked_order_action: *const u8,
+        );
+        unsafe fn instrument_trade_limit_query_response(
+            sink: &mut TraderSpiSink,
+            instr_trade_limit: *const u8,
+            rsp_info: *const u8,
+            request_id: i32,
+            is_last: bool,
         );
     }
 }

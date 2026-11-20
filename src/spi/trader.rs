@@ -10,27 +10,28 @@ use crate::{
     ForQuote, ForQuoteRsp, HedgeCfm, HedgeCfmAction, InputBatchOrderAction, InputCombAction,
     InputExecOrder, InputExecOrderAction, InputForQuote, InputHedgeCfm, InputHedgeCfmAction,
     InputOffsetSetting, InputOptionSelfClose, InputOptionSelfCloseAction, InputOrder,
-    InputOrderAction, InputQuote, InputQuoteAction, InputSpdApply, InputSpdApplyAction, Instrument,
-    InstrumentCommissionRate, InstrumentMarginRate, InstrumentOrderCommRate, InstrumentStatus,
-    InvestUnit, Investor, InvestorCommodityGroupSPMMMargin, InvestorCommoditySPMMMargin,
-    InvestorInfoCommRec, InvestorPortfMarginRatio, InvestorPortfSetting, InvestorPosition,
+    InputOrderAction, InputQuote, InputQuoteAction, InputSpdApply, InputSpdApplyAction,
+    InstrTradeLimit, Instrument, InstrumentCommissionRate, InstrumentMarginRate,
+    InstrumentOrderCommRate, InstrumentStatus, InvestUnit, Investor,
+    InvestorCommodityGroupSPMMMargin, InvestorCommoditySPMMMargin, InvestorInfoCommRec,
+    InvestorPortfMarginRatio, InvestorPortfSetting, InvestorPosition,
     InvestorPositionCombineDetail, InvestorPositionDetail, InvestorProdRCAMSMargin,
     InvestorProdRULEMargin, InvestorProdSPBMDetail, InvestorProductGroupMargin,
     MMInstrumentCommissionRate, MMOptionInstrCommRate, Notice, NotifyQueryAccount, OffsetSetting,
     OpenAccount, OptionInstrCommRate, OptionInstrTradeCost, OptionSelfClose, OptionSelfCloseAction,
     Order, OrderAction, ParkedOrder, ParkedOrderAction, Product, ProductExchRate, ProductGroup,
-    QryMaxOrderVolume, QueryCFMMCTradingAccountToken, Quote, QuoteAction, RCAMSCombProductInfo,
-    RCAMSInstrParameter, RCAMSInterParameter, RCAMSIntraParameter, RCAMSInvestorCombPosition,
-    RCAMSShortOptAdjustParam, RULEInstrParameter, RULEInterParameter, RULEIntraParameter,
-    RemoveParkedOrder, RemoveParkedOrderAction, ReqQueryAccount, ReqRepeal, ReqTransfer,
-    RiskSettleInvestPosition, RiskSettleProductStatus, RspAuthenticate, RspGenSMSCode,
-    RspGenUserCaptcha, RspGenUserText, RspInfo, RspRepeal, RspTransfer, RspUserAuthMethod,
-    RspUserLogin, SPBMAddOnInterParameter, SPBMFutureParameter, SPBMInterParameter,
-    SPBMIntraParameter, SPBMInvestorPortfDef, SPBMOptionParameter, SPBMPortfDefinition,
-    SPMMInstParam, SPMMProductParam, SecAgentACIDMap, SecAgentCheckMode, SecAgentTradeInfo,
-    SettlementInfo, SettlementInfoConfirm, SpdApply, SpdApplyAction, Trade, TraderOffer,
-    TradingAccount, TradingAccountPasswordUpdate, TradingCode, TradingNotice, TradingNoticeInfo,
-    TransferBank, TransferSerial, UserLogout, UserPasswordUpdate, UserSession,
+    QryMaxOrderVolume, QryMaxOrderVolumeWithPrice, QueryCFMMCTradingAccountToken, Quote,
+    QuoteAction, RCAMSCombProductInfo, RCAMSInstrParameter, RCAMSInterParameter,
+    RCAMSIntraParameter, RCAMSInvestorCombPosition, RCAMSShortOptAdjustParam, RULEInstrParameter,
+    RULEInterParameter, RULEIntraParameter, RemoveParkedOrder, RemoveParkedOrderAction,
+    ReqQueryAccount, ReqRepeal, ReqTransfer, RiskSettleInvestPosition, RiskSettleProductStatus,
+    RspAuthenticate, RspGenSMSCode, RspGenUserCaptcha, RspGenUserText, RspInfo, RspRepeal,
+    RspTransfer, RspUserAuthMethod, RspUserLogin, SPBMAddOnInterParameter, SPBMFutureParameter,
+    SPBMInterParameter, SPBMIntraParameter, SPBMInvestorPortfDef, SPBMOptionParameter,
+    SPBMPortfDefinition, SPMMInstParam, SPMMProductParam, SecAgentACIDMap, SecAgentCheckMode,
+    SecAgentTradeInfo, SettlementInfo, SettlementInfoConfirm, SpdApply, SpdApplyAction, Trade,
+    TraderOffer, TradingAccount, TradingAccountPasswordUpdate, TradingCode, TradingNotice,
+    TradingNoticeInfo, TransferBank, TransferSerial, UserLogout, UserPasswordUpdate, UserSession,
 };
 
 /// 原生回调线程中的调用方 SPI；只需覆盖关心的方法。
@@ -167,6 +168,14 @@ pub trait TraderSpi: Send {
     fn remove_parked_order_action_response(
         &mut self,
         remove_parked_order_action: Option<RemoveParkedOrderAction>,
+        rsp_info: Option<RspInfo>,
+        request_id: i32,
+        is_last: bool,
+    ) {
+    }
+    fn max_order_volume_with_price_query_response(
+        &mut self,
+        qry_max_order_volume_with_price: Option<QryMaxOrderVolumeWithPrice>,
         rsp_info: Option<RspInfo>,
         request_id: i32,
         is_last: bool,
@@ -1178,6 +1187,16 @@ pub trait TraderSpi: Send {
         &mut self,
         hedge_cfm_action: Option<HedgeCfmAction>,
         rsp_info: Option<RspInfo>,
+    ) {
+    }
+    fn parked_order_report(&mut self, parked_order: Option<ParkedOrder>) {}
+    fn parked_order_action_report(&mut self, parked_order_action: Option<ParkedOrderAction>) {}
+    fn instrument_trade_limit_query_response(
+        &mut self,
+        instr_trade_limit: Option<InstrTradeLimit>,
+        rsp_info: Option<RspInfo>,
+        request_id: i32,
+        is_last: bool,
     ) {
     }
 }

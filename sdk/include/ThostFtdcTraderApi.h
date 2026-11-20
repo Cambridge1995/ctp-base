@@ -97,6 +97,9 @@ public:
 	///删除预埋撤单响应
 	virtual void OnRspRemoveParkedOrderAction(CThostFtdcRemoveParkedOrderActionField *pRemoveParkedOrderAction, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {};
 
+	///根据价格查询最大报单数量响应
+	virtual void OnRspQryMaxOrderVolumeWithPrice(CThostFtdcQryMaxOrderVolumeWithPriceField *pQryMaxOrderVolumeWithPrice, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {};
+
 	///执行宣告录入请求响应
 	virtual void OnRspExecOrderInsert(CThostFtdcInputExecOrderField *pInputExecOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {};
 
@@ -570,6 +573,15 @@ public:
 
 	///套保确认撤销通知
 	virtual void OnErrRtnHedgeCfmAction(CThostFtdcHedgeCfmActionField *pHedgeCfmAction, CThostFtdcRspInfoField *pRspInfo) {};
+
+	///预埋报单通知
+	virtual void OnRtnParkedOrder(CThostFtdcParkedOrderField *pParkedOrder) {};
+
+	///预埋撤单通知
+	virtual void OnRtnParkedOrderAction(CThostFtdcParkedOrderActionField *pParkedOrderAction) {};
+
+	///合约交易限制查询回复
+	virtual void OnRspQryInstrTradeLimit(CThostFtdcInstrTradeLimitField *pInstrTradeLimit, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {};
 };
 
 class TRADER_API_EXPORT CThostFtdcTraderApi
@@ -716,6 +728,9 @@ public:
 
 	///请求删除预埋撤单
 	virtual int ReqRemoveParkedOrderAction(CThostFtdcRemoveParkedOrderActionField *pRemoveParkedOrderAction, int nRequestID) = 0;
+
+	///根据价格查询最大报单数量请求
+	virtual int ReqQryMaxOrderVolumeWithPrice(CThostFtdcQryMaxOrderVolumeWithPriceField *pQryMaxOrderVolumeWithPrice, int nRequestID) = 0;
 
 	///执行宣告录入请求
 	virtual int ReqExecOrderInsert(CThostFtdcInputExecOrderField *pInputExecOrder, int nRequestID) = 0;
@@ -1034,6 +1049,9 @@ public:
 
 	///套保确认查询请求
 	virtual int ReqQryHedgeCfm(CThostFtdcQryHedgeCfmField *pQryHedgeCfm, int nRequestID) = 0;
+
+	///合约交易限制查询请求
+	virtual int ReqQryInstrTradeLimit(CThostFtdcQryInstrTradeLimitField *pQryInstrTradeLimit, int nRequestID) = 0;
 protected:
 	~CThostFtdcTraderApi(){};
 };
