@@ -199,6 +199,23 @@ fn main() {
     });
     println!("cargo:rustc-link-search=native={}", library_dir.display());
 
+    if target_os == "windows" {
+        let mut header = String::from("#pragma once\n\n");
+        for (name, base) in [
+            ("CTP_BASE_MD_DLL_PATH", &md_base),
+            ("CTP_BASE_TRADER_DLL_PATH", &trader_base),
+        ] {
+            let path = library_dir.join(library_file(base, &target_os));
+            let path = path
+                .to_string_lossy()
+                .replace('\\', "\\\\")
+                .replace('"', "\\\"");
+            header.push_str(&format!("#define {name} L\"{path}\"\n"));
+        }
+        fs::write(out_dir.join("ctp_sdk_libraries.h"), header)
+            .unwrap_or_else(|error| panic!("写入 Windows CTP 库路径失败：{error}"));
+    }
+
     if target_os == "macos" {
         // 官方 dylib 的 install name 与代码签名面向 framework Bundle，
         // 处理后改为 @rpath 形式并用 ad-hoc 签名替换，否则 Apple Silicon
@@ -252,6 +269,7 @@ fn main() {
     cxx_build::bridges(["src/sys/ffi/md.rs", "src/sys/ffi/trader.rs"])
         .include(&root)
         .include(&include_dir)
+        .include(&out_dir)
         .files(["cpp/md_bridge.cpp", "cpp/trader_bridge.cpp"])
         .warnings(false)
         .extra_warnings(false)
@@ -262,10 +280,7 @@ fn main() {
         .flag_if_supported("-fPIC")
         .compile("ctp_native_bridge");
 
-    if target_os == "windows" {
-        println!("cargo:rustc-link-lib={md_base}");
-        println!("cargo:rustc-link-lib={trader_base}");
-    } else {
+    if target_os != "windows" {
         println!("cargo:rustc-link-lib=dylib={md_base}");
         println!("cargo:rustc-link-lib=dylib={trader_base}");
         println!("cargo:rustc-link-arg=-Wl,-rpath,{}", library_dir.display());

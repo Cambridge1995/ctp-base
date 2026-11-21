@@ -543,6 +543,12 @@ fn main() -> Result<(), Box<dyn Error>> {
         println!("正在连接交易前置：{trade_front}");
         api.register_front(&trade_front)
             .map_err(|error| error.to_string())?;
+        // CTP 要求在 Init 前设置订阅模式；Quick 只接收登录后的新消息，避免历史报单重放。
+        api.subscribe_private(ResumeType::Quick)
+            .map_err(|error| error.to_string())?;
+        api.subscribe_public(ResumeType::Quick)
+            .map_err(|error| error.to_string())?;
+        println!("私有流、公共流订阅完成");
         api.init();
         wait_for(&shared, "连接交易前置", |state| state.connected)?;
         println!("交易前置已连接");
@@ -580,11 +586,6 @@ fn main() -> Result<(), Box<dyn Error>> {
             front_id.get(),
             session_id.get()
         );
-        api.subscribe_private(ResumeType::Quick)
-            .map_err(|error| error.to_string())?;
-        api.subscribe_public(ResumeType::Quick)
-            .map_err(|error| error.to_string())?;
-        println!("私有流、公共流订阅完成");
 
         let settlement = SettlementInfoConfirm {
             broker_id: BrokerId::new(&ctp.broker_id).unwrap(),

@@ -3,7 +3,41 @@
 #include <utility>
 #include <vector>
 
+#ifdef _WIN32
+#include "ctp_sdk_libraries.h"
+#include <windows.h>
+#endif
+
 namespace ctp_base::trader {
+
+#ifdef _WIN32
+namespace {
+using CreateApi = CThostFtdcTraderApi* (*)(const char*, bool);
+using GetApiVersion = const char* (*)();
+struct EntryPoints {
+    CreateApi create;
+    GetApiVersion version;
+};
+
+const EntryPoints& ctp_entry_points() {
+    static const EntryPoints entry_points = [] {
+        HMODULE library = LoadLibraryExW(CTP_BASE_TRADER_DLL_PATH, nullptr, LOAD_WITH_ALTERED_SEARCH_PATH);
+        if (library == nullptr) {
+            return EntryPoints{};
+        }
+        const auto create = reinterpret_cast<CreateApi>(GetProcAddress(library, "?CreateFtdcTraderApi@CThostFtdcTraderApi@@SAPEAV1@PEBD_N@Z"));
+        const auto version = reinterpret_cast<GetApiVersion>(GetProcAddress(library, "?GetApiVersion@CThostFtdcTraderApi@@SAPEBDXZ"));
+        if (create == nullptr || version == nullptr) {
+            FreeLibrary(library);
+            return EntryPoints{};
+        }
+        // CTP 对象与虚表持续引用此模块，成功加载后保留到进程退出。
+        return EntryPoints{create, version};
+    }();
+    return entry_points;
+}
+} // namespace
+#endif
 
 TraderSpiBridge::TraderSpiBridge(rust::Box<TraderSpiSink> sink) : sink_(std::move(sink)) {}
 
@@ -759,8 +793,18 @@ std::unique_ptr<TraderSpiBridge> create_trader_spi(rust::Box<TraderSpiSink> sink
 }
 
 std::unique_ptr<TraderApiBridge> create_trader_api(rust::Box<TraderSpiSink> sink, rust::Str flow_path, bool using_udp, bool multicast, bool production_mode) {
+#ifdef _WIN32
+    const auto& entry_points = ctp_entry_points();
+    if (entry_points.create == nullptr) {
+        return nullptr;
+    }
+#endif
     const std::string path(flow_path);
+#ifdef _WIN32
+    CThostFtdcTraderApi* api = entry_points.create(path.c_str(), production_mode);
+#else
     CThostFtdcTraderApi* api = CThostFtdcTraderApi::CreateFtdcTraderApi(path.c_str());
+#endif
     (void)using_udp;
     (void)multicast;
     (void)production_mode;
@@ -771,7 +815,11 @@ std::unique_ptr<TraderApiBridge> create_trader_api(rust::Box<TraderSpiSink> sink
 }
 
 rust::String TraderApiBridge::version() const {
+#ifdef _WIN32
+    const char* value = ctp_entry_points().version();
+#else
     const char* value = CThostFtdcTraderApi::GetApiVersion();
+#endif
     return value == nullptr ? rust::String() : rust::String(value);
 }
 

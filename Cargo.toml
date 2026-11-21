@@ -1,6 +1,6 @@
 [package]
 name = "ctp-base"
-version = "1.1.0"
+version = "1.1.1"
 edition = "2024"
 authors = ["Cambridge"]
 description = "CTP 行情与交易 API 的安全 Rust 绑定：owned 回调、强类型字段与 request_id 语义"
