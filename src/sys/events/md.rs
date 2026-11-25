@@ -1,10 +1,9 @@
 // 由 ctp-generator 根据官方 SPI 与事件审核表生成，请勿手工编辑。
 
-use crate::spi::MdSpi;
 use crate::sys::convert::owned_params;
 use crate::{
-    DepthMarketData, ForQuoteRsp, MulticastInstrument, RspInfo, RspUserLogin, SpecificInstrument,
-    UserLogout,
+    DepthMarketData, ForQuoteRsp, MdSpi, MulticastInstrument, RspInfo, RspUserLogin,
+    SpecificInstrument, UserLogout,
 };
 
 pub struct MdSpiSink {

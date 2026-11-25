@@ -3,6 +3,8 @@
 本文列出 `ctp-base` 全部公开接口与 CTP C++ 接口的对应关系，避免直接使用 C++ 名称时找不到 Rust 方法。
 API 与 SPI 清单由生成器从审核表自动生成，与当前 CTP SDK 版本保持同步。
 
+> 本文只记录原始 API/SPI 与 C++ 的对应关系。Session 公共方法的开发、测试与生产审核状态及证据统一见 [Session层接口.md](Session层接口.md)；原始绑定存在不等于 Session 已通过任何审核。
+
 ## 命名约定
 
 - CTP `ReqUserLogin` 对应 Rust `login`；
@@ -16,18 +18,25 @@ API 与 SPI 清单由生成器从审核表自动生成，与当前 CTP SDK 版�
 
 请求转换失败会直接返回 `ConversionError`；回调负载 owned 化失败会调用 SPI 的 `conversion_error`。
 
+raw API 主动方法使用的请求、输入和查询结构体具有 `Default` 实现，可用结构体更新语法只填写必要字段。普通字段默认为空值/零值；没有安全默认值的枚举保持 `UnknownValue(0)` 并在转换时拒绝发送。逐枚举业务含义和审核策略见 [枚举默认值审核.md](枚举默认值审核.md)。
+
 ## 行情配置
 
 ### `MdConfig`
 
 | 字段 | 类型 | 作用 |
 |---|---|---|
-| `flow_path` | `String` | CTP 流量文件目录 |
+| `broker_id` | `String` | 经纪商代码 |
+| `user_id` | `String` | 投资者代码 |
+| `fronts` | `Vec<String>` | 行情前置地址列表 |
+| `flow_dir` | `String` | CTP 流量文件目录 |
+| `subscribe` | `Vec<String>` | 登录后自动订阅的合约 |
+| `queue_capacity` | `usize` | 事件与输入队列容量，0 使用默认值 |
 | `using_udp` | `bool` | 是否使用 UDP 行情 |
 | `multicast` | `bool` | 是否使用组播行情 |
 | `production_mode` | `bool` | 生产或测评模式 |
 
-`MdConfig::new(flow_path)` 默认关闭 UDP、组播，并启用生产模式。
+`MdConfig` 实现 `Default`；`MdSession::new(&MdConfig)` 完成连接、登录和初始订阅。直接调用 `MdApi::new` 时依次传入 SPI、流量目录、UDP、组播和生产模式参数。
 
 ## 行情 API
 
@@ -64,7 +73,7 @@ API 与 SPI 清单由生成器从审核表自动生成，与当前 CTP SDK 版�
 
 ## 交易 API
 
-### `TraderApi`（140 个）
+### `TraderApi`（142 个）
 
 | Rust 方法 | CTP 接口 | 说明 |
 |---|---|---|
@@ -85,7 +94,7 @@ API 与 SPI 清单由生成器从审核表自动生成，与当前 CTP SDK 版�
 | `register_wechat_user_system_info` | `RegisterWechatUserSystemInfo` | 注册用户终端信息，用于中继服务器多连接模式.用于微信小程序等应用上报信息. |
 | `submit_wechat_user_system_info` | `SubmitWechatUserSystemInfo` | 上报用户终端信息，用于中继服务器操作员登录模式.用于微信小程序等应用上报信息. |
 | `login` | `ReqUserLogin` | 用户登录请求 |
-| `logout` | `ReqUserLogout` | 登出请求 |
+| `logout` | `ReqUserLogout` | 登出请求（官方记载语义是断开重连，托管层以 `reconnect` 利用该行为） |
 | `user_password_update` | `ReqUserPasswordUpdate` | 用户口令更新请求 |
 | `trading_account_password_update` | `ReqTradingAccountPasswordUpdate` | 资金账户口令更新请求 |
 | `user_auth_method` | `ReqUserAuthMethod` | 查询用户当前支持的认证模式 |
@@ -250,7 +259,7 @@ impl MdSpi for MySpi {
 | `tick` | `OnRtnDepthMarketData` | 深度行情通知 |
 | `for_quote_response` | `OnRtnForQuoteRsp` | 询价应答通知 |
 
-### `TraderSpi`（178 个）
+### `TraderSpi`（182 个）
 
 | Rust 回调 | CTP 回调 | 说明 |
 |---|---|---|

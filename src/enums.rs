@@ -305,6 +305,12 @@ impl fmt::Display for ActionFlag {
     }
 }
 
+impl Default for ActionFlag {
+    fn default() -> Self {
+        Self::UnknownValue(0)
+    }
+}
+
 /// CTP 类型：`TThostFtdcActionTypeType`。
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum ActionType {
@@ -340,6 +346,12 @@ impl fmt::Display for ActionType {
             Self::UnknownValue(value) => write!(formatter, "UnknownValue({value})"),
             _ => write!(formatter, "{:?}", self),
         }
+    }
+}
+
+impl Default for ActionType {
+    fn default() -> Self {
+        Self::UnknownValue(0)
     }
 }
 
@@ -1375,6 +1387,12 @@ impl fmt::Display for BankAccType {
     }
 }
 
+impl Default for BankAccType {
+    fn default() -> Self {
+        Self::UnknownValue(0)
+    }
+}
+
 /// CTP 类型名称已按 Rust 语义规范调整，原始名称见审核表。
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum BankAccountOrigin {
@@ -1654,6 +1672,12 @@ impl fmt::Display for BizType {
             Self::UnknownValue(value) => write!(formatter, "UnknownValue({value})"),
             _ => write!(formatter, "{:?}", self),
         }
+    }
+}
+
+impl Default for BizType {
+    fn default() -> Self {
+        Self::UnknownValue(0)
     }
 }
 
@@ -2879,6 +2903,12 @@ impl fmt::Display for ClassType {
     }
 }
 
+impl Default for ClassType {
+    fn default() -> Self {
+        Self::UnknownValue(0)
+    }
+}
+
 /// CTP 类型：`TThostFtdcClientIDStatusType`。
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum ClientIDStatus {
@@ -2976,6 +3006,12 @@ impl fmt::Display for ClientIDType {
             Self::UnknownValue(value) => write!(formatter, "UnknownValue({value})"),
             _ => write!(formatter, "{:?}", self),
         }
+    }
+}
+
+impl Default for ClientIDType {
+    fn default() -> Self {
+        Self::UnknownValue(0)
     }
 }
 
@@ -3221,6 +3257,12 @@ impl fmt::Display for CmbType {
     }
 }
 
+impl Default for CmbType {
+    fn default() -> Self {
+        Self::UnknownValue(0)
+    }
+}
+
 /// CTP 类型：`TThostFtdcCodeSourceTypeType`。
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum CodeSourceType {
@@ -3298,6 +3340,12 @@ impl fmt::Display for CombDirection {
             Self::UnknownValue(value) => write!(formatter, "UnknownValue({value})"),
             _ => write!(formatter, "{:?}", self),
         }
+    }
+}
+
+impl Default for CombDirection {
+    fn default() -> Self {
+        Self::UnknownValue(0)
     }
 }
 
@@ -3603,6 +3651,12 @@ impl fmt::Display for ContingentCondition {
     }
 }
 
+impl Default for ContingentCondition {
+    fn default() -> Self {
+        Self::UnknownValue(0)
+    }
+}
+
 /// CTP 类型：`TThostFtdcCurrExDirectionType`。
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum CurrExDirection {
@@ -3780,6 +3834,12 @@ impl fmt::Display for CustType {
             Self::UnknownValue(value) => write!(formatter, "UnknownValue({value})"),
             _ => write!(formatter, "{:?}", self),
         }
+    }
+}
+
+impl Default for CustType {
+    fn default() -> Self {
+        Self::UnknownValue(0)
     }
 }
 
@@ -4281,6 +4341,12 @@ impl fmt::Display for Direction {
     }
 }
 
+impl Default for Direction {
+    fn default() -> Self {
+        Self::UnknownValue(0)
+    }
+}
+
 /// CTP 类型：`TThostFtdcDirectionEnType`。
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum DirectionEn {
@@ -4775,6 +4841,12 @@ impl fmt::Display for ExecOrderCloseFlag {
     }
 }
 
+impl Default for ExecOrderCloseFlag {
+    fn default() -> Self {
+        Self::UnknownValue(0)
+    }
+}
+
 /// CTP 类型：`TThostFtdcExecOrderPositionFlagType`。
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum ExecOrderPositionFlag {
@@ -4810,6 +4882,12 @@ impl fmt::Display for ExecOrderPositionFlag {
             Self::UnknownValue(value) => write!(formatter, "UnknownValue({value})"),
             _ => write!(formatter, "{:?}", self),
         }
+    }
+}
+
+impl Default for ExecOrderPositionFlag {
+    fn default() -> Self {
+        Self::UnknownValue(0)
     }
 }
 
@@ -5559,6 +5637,12 @@ impl fmt::Display for FeePayFlag {
     }
 }
 
+impl Default for FeePayFlag {
+    fn default() -> Self {
+        Self::UnknownValue(0)
+    }
+}
+
 /// CTP 类型：`TThostFtdcFileBusinessCodeType`。
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum FileBusinessCode {
@@ -6184,6 +6268,12 @@ impl fmt::Display for ForceCloseReason {
             Self::UnknownValue(value) => write!(formatter, "UnknownValue({value})"),
             _ => write!(formatter, "{:?}", self),
         }
+    }
+}
+
+impl Default for ForceCloseReason {
+    fn default() -> Self {
+        Self::UnknownValue(0)
     }
 }
 
@@ -7247,6 +7337,12 @@ impl fmt::Display for HedgeFlag {
     }
 }
 
+impl Default for HedgeFlag {
+    fn default() -> Self {
+        Self::UnknownValue(0)
+    }
+}
+
 /// CTP 类型：`TThostFtdcHedgeFlagEnType`。
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum HedgeFlagEn {
@@ -7416,6 +7512,12 @@ impl fmt::Display for IdCardType {
             Self::UnknownValue(value) => write!(formatter, "UnknownValue({value})"),
             _ => write!(formatter, "{:?}", self),
         }
+    }
+}
+
+impl Default for IdCardType {
+    fn default() -> Self {
+        Self::UnknownValue(0)
     }
 }
 
@@ -8073,6 +8175,12 @@ impl fmt::Display for LastFragment {
     }
 }
 
+impl Default for LastFragment {
+    fn default() -> Self {
+        Self::UnknownValue(0)
+    }
+}
+
 /// CTP 类型：`TThostFtdcLimitUseTypeType`。
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum LimitUseType {
@@ -8184,6 +8292,12 @@ impl fmt::Display for LoginMode {
             Self::UnknownValue(value) => write!(formatter, "UnknownValue({value})"),
             _ => write!(formatter, "{:?}", self),
         }
+    }
+}
+
+impl Default for LoginMode {
+    fn default() -> Self {
+        Self::UnknownValue(0)
     }
 }
 
@@ -8883,6 +8997,12 @@ impl fmt::Display for OffsetFlag {
     }
 }
 
+impl Default for OffsetFlag {
+    fn default() -> Self {
+        Self::UnknownValue(0)
+    }
+}
+
 /// CTP 类型：`TThostFtdcOffsetFlagEnType`。
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum OffsetFlagEn {
@@ -8984,6 +9104,12 @@ impl fmt::Display for OffsetType {
             Self::UnknownValue(value) => write!(formatter, "UnknownValue({value})"),
             _ => write!(formatter, "{:?}", self),
         }
+    }
+}
+
+impl Default for OffsetType {
+    fn default() -> Self {
+        Self::UnknownValue(0)
     }
 }
 
@@ -9110,6 +9236,12 @@ impl fmt::Display for OptSelfCloseFlag {
             Self::UnknownValue(value) => write!(formatter, "UnknownValue({value})"),
             _ => write!(formatter, "{:?}", self),
         }
+    }
+}
+
+impl Default for OptSelfCloseFlag {
+    fn default() -> Self {
+        Self::UnknownValue(0)
     }
 }
 
@@ -9406,6 +9538,12 @@ impl fmt::Display for OrderPriceType {
             Self::UnknownValue(value) => write!(formatter, "UnknownValue({value})"),
             _ => write!(formatter, "{:?}", self),
         }
+    }
+}
+
+impl Default for OrderPriceType {
+    fn default() -> Self {
+        Self::UnknownValue(0)
     }
 }
 
@@ -9859,6 +9997,12 @@ impl fmt::Display for ParkedOrderStatus {
     }
 }
 
+impl Default for ParkedOrderStatus {
+    fn default() -> Self {
+        Self::UnknownValue(0)
+    }
+}
+
 /// CTP 类型：`TThostFtdcPassWordKeyTypeType`。
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum PassWordKeyType {
@@ -10156,6 +10300,12 @@ impl fmt::Display for PosiDirection {
             Self::UnknownValue(value) => write!(formatter, "UnknownValue({value})"),
             _ => write!(formatter, "{:?}", self),
         }
+    }
+}
+
+impl Default for PosiDirection {
+    fn default() -> Self {
+        Self::UnknownValue(0)
     }
 }
 
@@ -10462,6 +10612,12 @@ impl fmt::Display for ProductClass {
             Self::UnknownValue(value) => write!(formatter, "UnknownValue({value})"),
             _ => write!(formatter, "{:?}", self),
         }
+    }
+}
+
+impl Default for ProductClass {
+    fn default() -> Self {
+        Self::UnknownValue(0)
     }
 }
 
@@ -10802,6 +10958,12 @@ impl fmt::Display for PwdFlag {
             Self::UnknownValue(value) => write!(formatter, "UnknownValue({value})"),
             _ => write!(formatter, "{:?}", self),
         }
+    }
+}
+
+impl Default for PwdFlag {
+    fn default() -> Self {
+        Self::UnknownValue(0)
     }
 }
 
@@ -13633,6 +13795,12 @@ impl fmt::Display for TimeCondition {
     }
 }
 
+impl Default for TimeCondition {
+    fn default() -> Self {
+        Self::UnknownValue(0)
+    }
+}
+
 /// CTP 类型：`TThostFtdcTimeRangeType`。
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum TimeRange {
@@ -14135,6 +14303,12 @@ impl fmt::Display for TradingType {
     }
 }
 
+impl Default for TradingType {
+    fn default() -> Self {
+        Self::UnknownValue(0)
+    }
+}
+
 /// CTP 类型：`TThostFtdcTransferDirectionType`。
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum TransferDirection {
@@ -14208,6 +14382,12 @@ impl fmt::Display for TransferStatus {
             Self::UnknownValue(value) => write!(formatter, "UnknownValue({value})"),
             _ => write!(formatter, "{:?}", self),
         }
+    }
+}
+
+impl Default for TransferStatus {
+    fn default() -> Self {
+        Self::UnknownValue(0)
     }
 }
 
@@ -14729,6 +14909,12 @@ impl fmt::Display for UserType {
     }
 }
 
+impl Default for UserType {
+    fn default() -> Self {
+        Self::UnknownValue(0)
+    }
+}
+
 /// CTP 类型：`TThostFtdcValueMethodType`。
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum ValueMethod {
@@ -15027,6 +15213,12 @@ impl fmt::Display for VolumeCondition {
     }
 }
 
+impl Default for VolumeCondition {
+    fn default() -> Self {
+        Self::UnknownValue(0)
+    }
+}
+
 /// CTP 类型：`TThostFtdcWeakPasswordSourceType`。
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum WeakPasswordSource {
@@ -15134,5 +15326,11 @@ impl fmt::Display for YesNoIndicator {
             Self::UnknownValue(value) => write!(formatter, "UnknownValue({value})"),
             _ => write!(formatter, "{:?}", self),
         }
+    }
+}
+
+impl Default for YesNoIndicator {
+    fn default() -> Self {
+        Self::UnknownValue(0)
     }
 }

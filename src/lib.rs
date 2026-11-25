@@ -3,19 +3,22 @@
 
 #![deny(unsafe_op_in_unsafe_fn)]
 
-mod api;
 pub mod enums;
 pub mod error;
-mod spi;
+mod raw;
+pub mod session;
 pub mod structs;
 #[doc(hidden)]
 pub mod sys;
 pub mod types;
 
-pub use api::*;
 pub use enums::*;
 pub use error::*;
-pub use spi::*;
+pub use raw::*;
+pub use session::{
+    MdConfig, MdSession, MdSessionError, MdSessionEvent, QueryKind, QueryRow, QueryRows,
+    TraderConfig, TraderSession, TraderSessionError, TraderSessionEvent,
+};
 pub use structs::*;
 pub use sys::convert::ConversionError;
 pub use types::*;

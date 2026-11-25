@@ -1,10 +1,39 @@
 # CTP 连接配置模板。
 # 复制本文件为同目录的 ctp.toml 并填写真实值；ctp.toml 不提交版本库。
+
+version = 1
+
+[ctp.profiles.simulation]
+broker_id = ""
+user_id = ""
+password = ""
+app_id = ""
+auth_code = ""
+# 多组前置地址
+market_fronts = []
+trade_fronts = []
+
+[ctp.profiles.live]
+broker_id = ""
+user_id = ""
+password = ""
+app_id = ""
+auth_code = ""
+# 多组前置地址
+market_fronts = []
+trade_fronts = []
+
+
+[ctp.profiles.simnow]
 broker_id = "你的经纪公司代码"
 user_id = "你的用户"
 password = "你的密码"
 app_id = "你的AppID"
 auth_code = "你的授权码"
-market_front = "tcp://行情前置:端口"
-trade_front = "tcp://交易前置:端口"
+# 24h 前置
+#market_front = ["tcp://182.254.243.31:40011"]
+#trade_front = ["tcp://182.254.243.31:40001"]
+# 三组前置
+market_fronts = ["tcp://182.254.243.31:30011", "tcp://182.254.243.31:30012", "tcp://182.254.243.31:30013", "tcp://182.254.243.31:40011"]
+trade_fronts = ["tcp://182.254.243.31:30001", "tcp://182.254.243.31:30002", "tcp://182.254.243.31:30003","tcp://182.254.243.31:40001"]
 instrument = "ag2612"

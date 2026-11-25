@@ -192,7 +192,7 @@ const fn assemble_comb(first: Option<u8>, tail: [u8; 4]) -> Option<[u8; 5]> {
     }
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Default)]
 pub struct CombOffsetFlag {
     first: crate::OffsetFlag,
     tail: [u8; 4],
@@ -226,7 +226,7 @@ impl CombOffsetFlag {
     }
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Default)]
 pub struct CombHedgeFlag {
     first: crate::HedgeFlag,
     tail: [u8; 4],

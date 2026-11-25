@@ -2,8 +2,8 @@
 mod config;
 
 use ctp_base::{
-    BrokerId, DateText, DepthMarketData, DisconnectReason, MdApi, MdConfig, MdSpi, ReqUserLogin,
-    RspInfo, RspUserLogin, UserId,
+    BrokerId, DateText, DepthMarketData, DisconnectReason, MdApi, MdSpi, ReqUserLogin, RspInfo,
+    RspUserLogin, UserId,
 };
 use std::{
     error::Error,
@@ -141,10 +141,13 @@ fn run() -> Result<(), Box<dyn Error>> {
     let ctp = config::CtpConfig::load()?;
     let shared = Arc::new((Mutex::new(ExampleState::default()), Condvar::new()));
     let api = MdApi::new(
-        MdConfig::new(FLOW_PATH),
         Box::new(ExampleSpi {
             shared: shared.clone(),
         }),
+        FLOW_PATH,
+        false,
+        false,
+        true,
     )?;
 
     let instrument = std::env::var("CTP_INSTRUMENT").unwrap_or_else(|_| ctp.instrument.clone());

@@ -37,23 +37,9 @@ use crate::{
     SettlementInfoConfirm, TextError, TraderSpi, TradingAccountPasswordUpdate, UserLogout,
     UserPasswordUpdate, UserSystemInfo, WechatUserSystemInfo, sys,
 };
+
 use cxx::UniquePtr;
 use std::{error::Error, fmt, ops::Deref};
-
-#[derive(Debug, Clone)]
-pub struct TraderConfig {
-    pub flow_path: String,
-    pub production_mode: bool,
-}
-
-impl TraderConfig {
-    pub fn new(flow_path: impl Into<String>) -> Self {
-        Self {
-            flow_path: flow_path.into(),
-            production_mode: true,
-        }
-    }
-}
 
 pub struct TraderApi {
     inner: UniquePtr<ffi::trader::TraderApiBridge>,
@@ -96,19 +82,23 @@ impl Deref for SharedTraderApi {
 // noinspection DuplicatedCode
 impl TraderApi {
     /// 创建原生 API 并注册 SPI；必须在调用 `init` 前完成，SPI 随 API 持有并在原生释放后销毁。
+    ///
+    /// 参数对应 CTP `CreateFtdcTraderApi(pszFlowPath)`（新版 SDK 增加 production_mode）；
+    /// 常规使用建议走 `session` 托管层。
     pub fn new(
-        config: TraderConfig,
         spi: Box<dyn TraderSpi>,
+        flow_path: &str,
+        production_mode: bool,
     ) -> Result<Self, CreateTraderApiError> {
-        if config.flow_path.as_bytes().contains(&0) {
+        if flow_path.as_bytes().contains(&0) {
             return Err(CreateTraderApiError::InvalidFlowPath);
         }
         let inner = ffi::trader::create_trader_api(
             Box::new(TraderSpiSink::new(spi)),
-            &config.flow_path,
+            flow_path,
             false,
             false,
-            config.production_mode,
+            production_mode,
         );
         if inner.is_null() {
             return Err(CreateTraderApiError::CreationFailed);

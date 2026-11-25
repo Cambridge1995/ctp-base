@@ -21,7 +21,8 @@
 | 1.0.0 | v6.7.13_20260225 | 历史版本 |
 | 1.0.1 | v6.7.13_20260225 | 历史版本 |
 | 1.1.0 | v6.7.13_P1_20261103 | 历史版本 |
-| 1.1.1 | v6.7.13_P1_20261103 | 当前版本（修复 Windows CTP DLL 加载与交易示例订阅时序） |
+| 1.1.1 | v6.7.13_P1_20261103 | 历史版本 |
+| 1.1.2 | v6.7.13_P1_20261103 | 当前版本（新增 raw/session 分层、逐行查询事件与请求默认值） |
 
 本项目使用的 CTP 版本均为非商密版本。若券商要求使用商密（SM）版本，crates.io 包无法直接替换，
 请从 GitHub 克隆源码后按「二次开发与商密（SM）版本」一节操作。
@@ -100,13 +101,13 @@ macOS 版 CTP SDK 为 fat dylib，x86_64 与 Apple Silicon（aarch64）使用同
 
    ```toml
    [dependencies]
-   ctp-base = "1.0.0"
+   ctp-base = "1.1.2"
    ```
 
    或使用 cargo 命令：
 
    ```bash
-   cargo add ctp-base@1.0.0
+   cargo add ctp-base@1.1.2
    ```
 
    引入后按下方「配置文件」准备 `config/ctp.toml` 即可使用；crate 内含三平台
@@ -175,22 +176,28 @@ instrument = "ag2612"
 ## 基本用法
 
 ```rust
-use ctp_base::{MdApi, MdConfig, MdSpi};
+use ctp_base::{MdConfig, MdSession};
 
-struct Spi;
-
-impl MdSpi for Spi {}
-
-let api = MdApi::new(
-    MdConfig::new("./flow/"),
-    Box::new(Spi),
-)?;
-api.register_front("tcp://行情前置:端口")?;
-api.init();
-api.close();
+let session = MdSession::new(&MdConfig {
+    broker_id: "9999".to_owned(),
+    user_id: "投资者代码".to_owned(),
+    fronts: vec!["tcp://行情前置:端口".to_owned()],
+    flow_dir: "./flow/".to_owned(),
+    subscribe: vec!["ag2612".to_owned()],
+    production_mode: false,
+    ..Default::default()
+})?;
+println!("交易日：{}", session.trading_day());
+session.exit();
 ```
 
-更多接口请查看 [docs/接口.md](docs/接口.md)。
+### 查询响应与调用方视图
+
+`TraderSessionEvent::QueryRow` 在每个查询响应到达时立即发送，包含 `request_id`、`is_last`、错误信息和类型化载荷。Session 不再等待 `is_last` 后发送整批结果；空载荷末行也会发送。`OnRspError` 映射为携带 `request_id` 的 `QueryError`，供调用方结束对应批次。
+
+调用方逐行更新自己的视图；需要完整批次时，自行创建 `QueryRows` 并逐行追加，直到 `is_last`。`OnRspError`、`Disconnected`、超时和完整性清理由调用方负责。`examples/common/query.rs` 展示了不依赖底座聚合器的手动聚合方式。
+
+更多原始接口请查看 [raw层接口.md](docs/raw层接口.md)。开发、仿真与生产环境的常见问题和故障处置请查阅 [CTP 开发、测试与生产知识库](docs/CTP开发知识库.md)；Session 接口的开发、测试与生产审核状态见 [Session层接口.md](docs/Session层接口.md)；PeopleQuant 本地校验与后续增强参考见 [功能增强.md](docs/功能增强.md)。
 
 ## 在 GitHub Actions 中运行示例
 
@@ -224,8 +231,9 @@ ctp-base/
 │                        # 编译 C++ 桥接、按平台链接 CTP 库
 ├── config/ctp-template.toml  # 配置模板，本地复制为 ctp.toml 使用
 ├── cpp/                 # C++ SPI 与 API 桥接
-├── docs/接口.md
-├── examples/            # 行情与交易示例
+├── docs/raw层接口.md     # 原始 API/SPI 对应关系
+├── docs/Session层接口.md # Session 三栏审核状态与证据
+├── examples/            # 行情、交易与 SimNow 审核示例
 ├── sdk/                 # CTP 头文件与 xz 压缩的三平台库（首次构建解压到 target/ctp-sdk-libs，之后复用）
 ├── src/                 # Rust 公共 API、SPI 与内部桥接
 └── tests/

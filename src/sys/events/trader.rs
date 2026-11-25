@@ -1,6 +1,5 @@
 // 由 ctp-generator 根据官方 SPI 与事件审核表生成，请勿手工编辑。
 
-use crate::spi::TraderSpi;
 use crate::sys::convert::owned_params;
 use crate::{
     AccountRegister, BatchOrderAction, BrokerTradingAlgos, BrokerTradingParams, Bulletin,
@@ -30,8 +29,9 @@ use crate::{
     SPBMInterParameter, SPBMIntraParameter, SPBMInvestorPortfDef, SPBMOptionParameter,
     SPBMPortfDefinition, SPMMInstParam, SPMMProductParam, SecAgentACIDMap, SecAgentCheckMode,
     SecAgentTradeInfo, SettlementInfo, SettlementInfoConfirm, SpdApply, SpdApplyAction, Trade,
-    TraderOffer, TradingAccount, TradingAccountPasswordUpdate, TradingCode, TradingNotice,
-    TradingNoticeInfo, TransferBank, TransferSerial, UserLogout, UserPasswordUpdate, UserSession,
+    TraderOffer, TraderSpi, TradingAccount, TradingAccountPasswordUpdate, TradingCode,
+    TradingNotice, TradingNoticeInfo, TransferBank, TransferSerial, UserLogout, UserPasswordUpdate,
+    UserSession,
 };
 
 pub struct TraderSpiSink {

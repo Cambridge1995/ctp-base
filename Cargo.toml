@@ -1,6 +1,6 @@
 [package]
 name = "ctp-base"
-version = "1.1.1"
+version = "1.1.2"
 edition = "2024"
 authors = ["Cambridge"]
 description = "CTP 行情与交易 API 的安全 Rust 绑定：owned 回调、强类型字段与 request_id 语义"
@@ -25,6 +25,50 @@ cxx-build = "1.0"
 name = "unit"
 path = "tests/unit.rs"
 
+[[test]]
+name = "session"
+path = "tests/session.rs"
+
 [package.metadata.docs.rs]
 # docs.rs 使用系统 tar 解压 sdk/binaries.tar.xz，无需网络。
 targets = ["x86_64-unknown-linux-gnu"]
+
+[[example]]
+name = "penetration_connectivity"
+path = "examples/穿透式测试/连通性.rs"
+
+[[example]]
+name = "penetration_basic_trading"
+path = "examples/穿透式测试/基础交易功能.rs"
+
+[[example]]
+name = "penetration_order_checks"
+path = "examples/穿透式测试/交易指令检查.rs"
+
+[[example]]
+name = "penetration_batch_cancel"
+path = "examples/穿透式测试/批量撤单.rs"
+
+[[example]]
+name = "penetration_repeat_orders"
+path = "examples/穿透式测试/重复报单监测.rs"
+
+[[example]]
+name = "penetration_order_metrics"
+path = "examples/穿透式测试/报撤单笔数信息量等监测.rs"
+
+[[example]]
+name = "penetration_risk_thresholds"
+path = "examples/穿透式测试/阈值设置及预警.rs"
+
+[[example]]
+name = "penetration_emergency_stop"
+path = "examples/穿透式测试/应急处置暂停交易.rs"
+
+[[example]]
+name = "penetration_error_handling"
+path = "examples/穿透式测试/错误防范.rs"
+
+[[example]]
+name = "penetration_connection_recovery"
+path = "examples/穿透式测试/系统连接状态异常监测.rs"

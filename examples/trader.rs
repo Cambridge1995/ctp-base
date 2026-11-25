@@ -5,11 +5,11 @@ use ctp_base::{
     AccountId, ActionFlag, BrokerId, BusinessUnit, CombHedgeFlag, CombOffsetFlag,
     ContingentCondition, ConversionError, DateText, DepthMarketData, Direction, DisconnectReason,
     ExchangeId, ExchangeInstrumentId, ForceCloseReason, FrontId, HedgeFlag, InputOrder,
-    InputOrderAction, Instrument, InstrumentId, InvestUnitId, InvestorId, MdApi, MdConfig, MdSpi,
-    OffsetFlag, Order, OrderAction, OrderPriceType, OrderRef, OrderStatus, OrderSysId,
-    QryInstrument, ReqAuthenticate, ReqUserLogin, RequestId, ResumeType, RspAuthenticate, RspInfo,
-    RspUserLogin, SessionId, SettlementInfoConfirm, TimeCondition, TimeText, Trade, TraderApi,
-    TraderConfig, TraderSpi, UserId, VolumeCondition,
+    InputOrderAction, Instrument, InstrumentId, InvestUnitId, InvestorId, MdApi, MdSpi, OffsetFlag,
+    Order, OrderAction, OrderPriceType, OrderRef, OrderStatus, OrderSysId, QryInstrument,
+    ReqAuthenticate, ReqUserLogin, RequestId, ResumeType, RspAuthenticate, RspInfo, RspUserLogin,
+    SessionId, SettlementInfoConfirm, TimeCondition, TimeText, Trade, TraderApi, TraderSpi, UserId,
+    VolumeCondition,
 };
 use std::{
     error::Error,
@@ -408,10 +408,13 @@ fn load_market_data(
     std::fs::create_dir_all(FLOW_PATH).map_err(|error| error.to_string())?;
     let shared = Arc::new((Mutex::new(MarketState::default()), Condvar::new()));
     let api = MdApi::new(
-        MdConfig::new(FLOW_PATH),
         Box::new(MarketDepthSpi {
             shared: shared.clone(),
         }),
+        FLOW_PATH,
+        false,
+        false,
+        true,
     )
     .map_err(|error| error.to_string())?;
 
@@ -525,11 +528,12 @@ fn main() -> Result<(), Box<dyn Error>> {
     let order_ref = new_order_ref();
     let shared = Arc::new((Mutex::new(TraderState::default()), Condvar::new()));
     let api = TraderApi::new(
-        TraderConfig::new(FLOW_PATH),
         Box::new(SimnowTraderSpi {
             shared: shared.clone(),
             order_ref,
         }),
+        FLOW_PATH,
+        true,
     )
     .unwrap();
 

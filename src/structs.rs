@@ -2430,7 +2430,7 @@ pub struct ExitEmergency {
 }
 
 /// Fens用户信息
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct FensUserInfo {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -2763,7 +2763,7 @@ pub struct IndexPrice {
 }
 
 /// 输入批量报单操作
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct InputBatchOrderAction {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -2790,7 +2790,7 @@ pub struct InputBatchOrderAction {
 }
 
 /// 输入的申请组合
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct InputCombAction {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -2825,7 +2825,7 @@ pub struct InputCombAction {
 }
 
 /// 输入的执行宣告
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct InputExecOrder {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -2872,7 +2872,7 @@ pub struct InputExecOrder {
 }
 
 /// 输入执行宣告操作
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct InputExecOrderAction {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -2907,7 +2907,7 @@ pub struct InputExecOrderAction {
 }
 
 /// 输入的询价
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct InputForQuote {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -2930,7 +2930,7 @@ pub struct InputForQuote {
 }
 
 /// 套保确认输入基本信息
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct InputHedgeCfm {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -2957,7 +2957,7 @@ pub struct InputHedgeCfm {
 }
 
 /// 套保申请撤销
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct InputHedgeCfmAction {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -2984,7 +2984,7 @@ pub struct InputHedgeCfmAction {
 }
 
 /// 输入的对冲设置
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct InputOffsetSetting {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -3015,7 +3015,7 @@ pub struct InputOffsetSetting {
 }
 
 /// 输入的期权自对冲
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct InputOptionSelfClose {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -3054,7 +3054,7 @@ pub struct InputOptionSelfClose {
 }
 
 /// 输入期权自对冲操作
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct InputOptionSelfCloseAction {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -3089,7 +3089,7 @@ pub struct InputOptionSelfCloseAction {
 }
 
 /// 输入报单
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct InputOrder {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -3158,7 +3158,7 @@ pub struct InputOrder {
 }
 
 /// 输入报单操作
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct InputOrderAction {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -3201,7 +3201,7 @@ pub struct InputOrderAction {
 }
 
 /// 输入的报价
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct InputQuote {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -3260,7 +3260,7 @@ pub struct InputQuote {
 }
 
 /// 输入报价操作
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct InputQuoteAction {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -3301,7 +3301,7 @@ pub struct InputQuoteAction {
 }
 
 /// 套利确认输入基本信息
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct InputSpdApply {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -3332,7 +3332,7 @@ pub struct InputSpdApply {
 }
 
 /// 套利申请撤销
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct InputSpdApplyAction {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -5894,7 +5894,7 @@ pub struct OrderAction {
 }
 
 /// 预埋单
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct ParkedOrder {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -5969,7 +5969,7 @@ pub struct ParkedOrder {
 }
 
 /// 输入预埋单操作
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct ParkedOrderAction {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -6130,7 +6130,7 @@ pub struct ProductGroup {
 }
 
 /// 请求查询银期签约关系
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryAccountRegister {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -6170,7 +6170,7 @@ pub struct QryBroker {
 }
 
 /// 查询经纪公司交易算法
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryBrokerTradingAlgos {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -6181,7 +6181,7 @@ pub struct QryBrokerTradingAlgos {
 }
 
 /// 查询经纪公司交易参数
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryBrokerTradingParams {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -6245,7 +6245,7 @@ pub struct QryCFMMCBrokerKey {
 }
 
 /// 请求查询保证金监管系统经纪公司资金账户密钥
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryCFMMCTradingAccountKey {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -6254,7 +6254,7 @@ pub struct QryCFMMCTradingAccountKey {
 }
 
 /// 查询分类合约
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryClassifiedInstrument {
     /// 合约代码。CTP：`InstrumentID`，`TThostFtdcInstrumentIDType`。
     pub instrument_id: InstrumentId,
@@ -6271,7 +6271,7 @@ pub struct QryClassifiedInstrument {
 }
 
 /// 申请组合查询
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryCombAction {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -6286,7 +6286,7 @@ pub struct QryCombAction {
 }
 
 /// 组合合约安全系数查询
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryCombInstrumentGuard {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -6297,14 +6297,14 @@ pub struct QryCombInstrumentGuard {
 }
 
 /// 组合腿信息查询
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryCombLeg {
     /// 单腿合约代码。CTP：`LegInstrumentID`，`TThostFtdcInstrumentIDType`。
     pub leg_instrument_id: InstrumentId,
 }
 
 /// 查询组合优惠比例
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryCombPromotionParam {
     /// 交易所代码。CTP：`ExchangeID`，`TThostFtdcExchangeIDType`。
     pub exchange_id: ExchangeId,
@@ -6333,7 +6333,7 @@ pub struct QryCommRateModel {
 }
 
 /// 查询签约银行请求
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryContractBank {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -6351,7 +6351,7 @@ pub struct QryDepartmentUser {
 }
 
 /// 查询行情
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryDepthMarketData {
     /// 交易所代码。CTP：`ExchangeID`，`TThostFtdcExchangeIDType`。
     pub exchange_id: ExchangeId,
@@ -6362,7 +6362,7 @@ pub struct QryDepthMarketData {
 }
 
 /// 查询仓单折抵信息
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryEWarrantOffset {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -6413,7 +6413,7 @@ pub struct QryErrOrderAction {
 }
 
 /// 查询交易所
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryExchange {
     /// 交易所代码。CTP：`ExchangeID`，`TThostFtdcExchangeIDType`。
     pub exchange_id: ExchangeId,
@@ -6478,7 +6478,7 @@ pub struct QryExchangeForQuote {
 }
 
 /// 查询交易所保证金率
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryExchangeMarginRate {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -6491,7 +6491,7 @@ pub struct QryExchangeMarginRate {
 }
 
 /// 查询交易所调整保证金率
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryExchangeMarginRateAdjust {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -6558,7 +6558,7 @@ pub struct QryExchangeQuoteAction {
 }
 
 /// 查询汇率
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryExchangeRate {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -6576,7 +6576,7 @@ pub struct QryExchangeSequence {
 }
 
 /// 执行宣告查询
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryExecOrder {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -6606,7 +6606,7 @@ pub struct QryExecOrderAction {
 }
 
 /// 询价查询
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryForQuote {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -6643,7 +6643,7 @@ pub struct QryFrontStatus {
 }
 
 /// 套利套保申请查询
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryHedgeCfm {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -6688,7 +6688,7 @@ pub struct QryIPList {
 }
 
 /// 合约交易限制查询
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryInstrTradeLimit {
     /// 合约代码。CTP：`InstrumentID`，`TThostFtdcInstrumentIDType`。
     pub instrument_id: InstrumentId,
@@ -6697,7 +6697,7 @@ pub struct QryInstrTradeLimit {
 }
 
 /// 查询合约
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryInstrument {
     /// 交易所代码。CTP：`ExchangeID`，`TThostFtdcExchangeIDType`。
     pub exchange_id: ExchangeId,
@@ -6710,7 +6710,7 @@ pub struct QryInstrument {
 }
 
 /// 查询手续费率
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryInstrumentCommissionRate {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -6725,7 +6725,7 @@ pub struct QryInstrumentCommissionRate {
 }
 
 /// 查询合约保证金率
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryInstrumentMarginRate {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -6742,7 +6742,7 @@ pub struct QryInstrumentMarginRate {
 }
 
 /// 报单手续费率查询
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryInstrumentOrderCommRate {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -6773,7 +6773,7 @@ pub struct QryInstrumentTradingRight {
 }
 
 /// 查询投资单元
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryInvestUnit {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -6784,7 +6784,7 @@ pub struct QryInvestUnit {
 }
 
 /// 查询投资者
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryInvestor {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -6793,7 +6793,7 @@ pub struct QryInvestor {
 }
 
 /// 投资者商品群SPMM记录查询
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryInvestorCommodityGroupSPMMMargin {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -6804,7 +6804,7 @@ pub struct QryInvestorCommodityGroupSPMMMargin {
 }
 
 /// 投资者商品组SPMM记录查询
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryInvestorCommoditySPMMMargin {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -6829,7 +6829,7 @@ pub struct QryInvestorGroup {
 }
 
 /// 投资者申报费阶梯收取记录查询
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryInvestorInfoCommRec {
     /// 投资者代码。CTP：`InvestorID`，`TThostFtdcInvestorIDType`。
     pub investor_id: InvestorId,
@@ -6840,7 +6840,7 @@ pub struct QryInvestorInfoCommRec {
 }
 
 /// 投资者新型组合保证金系数查询
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryInvestorPortfMarginRatio {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -6853,7 +6853,7 @@ pub struct QryInvestorPortfMarginRatio {
 }
 
 /// 投资者新组保设置查询
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryInvestorPortfSetting {
     /// 交易所代码。CTP：`ExchangeID`，`TThostFtdcExchangeIDType`。
     pub exchange_id: ExchangeId,
@@ -6864,7 +6864,7 @@ pub struct QryInvestorPortfSetting {
 }
 
 /// 查询投资者持仓
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryInvestorPosition {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -6879,7 +6879,7 @@ pub struct QryInvestorPosition {
 }
 
 /// 查询组合持仓明细
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryInvestorPositionCombineDetail {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -6894,7 +6894,7 @@ pub struct QryInvestorPositionCombineDetail {
 }
 
 /// 查询投资者持仓明细
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryInvestorPositionDetail {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -6909,7 +6909,7 @@ pub struct QryInvestorPositionDetail {
 }
 
 /// 投资者品种RCAMS保证金查询
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryInvestorProdRCAMSMargin {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -6922,7 +6922,7 @@ pub struct QryInvestorProdRCAMSMargin {
 }
 
 /// 投资者产品RULE保证金查询
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryInvestorProdRULEMargin {
     /// 交易所代码。CTP：`ExchangeID`，`TThostFtdcExchangeIDType`。
     pub exchange_id: ExchangeId,
@@ -6937,7 +6937,7 @@ pub struct QryInvestorProdRULEMargin {
 }
 
 /// 投资者产品SPBM明细查询
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryInvestorProdSPBMDetail {
     /// 交易所代码。CTP：`ExchangeID`，`TThostFtdcExchangeIDType`。
     pub exchange_id: ExchangeId,
@@ -6950,7 +6950,7 @@ pub struct QryInvestorProdSPBMDetail {
 }
 
 /// 查询投资者品种/跨品种保证金
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryInvestorProductGroupMargin {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -7010,7 +7010,7 @@ pub struct QryMDTraderOffer {
 }
 
 /// 查询做市商合约手续费率
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryMMInstrumentCommissionRate {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -7021,7 +7021,7 @@ pub struct QryMMInstrumentCommissionRate {
 }
 
 /// 做市商期权手续费率查询
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryMMOptionInstrCommRate {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -7041,7 +7041,7 @@ pub struct QryMarginModel {
 }
 
 /// 查询最大报单数量
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryMaxOrderVolume {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -7064,7 +7064,7 @@ pub struct QryMaxOrderVolume {
 }
 
 /// 根据价格查询最大报单数量
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryMaxOrderVolumeWithPrice {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -7089,7 +7089,7 @@ pub struct QryMaxOrderVolumeWithPrice {
 }
 
 /// 查询组播合约
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryMulticastInstrument {
     /// 主题号。CTP：`TopicID`，`TThostFtdcInstallIDType`。
     pub topic_id: i32,
@@ -7098,14 +7098,14 @@ pub struct QryMulticastInstrument {
 }
 
 /// 查询客户通知
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryNotice {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
 }
 
 /// 查询对冲设置
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryOffsetSetting {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -7118,7 +7118,7 @@ pub struct QryOffsetSetting {
 }
 
 /// 期权手续费率查询
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryOptionInstrCommRate {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -7133,7 +7133,7 @@ pub struct QryOptionInstrCommRate {
 }
 
 /// 期权交易成本查询
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryOptionInstrTradeCost {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -7167,7 +7167,7 @@ pub struct QryOptionInstrTradingRight {
 }
 
 /// 期权自对冲查询
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryOptionSelfClose {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -7197,7 +7197,7 @@ pub struct QryOptionSelfCloseAction {
 }
 
 /// 查询报单
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryOrder {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -7229,7 +7229,7 @@ pub struct QryOrderAction {
 }
 
 /// 查询预埋单
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryParkedOrder {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -7244,7 +7244,7 @@ pub struct QryParkedOrder {
 }
 
 /// 查询预埋撤单
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryParkedOrderAction {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -7270,7 +7270,7 @@ pub struct QryPartBroker {
 }
 
 /// 查询产品
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryProduct {
     /// 产品类型。CTP：`ProductClass`，`TThostFtdcProductClassType`。
     pub product_class: ProductClass,
@@ -7281,7 +7281,7 @@ pub struct QryProduct {
 }
 
 /// 产品报价汇率查询
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryProductExchRate {
     /// 交易所代码。CTP：`ExchangeID`，`TThostFtdcExchangeIDType`。
     pub exchange_id: ExchangeId,
@@ -7290,7 +7290,7 @@ pub struct QryProductExchRate {
 }
 
 /// 查询产品组
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryProductGroup {
     /// 交易所代码。CTP：`ExchangeID`，`TThostFtdcExchangeIDType`。
     pub exchange_id: ExchangeId,
@@ -7299,7 +7299,7 @@ pub struct QryProductGroup {
 }
 
 /// 报价查询
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryQuote {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -7331,7 +7331,7 @@ pub struct QryQuoteAction {
 }
 
 /// RCAMS产品组合信息查询
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryRCAMSCombProductInfo {
     /// 产品代码。CTP：`ProductID`，`TThostFtdcProductIDType`。
     pub product_id: ProductId,
@@ -7342,14 +7342,14 @@ pub struct QryRCAMSCombProductInfo {
 }
 
 /// RCAMS同合约风险对冲参数查询
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryRCAMSInstrParameter {
     /// 产品代码。CTP：`ProductID`，`TThostFtdcProductIDType`。
     pub product_id: ProductId,
 }
 
 /// RCAMS跨品种风险折抵参数查询
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryRCAMSInterParameter {
     /// 商品群代码。CTP：`ProductGroupID`，`TThostFtdcProductIDType`。
     pub product_group_id: ProductId,
@@ -7360,14 +7360,14 @@ pub struct QryRCAMSInterParameter {
 }
 
 /// RCAMS品种内风险对冲参数查询
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryRCAMSIntraParameter {
     /// 产品组合代码。CTP：`CombProductID`，`TThostFtdcProductIDType`。
     pub comb_product_id: ProductId,
 }
 
 /// RCAMS策略组合持仓查询
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryRCAMSInvestorCombPosition {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -7380,14 +7380,14 @@ pub struct QryRCAMSInvestorCombPosition {
 }
 
 /// RCAMS空头期权风险调整参数查询
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryRCAMSShortOptAdjustParam {
     /// 产品组合代码。CTP：`CombProductID`，`TThostFtdcProductIDType`。
     pub comb_product_id: ProductId,
 }
 
 /// RULE合约保证金参数查询
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryRULEInstrParameter {
     /// 交易所代码。CTP：`ExchangeID`，`TThostFtdcExchangeIDType`。
     pub exchange_id: ExchangeId,
@@ -7396,7 +7396,7 @@ pub struct QryRULEInstrParameter {
 }
 
 /// RULE跨品种抵扣参数查询
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryRULEInterParameter {
     /// 交易所代码。CTP：`ExchangeID`，`TThostFtdcExchangeIDType`。
     pub exchange_id: ExchangeId,
@@ -7409,7 +7409,7 @@ pub struct QryRULEInterParameter {
 }
 
 /// RULE品种内对锁仓折扣参数查询
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryRULEIntraParameter {
     /// 交易所代码。CTP：`ExchangeID`，`TThostFtdcExchangeIDType`。
     pub exchange_id: ExchangeId,
@@ -7418,7 +7418,7 @@ pub struct QryRULEIntraParameter {
 }
 
 /// 投资者风险结算持仓查询
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryRiskSettleInvestPosition {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -7429,14 +7429,14 @@ pub struct QryRiskSettleInvestPosition {
 }
 
 /// 风险结算产品查询
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryRiskSettleProductStatus {
     /// 产品代码。CTP：`ProductID`，`TThostFtdcInstrumentIDType`。
     pub product_id: InstrumentId,
 }
 
 /// SPBM附加跨品种抵扣参数查询
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QrySPBMAddOnInterParameter {
     /// 交易所代码。CTP：`ExchangeID`，`TThostFtdcExchangeIDType`。
     pub exchange_id: ExchangeId,
@@ -7447,7 +7447,7 @@ pub struct QrySPBMAddOnInterParameter {
 }
 
 /// SPBM期货合约保证金参数查询
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QrySPBMFutureParameter {
     /// 交易所代码。CTP：`ExchangeID`，`TThostFtdcExchangeIDType`。
     pub exchange_id: ExchangeId,
@@ -7458,7 +7458,7 @@ pub struct QrySPBMFutureParameter {
 }
 
 /// SPBM跨品种抵扣参数查询
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QrySPBMInterParameter {
     /// 交易所代码。CTP：`ExchangeID`，`TThostFtdcExchangeIDType`。
     pub exchange_id: ExchangeId,
@@ -7469,7 +7469,7 @@ pub struct QrySPBMInterParameter {
 }
 
 /// SPBM品种内对锁仓折扣参数查询
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QrySPBMIntraParameter {
     /// 交易所代码。CTP：`ExchangeID`，`TThostFtdcExchangeIDType`。
     pub exchange_id: ExchangeId,
@@ -7478,7 +7478,7 @@ pub struct QrySPBMIntraParameter {
 }
 
 /// 投资者套餐选择查询
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QrySPBMInvestorPortfDef {
     /// 交易所代码。CTP：`ExchangeID`，`TThostFtdcExchangeIDType`。
     pub exchange_id: ExchangeId,
@@ -7489,7 +7489,7 @@ pub struct QrySPBMInvestorPortfDef {
 }
 
 /// SPBM期权合约保证金参数查询
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QrySPBMOptionParameter {
     /// 交易所代码。CTP：`ExchangeID`，`TThostFtdcExchangeIDType`。
     pub exchange_id: ExchangeId,
@@ -7500,7 +7500,7 @@ pub struct QrySPBMOptionParameter {
 }
 
 /// 组合保证金套餐查询
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QrySPBMPortfDefinition {
     /// 交易所代码。CTP：`ExchangeID`，`TThostFtdcExchangeIDType`。
     pub exchange_id: ExchangeId,
@@ -7511,21 +7511,21 @@ pub struct QrySPBMPortfDefinition {
 }
 
 /// SPMM合约参数查询
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QrySPMMInstParam {
     /// 合约代码。CTP：`InstrumentID`，`TThostFtdcInstrumentIDType`。
     pub instrument_id: InstrumentId,
 }
 
 /// SPMM产品参数查询
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QrySPMMProductParam {
     /// 产品代码。CTP：`ProductID`，`TThostFtdcSPMMProductIDType`。
     pub product_id: String,
 }
 
 /// 二级代理操作员银期权限查询
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QrySecAgentACIDMap {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -7538,7 +7538,7 @@ pub struct QrySecAgentACIDMap {
 }
 
 /// 查询二级代理商资金校验模式
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QrySecAgentCheckMode {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -7547,7 +7547,7 @@ pub struct QrySecAgentCheckMode {
 }
 
 /// 查询二级代理商信息
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QrySecAgentTradeInfo {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -7556,7 +7556,7 @@ pub struct QrySecAgentTradeInfo {
 }
 
 /// 查询投资者结算结果
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QrySettlementInfo {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -7571,7 +7571,7 @@ pub struct QrySettlementInfo {
 }
 
 /// 查询结算信息确认域
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QrySettlementInfoConfirm {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -7584,7 +7584,7 @@ pub struct QrySettlementInfoConfirm {
 }
 
 /// 套利套保申请查询
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QrySpdApply {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -7680,7 +7680,7 @@ pub struct QryThostUserFunction {
 }
 
 /// 查询成交
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryTrade {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -7719,7 +7719,7 @@ pub struct QryTraderAssign {
 }
 
 /// 查询交易员报盘机
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryTraderOffer {
     /// 交易所代码。CTP：`ExchangeID`，`TThostFtdcExchangeIDType`。
     pub exchange_id: ExchangeId,
@@ -7730,7 +7730,7 @@ pub struct QryTraderOffer {
 }
 
 /// 查询资金账户
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryTradingAccount {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -7745,7 +7745,7 @@ pub struct QryTradingAccount {
 }
 
 /// 查询交易编码
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryTradingCode {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -7762,7 +7762,7 @@ pub struct QryTradingCode {
 }
 
 /// 查询交易事件通知
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryTradingNotice {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -7773,7 +7773,7 @@ pub struct QryTradingNotice {
 }
 
 /// 查询转帐银行
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryTransferBank {
     /// 银行代码。CTP：`BankID`，`TThostFtdcBankIDType`。
     pub bank_id: String,
@@ -7782,7 +7782,7 @@ pub struct QryTransferBank {
 }
 
 /// 请求查询转帐流水
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryTransferSerial {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -7804,7 +7804,7 @@ pub struct QryUserRightsAssign {
 }
 
 /// 查询用户会话
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QryUserSession {
     /// 前置编号。CTP：`FrontID`，`TThostFtdcFrontIDType`。
     pub front_id: FrontId,
@@ -7826,7 +7826,7 @@ pub struct QueryBrokerDeposit {
 }
 
 /// 查询监控中心用户令牌
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct QueryCFMMCTradingAccountToken {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -8199,7 +8199,7 @@ pub struct RULEIntraParameter {
 }
 
 /// 删除预埋单
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct RemoveParkedOrder {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -8212,7 +8212,7 @@ pub struct RemoveParkedOrder {
 }
 
 /// 删除预埋撤单
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct RemoveParkedOrderAction {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -8232,7 +8232,7 @@ pub struct ReqApiHandshake {
 }
 
 /// 客户端认证请求
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct ReqAuthenticate {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -8509,7 +8509,7 @@ pub struct ReqFutureSignOut {
 }
 
 /// 申请短信验证码请求
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct ReqGenSMSCode {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -8520,7 +8520,7 @@ pub struct ReqGenSMSCode {
 }
 
 /// 用户发出获取安全安全登陆方法请求
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct ReqGenUserCaptcha {
     /// 交易日。CTP：`TradingDay`，`TThostFtdcDateType`。
     pub trading_day: DateText,
@@ -8531,7 +8531,7 @@ pub struct ReqGenUserCaptcha {
 }
 
 /// 用户发出获取安全安全登陆方法请求
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct ReqGenUserText {
     /// 交易日。CTP：`TradingDay`，`TThostFtdcDateType`。
     pub trading_day: DateText,
@@ -8637,7 +8637,7 @@ pub struct ReqOpenAccount {
 }
 
 /// 查询账户信息请求
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct ReqQueryAccount {
     /// 业务功能码。CTP：`TradeCode`，`TThostFtdcTradeCodeType`。
     pub trade_code: String,
@@ -9010,7 +9010,7 @@ pub struct ReqSyncKey {
 }
 
 /// 转账请求
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct ReqTransfer {
     /// 业务功能码。CTP：`TradeCode`，`TThostFtdcTradeCodeType`。
     pub trade_code: String,
@@ -9200,7 +9200,7 @@ pub struct ReqTransferBySec {
 }
 
 /// 用户发出获取安全安全登陆方法请求
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct ReqUserAuthMethod {
     /// 交易日。CTP：`TradingDay`，`TThostFtdcDateType`。
     pub trading_day: DateText,
@@ -9211,7 +9211,7 @@ pub struct ReqUserAuthMethod {
 }
 
 /// 用户登录请求
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct ReqUserLogin {
     /// 交易日。CTP：`TradingDay`，`TThostFtdcDateType`。
     pub trading_day: DateText,
@@ -9281,7 +9281,7 @@ pub struct ReqUserLoginSM {
 }
 
 /// 用户发出带图形验证码的登录请求请求
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct ReqUserLoginWithCaptcha {
     /// 交易日。CTP：`TradingDay`，`TThostFtdcDateType`。
     pub trading_day: DateText,
@@ -9310,7 +9310,7 @@ pub struct ReqUserLoginWithCaptcha {
 }
 
 /// 用户发出带动态验证码的登录请求请求
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct ReqUserLoginWithOTP {
     /// 交易日。CTP：`TradingDay`，`TThostFtdcDateType`。
     pub trading_day: DateText,
@@ -9339,7 +9339,7 @@ pub struct ReqUserLoginWithOTP {
 }
 
 /// 用户发出带短信验证码的登录请求请求
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct ReqUserLoginWithText {
     /// 交易日。CTP：`TradingDay`，`TThostFtdcDateType`。
     pub trading_day: DateText,
@@ -10783,7 +10783,7 @@ pub struct SettlementInfo {
 }
 
 /// 投资者结算结果确认信息
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct SettlementInfoConfirm {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -12903,7 +12903,7 @@ pub struct TradingAccountPassword {
 }
 
 /// 资金账户口令变更域
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct TradingAccountPasswordUpdate {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -13297,7 +13297,7 @@ pub struct UserIP {
 }
 
 /// 用户登出请求
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct UserLogout {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -13306,7 +13306,7 @@ pub struct UserLogout {
 }
 
 /// 用户口令变更
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct UserPasswordUpdate {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -13387,7 +13387,7 @@ pub struct UserSession {
 }
 
 /// 用户系统信息
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct UserSystemInfo {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,
@@ -13502,7 +13502,7 @@ pub struct VerifyInvestorPassword {
 }
 
 /// 微信小程序等用户系统信息
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct WechatUserSystemInfo {
     /// 经纪公司代码。CTP：`BrokerID`，`TThostFtdcBrokerIDType`。
     pub broker_id: BrokerId,

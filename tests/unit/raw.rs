@@ -42,7 +42,7 @@ fn test_api_with_spi(spi: Box<dyn MdSpi>) -> (MdApi, PathBuf) {
     let flow_dir = std::env::temp_dir().join(format!("ctp-base-md-{}-{id}", std::process::id()));
     std::fs::create_dir_all(&flow_dir).unwrap();
     let flow_path = format!("{}{}", flow_dir.display(), std::path::MAIN_SEPARATOR);
-    let api = MdApi::new(MdConfig::new(flow_path), spi).unwrap();
+    let api = MdApi::new(spi, &flow_path, false, false, true).unwrap();
     (api, flow_dir)
 }
 

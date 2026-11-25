@@ -9,25 +9,6 @@ use crate::{
 use cxx::UniquePtr;
 use std::{error::Error, fmt};
 
-#[derive(Debug, Clone)]
-pub struct MdConfig {
-    pub flow_path: String,
-    pub using_udp: bool,
-    pub multicast: bool,
-    pub production_mode: bool,
-}
-
-impl MdConfig {
-    pub fn new(flow_path: impl Into<String>) -> Self {
-        Self {
-            flow_path: flow_path.into(),
-            using_udp: false,
-            multicast: false,
-            production_mode: true,
-        }
-    }
-}
-
 pub struct MdApi {
     inner: UniquePtr<ffi::md::MdApiBridge>,
 }
@@ -49,19 +30,27 @@ impl fmt::Display for CreateMdApiError {
 
 impl Error for CreateMdApiError {}
 
-// noinspection DuplicatedCode
 impl MdApi {
     /// 创建原生 API 并注册 SPI；必须在调用 `init` 前完成，SPI 随 API 持有并在原生释放后销毁。
-    pub fn new(config: MdConfig, spi: Box<dyn MdSpi>) -> Result<Self, CreateMdApiError> {
-        if config.flow_path.as_bytes().contains(&0) {
+    ///
+    /// 参数与 CTP `CreateFtdcMdApi(pszFlowPath, bIsUsingUdp, bIsMulticast, bIsProductionMode)`
+    /// 一一对应；常规使用建议走 `session` 托管层（带默认值的配置）。
+    pub fn new(
+        spi: Box<dyn MdSpi>,
+        flow_path: &str,
+        using_udp: bool,
+        multicast: bool,
+        production_mode: bool,
+    ) -> Result<Self, CreateMdApiError> {
+        if flow_path.as_bytes().contains(&0) {
             return Err(CreateMdApiError::InvalidFlowPath);
         }
         let inner = ffi::md::create_md_api(
             Box::new(MdSpiSink::new(spi)),
-            &config.flow_path,
-            config.using_udp,
-            config.multicast,
-            config.production_mode,
+            flow_path,
+            using_udp,
+            multicast,
+            production_mode,
         );
         if inner.is_null() {
             return Err(CreateMdApiError::CreationFailed);
